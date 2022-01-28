@@ -8,6 +8,10 @@ namespace Runtime.Cards {
     {
         public List<PlayCondition> conditions;
         public List<CardEffect> effects;
+
+        public string cardBody => _cardBody;
+        [TextArea] [SerializeField] string _cardBody;
+
         public int cost => _cost;
         [SerializeField] int _cost;
 
