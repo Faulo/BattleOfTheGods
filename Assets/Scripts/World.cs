@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Runtime.Extensions;
 using Slothsoft.UnityExtensions;
 using UnityEngine;
@@ -75,8 +76,6 @@ namespace Runtime {
             }
         }
 
-        public bool TryGetCell(Vector3 worldPosition, out ICell cell)
-            => cells.TryGetValue(groundTilemap.WorldToCell(worldPosition), out cell);
         public bool TryGetCell(Vector3Int gridPosition, out ICell cell)
             => cells.TryGetValue(gridPosition, out cell);
 
@@ -94,13 +93,36 @@ namespace Runtime {
                 cell.entities.Add(instance);
             }
         }
+        static readonly Vector3Int[] evenNeighbors = new[] {
+            new Vector3Int(1, 0),
+            new Vector3Int(0, -1),
+            new Vector3Int(-1, -1),
+            new Vector3Int(-1, 0),
+            new Vector3Int(0, 1),
+            new Vector3Int(-1, 1),
+        };
+        static readonly Vector3Int[] oddNeighbors = new[] {
+            new Vector3Int(1, 1),
+            new Vector3Int(1, 0),
+            new Vector3Int(0, -1),
+            new Vector3Int(-1, 0),
+            new Vector3Int(1, -1),
+            new Vector3Int(0, 1),
+        };
+        public IEnumerable<Vector3Int> GetNeighboringPositions(Vector3Int position) {
+            var neighbors = (position.y & 1) == 1
+                ? oddNeighbors
+                : evenNeighbors;
+            return neighbors.Select(offset => offset + position);
+        }
         public IEnumerable<ICell> GetNeighboringCells(Vector3Int position) {
-            foreach (var cell in cells.Values) {
-                if ((cell.gridPosition - position).sqrMagnitude == 1) {
+            foreach (var neighbor in GetNeighboringPositions(position)) {
+                if (TryGetCell(neighbor, out var cell)) {
                     yield return cell;
                 }
             }
         }
+
         public void MoveEntity(Vector3Int oldPosition, Vector3Int newPosition, GameObject entity) {
             if (!TryGetCell(oldPosition, out var oldCell)) {
                 Debug.LogWarning($"Position {oldPosition} is out of bounds");
