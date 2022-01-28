@@ -27,6 +27,7 @@ namespace Runtime {
                 instance.Init(card);
                 if (instance.TryGetComponent<CardView>(out CardView view))
                     view.Init(instance);
+                deck.Add(instance);
             }
 
             ShuffleDeck();
@@ -50,26 +51,32 @@ namespace Runtime {
 
         private void UpdateCardParents() 
         {
-            foreach (var ci in deck)
-                ci.transform.parent = deckParent;
-            foreach (var ci in hand)
-                ci.transform.parent = handParent;
-            foreach (var ci in grave)
-                ci.transform.parent = graveParent;
+            foreach (var ci in deck) {
+                ci.transform.SetParent(deckParent, false);
+            }
+            foreach (var ci in hand) {
+                ci.transform.SetParent(handParent, false);
+            }
+            foreach (var ci in grave) { 
+                ci.transform.SetParent(graveParent, false); 
+            }
         }
 
         private void Cleanup() {
             if (hand != default) {
-                foreach (var ci in hand)
+                foreach (var ci in hand) {
                     Destroy(ci.gameObject);
+                }
             }
             if (deck != default) {
-                foreach (var ci in deck)
+                foreach (var ci in deck) {
                     Destroy(ci.gameObject);
+                }
             }
             if (grave != default) {
-                foreach (var ci in grave)
+                foreach (var ci in grave) {
                     Destroy(ci.gameObject);
+                }
             }
         }
     }

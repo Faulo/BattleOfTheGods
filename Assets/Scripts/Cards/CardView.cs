@@ -14,6 +14,19 @@ namespace Runtime.Cards {
             this.header.text = instance.data.name;
             this.body.text = instance.body;
             this.cost.text = instance.cost.ToString();
+            this.gameObject.name = instance.data.name;
+            UpdateVisibilityByParent();
+        }
+
+        private void OnTransformParentChanged() {
+            UpdateVisibilityByParent();
+        }
+
+        private void UpdateVisibilityByParent() {
+            if (this.transform.parent.gameObject.TryGetComponent<HandView>(out HandView view))
+                gameObject.SetActive(true);
+            else
+                gameObject.SetActive(false);
         }
     }
 }
