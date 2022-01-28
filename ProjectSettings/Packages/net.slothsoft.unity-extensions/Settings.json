@@ -6,12 +6,22 @@
             {
                 "type": "Slothsoft.UnityExtensions.Editor.PackageSettings.CSharpSettings, Slothsoft.UnityExtensions.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "key": "m_expandableSettings",
-                "value": "{\"m_Value\":{\"addNamespaceToCSharpFiles\":true,\"rewriteProjectFiles\":true,\"projectFileSettings\":[]}}"
+                "value": "{\"m_Value\":{\"addNamespaceToCSharpFiles\":true,\"rewriteProjectFiles\":true,\"projectFileSettings\":[{\"affectedAssemblies\":[{\"fileID\":5897886265953266890,\"guid\":\"5cf007d335c0877488c1796edf65f8b0\",\"type\":3}],\"setCSharpVersionTo\":\"8.0\",\"m_setWarningLevelTo\":4}]}}"
             },
             {
                 "type": "Slothsoft.UnityExtensions.Editor.PackageSettings.ExpandableSettings, Slothsoft.UnityExtensions.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "key": "m_expandableSettings",
                 "value": "{\"m_Value\":{\"showSourceFile\":true,\"innerSpacing\":4,\"outerSpacing\":2,\"backgroundStyle\":1,\"darkenColor\":{\"r\":0.0,\"g\":0.0,\"b\":0.0,\"a\":0.20000000298023225},\"lightenColor\":{\"r\":1.0,\"g\":1.0,\"b\":1.0,\"a\":0.20000000298023225}}}"
+            },
+            {
+                "type": "Slothsoft.UnityExtensions.Editor.RenderPipelineConversionSettings, Slothsoft.UnityExtensions.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+                "key": "m_expandableSettings",
+                "value": "{\"m_Value\":{\"directionalLightIntensityMultiplier\":5.0,\"pointLightIntensityMultiplier\":30.0,\"lightIntensityProperty\":\"m_Intensity\"}}"
+            },
+            {
+                "type": "Slothsoft.UnityExtensions.Editor.PackageSettings.PrefabUtilsSettings, Slothsoft.UnityExtensions.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+                "key": "m_expandableSettings",
+                "value": "{\"m_Value\":{\"assetsFolder\":\"Assets/\",\"prefabExtension\":\".prefab\"}}"
             }
         ]
     }
