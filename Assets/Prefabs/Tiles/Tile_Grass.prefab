@@ -53,7 +53,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8460571604764077623, guid: dbb4413ce7305e3418ad42d7dea4e760, type: 3}
       propertyPath: m_Name
-      value: Tile
+      value: Tile_Grass
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbb4413ce7305e3418ad42d7dea4e760, type: 3}
+--- !u!1 &6345978842368535105 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8460571604764077623, guid: dbb4413ce7305e3418ad42d7dea4e760, type: 3}
+  m_PrefabInstance: {fileID: 3276526156932531318}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-3776617440932469498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6345978842368535105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceeab641143662c48bf3b0bfc13ae6db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 4997825342097703106, guid: 9e516a12638c88b45856798d16d94bbe, type: 3}
