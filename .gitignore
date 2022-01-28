@@ -1,0 +1,25 @@
+# == Windows ==
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# == Use opt-in instead of opt-out for root folder ==
+/*
+/*/
+
+# == Git ==
+!.gitattributes
+!.gitignore
+!.gitmodules
+
+# == Visual Studio ==
+!.editorconfig
+!*.md
+
+# == Unity ==
+!/Assets/
+!/ProjectSettings/
+!/Packages/
+InitTestScene*
+PerformanceTestRunInfo*
