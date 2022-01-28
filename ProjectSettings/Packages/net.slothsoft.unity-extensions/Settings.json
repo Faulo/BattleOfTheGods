@@ -7,6 +7,11 @@
                 "type": "Slothsoft.UnityExtensions.Editor.PackageSettings.CSharpSettings, Slothsoft.UnityExtensions.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "key": "m_expandableSettings",
                 "value": "{\"m_Value\":{\"addNamespaceToCSharpFiles\":true,\"rewriteProjectFiles\":true,\"projectFileSettings\":[]}}"
+            },
+            {
+                "type": "Slothsoft.UnityExtensions.Editor.PackageSettings.ExpandableSettings, Slothsoft.UnityExtensions.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+                "key": "m_expandableSettings",
+                "value": "{\"m_Value\":{\"showSourceFile\":true,\"innerSpacing\":4,\"outerSpacing\":2,\"backgroundStyle\":1,\"darkenColor\":{\"r\":0.0,\"g\":0.0,\"b\":0.0,\"a\":0.20000000298023225},\"lightenColor\":{\"r\":1.0,\"g\":1.0,\"b\":1.0,\"a\":0.20000000298023225}}}"
             }
         ]
     }
