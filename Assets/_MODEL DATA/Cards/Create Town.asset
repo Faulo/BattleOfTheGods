@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e61c3979d4baba4fbb44a1913644a53, type: 3}
-  m_Name: HolySeed
+  m_Name: Create Town
   m_EditorClassIdentifier: 
   conditions: []
   effects: []
-  _cardBody: Create 1 Holy Tree in distance of max 2 from occupied area
+  _cardBody: Create 1 Town in distance of max 2 from occupied area
   _cost: 5
-  _type: 1
+  _type: 0
