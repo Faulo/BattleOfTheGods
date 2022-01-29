@@ -69,11 +69,11 @@ namespace Runtime {
                 yield return PlayCards();
                 log.text += "Start simulation \n";
                 yield return EvaluateTurn();
-                log.text += "Start check win \n";
+                log.text += "Check win \n";
                 if (CheckWin()) {
                     break;
                 }
-                log.text += "Start end turn \n";
+                log.text += "End turn \n";
             }
         }
 
