@@ -140,6 +140,7 @@ MonoBehaviour:
   grid: {fileID: 1746776648438089322}
   groundTilemap: {fileID: 1746776648599625900}
   entitiesContainer: {fileID: 1746776648059201325}
+  maxDistanceToCenter: 0.25
   m_season: 0
   minSeasonDuration: 0.5
   autoAdvanceSeasons: 1

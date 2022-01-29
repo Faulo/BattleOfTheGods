@@ -47,7 +47,7 @@ namespace Runtime.Level {
         }
         void HandleMove(IEntity entity) {
             LeanTween
-                .move(entity.gameObject, entity.ownerCell.worldPosition, moveDuration)
+                .move(entity.gameObject, entity.ownerCell.worldPosition + World.instance.randomDistanceToCenter, moveDuration)
                 .setEase(moveEaseType);
         }
         void HandleDestroy(IEntity entity) {
