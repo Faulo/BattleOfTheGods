@@ -4,19 +4,19 @@ using UnityEngine;
 
 namespace Runtime.Entities {
     public class SpreadOut : MonoBehaviour {
+        bool isInitialized = false;
         IEntity entity;
 
-        protected void OnEnable() {
-            World.onStartSeasonChange += HandleSeasonChange;
-        }
-        protected void OnDisable() {
-            World.onStartSeasonChange -= HandleSeasonChange;
-        }
         protected void Start() {
+            isInitialized = true;
             entity = World.instance.GetEntityByEntityObject(gameObject);
         }
 
-        void HandleSeasonChange(Season season) {
+        protected void OnSeasonChange() {
+            if (!isInitialized) {
+                return;
+            }
+
             int count = entity.ownerCell.entities.Count();
             var cellCandidates = World.instance.GetNeighboringCells(entity.ownerCell)
                 .Where(neighbor => neighbor.entities.Count() < count)
