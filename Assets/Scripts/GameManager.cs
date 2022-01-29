@@ -18,6 +18,7 @@ namespace Runtime {
         ICell currentSelectedCell;
         public string noCellReason { get; private set; }
         [SerializeField] TextMeshProUGUI debugText;
+        [SerializeField] TextMeshProUGUI log;
         [SerializeField] Config config;
 
         public Player player { get; private set; }
@@ -53,9 +54,9 @@ namespace Runtime {
             StartCoroutine(GameLoop());
         }
 
-        public void EndTurn() 
+        public void SetTurnEvaluate() 
         {
-            state = States.EndingTurn;
+            state = States.EvaluatingTurn;
         }
 
         IEnumerator GameLoop() {
@@ -64,6 +65,7 @@ namespace Runtime {
                 player.maxEnergy += Config.current.energyIncreasePerTurn;
                 player.maxEnergy = Math.Min(Config.current.maxEnergy, player.maxEnergy);
                 player.energy = player.maxEnergy;
+                log.text += "Start turn";
                 yield return PlayCards();
                 yield return EvaluateTurn();
 
@@ -95,11 +97,13 @@ namespace Runtime {
                 {
                     yield return ExecuteCardRoutine();
                 } 
-                else if (currentSelectedCell == default) 
+                else if (currentSelectedCell == default &&
+                         currentSelectedCard != default) 
                 {
                     //feedback for not selecting cell
                     state = States.PlayingCardsIdle;
                 }
+                
                 yield return new WaitWhile(() => state == States.PlayingCardsExecuting);
 
                 if (state != States.PlayingCardsIdle &&
@@ -133,7 +137,7 @@ namespace Runtime {
                     //play visuals for effect & yield
                     yield return null;
                 }
-
+                player.energy -= card.cost;
                 CardManager.instance.SendToGraveyard(card);
             }
 
@@ -148,19 +152,30 @@ namespace Runtime {
 
         private void OnCardClick(CardInstance obj) {
 
-            if (CanPlayCard(obj, out IEnumerable<WorldCell> legalCells)) {
+            if (CanPlayCard(obj, out IEnumerable<WorldCell> legalCells, out string feedback)) {
                 CardInstance.clicked -= OnCardClick;
                 currentSelectedCard = obj;
                 WorldInput.clicked += OnCellSelect;
                 this.state = States.PlayingCardsTargeting;
             } else {
-                //feedback why you can't play the card!
+                log.text += feedback + "\n";
+                this.state = States.PlayingCardsIdle;
             }
         }
 
-        bool CanPlayCard(CardInstance card, out IEnumerable<WorldCell> legalCells) {
+        bool CanPlayCard(CardInstance card, out IEnumerable<WorldCell> legalCells, out string feedback) {
             legalCells = World.instance.cellValues.Where(c => card.playConditions.All(cond => cond.Check(new PlayCondition.PlayConditionData(c, card))));
-            return legalCells.Count() > 0;
+            if (player.energy < card.cost) {
+                feedback = "Energy low";
+                return false;
+            }
+            if (legalCells.Count() <= 0) {
+                feedback = "No legal target";
+                return false;
+            }
+
+            feedback = $"{card.data.name} is legal cast";
+            return true;
         }
 
         private void OnCellSelect(Vector3 obj) {
