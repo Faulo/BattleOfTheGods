@@ -155,6 +155,41 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
+--- !u!1 &4395584843182567862 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6056427924523954932, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
+  m_PrefabInstance: {fileID: 7569566067496665922}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-6299264478197241766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4395584843182567862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1753734382
+      Data2: 1171639300
+      Data3: -2084013432
+      Data4: 322021083
+    Path: event:/Ambience/Humans/Town_Ambience
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!4 &7627129794631565250 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 60097213861379200, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
