@@ -5,10 +5,10 @@ using UnityEngine;
 namespace Runtime.Entities {
     public class SpreadOut : MonoBehaviour {
         protected void OnEnable() {
-            World.instance.onSeasonChange += HandleSeasonChange;
+            World.instance.onStartSeasonChange += HandleSeasonChange;
         }
         protected void OnDisable() {
-            World.instance.onSeasonChange -= HandleSeasonChange;
+            World.instance.onStartSeasonChange -= HandleSeasonChange;
         }
 
         void HandleSeasonChange(Season season) {

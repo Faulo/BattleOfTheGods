@@ -8,10 +8,10 @@ namespace Runtime.Tiles {
         Season season = Season.Spring;
 
         protected void OnEnable() {
-            World.instance.onSeasonChange += HandleSeasonChange;
+            World.instance.onStartSeasonChange += HandleSeasonChange;
         }
         protected void OnDisable() {
-            World.instance.onSeasonChange -= HandleSeasonChange;
+            World.instance.onStartSeasonChange -= HandleSeasonChange;
         }
         void HandleSeasonChange(Season season) {
             if (season != this.season) {

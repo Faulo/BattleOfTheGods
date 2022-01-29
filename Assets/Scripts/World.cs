@@ -20,7 +20,8 @@ namespace Runtime {
             }
         }
 
-        public event Action<Season> onSeasonChange;
+        public event Action<Season> onStartSeasonChange;
+        public event Action<Season> onFinishSeasonChange;
 
         [Header("MonoBehaviour configuration")]
         [SerializeField]
@@ -29,15 +30,18 @@ namespace Runtime {
         Tilemap groundTilemap = default;
         [SerializeField]
         Transform entitiesContainer = default;
+
         [Header("Debug settings")]
         [SerializeField]
         public Season currentSeason = Season.Spring;
+        [SerializeField, Range(0, 60)]
+        public float minSeasonDuration = 1;
         [SerializeField]
         public bool autoAdvanceSeasons = false;
         [SerializeField, Range(0, 60)]
         public float autoAdvanceSeasonDuration = 1;
 
-        public IEnumerable<WorldCell> cellValues => cells.Values;
+        public IEnumerable<ICell> cellValues => cells.Values.Cast<ICell>();
         readonly Dictionary<Vector3Int, WorldCell> cells = new Dictionary<Vector3Int, WorldCell>();
 
         protected void OnValidate() {
@@ -71,7 +75,7 @@ namespace Runtime {
         IEnumerator Start() {
             while (true) {
                 if (autoAdvanceSeasons) {
-                    AdvanceSeason();
+                    yield return AdvanceSeasonRoutine();
                 }
                 yield return Wait.forSeconds[autoAdvanceSeasonDuration];
             }
@@ -87,9 +91,11 @@ namespace Runtime {
             }
         }
 
-        public void AdvanceSeason() {
+        public IEnumerator AdvanceSeasonRoutine() {
             currentSeason = (Season)(((int)currentSeason + 1) % 4);
-            onSeasonChange?.Invoke(currentSeason);
+            onStartSeasonChange?.Invoke(currentSeason);
+            yield return Wait.forSeconds[minSeasonDuration];
+            onFinishSeasonChange?.Invoke(currentSeason);
         }
 
         public Vector3Int WorldToGrid(Vector3 position) => groundTilemap.WorldToCell(position);

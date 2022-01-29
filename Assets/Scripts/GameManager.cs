@@ -148,7 +148,7 @@ namespace Runtime {
 
         private void OnCardClick(CardInstance obj) {
 
-            if (CanPlayCard(obj, out IEnumerable<WorldCell> legalCells)) {
+            if (CanPlayCard(obj, out IEnumerable<ICell> legalCells)) {
                 CardInstance.clicked -= OnCardClick;
                 currentSelectedCard = obj;
                 WorldInput.clicked += OnCellSelect;
@@ -158,7 +158,7 @@ namespace Runtime {
             }
         }
 
-        bool CanPlayCard(CardInstance card, out IEnumerable<WorldCell> legalCells) {
+        bool CanPlayCard(CardInstance card, out IEnumerable<ICell> legalCells) {
             legalCells = World.instance.cellValues.Where(c => card.playConditions.All(cond => cond.Check(new PlayCondition.PlayConditionData(c, card))));
             return legalCells.Count() > 0;
         }
