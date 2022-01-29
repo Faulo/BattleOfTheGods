@@ -45,4 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugText: {fileID: 0}
+  log: {fileID: 0}
   config: {fileID: 11400000, guid: cfccf2c57b2a4ea429c3298ee70abbcc, type: 2}
