@@ -213,7 +213,7 @@ MonoBehaviour:
       Data2: 1115435722
       Data3: -1538413402
       Data4: 346358741
-    Path: event:/SFX/Humans/Humans_Play_Card_SFX
+    Path: event:/SFX/Humans/Town_Play_Card_SFX
   Event: 
   PlayEvent: 1
   StopEvent: 0

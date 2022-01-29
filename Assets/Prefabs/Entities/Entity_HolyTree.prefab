@@ -120,7 +120,7 @@ MonoBehaviour:
       Data2: 1185505533
       Data3: 985586582
       Data4: 370862848
-    Path: event:/SFX/Nature/Nature_Play_Card_SFX
+    Path: event:/SFX/Nature/Tree_Play_Card_SFX
   Event: 
   PlayEvent: 1
   StopEvent: 0
