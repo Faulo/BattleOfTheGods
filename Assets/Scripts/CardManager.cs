@@ -19,7 +19,7 @@ namespace Runtime {
         public List<CardInstance> grave;
 
         [SerializeField] Transform deckParent, handParent, graveParent;
-        [SerializeField] CardInstance cardPrefab;
+        [SerializeField] CardInstance cardCiv, cardNat;
         public void Init(List <CardData> cards) {
             Cleanup();
 
@@ -28,7 +28,15 @@ namespace Runtime {
             grave = new List<CardInstance>();
 
             foreach(var card in cards) {
-                CardInstance instance = Instantiate(cardPrefab, deckParent);
+
+                CardInstance prefab = default;
+
+                if (card.type == CardTypes.CIV)
+                    prefab = cardCiv;
+                else if (card.type == CardTypes.NAT)
+                    prefab = cardNat;
+
+                CardInstance instance = Instantiate(prefab, deckParent);
                 instance.Init(card);
                 if (instance.TryGetComponent<CardView>(out CardView view))
                     view.Init(instance);
