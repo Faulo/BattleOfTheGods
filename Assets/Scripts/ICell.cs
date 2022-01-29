@@ -7,6 +7,6 @@ namespace Runtime {
         Vector3Int gridPosition { get; }
         Vector3 worldPosition { get; }
         TileBase ground { get; }
-        List<GameObject> entities { get; }
+        IReadOnlyList<GameObject> entities { get; }
     }
 }

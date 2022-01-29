@@ -37,7 +37,7 @@ namespace Runtime {
         [SerializeField, Range(0, 60)]
         public float autoAdvanceSeasonDuration = 1;
 
-        readonly Dictionary<Vector3Int, ICell> cells = new Dictionary<Vector3Int, ICell>();
+        readonly Dictionary<Vector3Int, WorldCell> cells = new Dictionary<Vector3Int, WorldCell>();
 
         protected void OnValidate() {
             if (!grid) {
@@ -76,8 +76,15 @@ namespace Runtime {
             }
         }
 
-        public bool TryGetCell(Vector3Int gridPosition, out ICell cell)
-            => cells.TryGetValue(gridPosition, out cell);
+        public bool TryGetCell(Vector3Int gridPosition, out ICell cell) {
+            if (cells.TryGetValue(gridPosition, out var c)) {
+                cell = c;
+                return true;
+            } else {
+                cell = default;
+                return false;
+            }
+        }
 
         public void AdvanceSeason() {
             currentSeason = (Season)(((int)currentSeason + 1) % 4);
@@ -88,11 +95,12 @@ namespace Runtime {
         public Vector3 GridToWorld(Vector3Int position) => groundTilemap.CellToWorld(position);
 
         public void InstantiateEntity(Vector3Int position, GameObject prefab) {
-            if (TryGetCell(position, out var cell)) {
+            if (cells.TryGetValue(position, out var cell)) {
                 var instance = Instantiate(prefab, cell.worldPosition, Quaternion.identity, entitiesContainer);
                 cell.entities.Add(instance);
             }
         }
+
         static readonly Vector3Int[] evenNeighbors = new[] {
             new Vector3Int(1, 0),
             new Vector3Int(0, -1),
@@ -109,12 +117,14 @@ namespace Runtime {
             new Vector3Int(1, -1),
             new Vector3Int(0, 1),
         };
+
         public IEnumerable<Vector3Int> GetNeighboringPositions(Vector3Int position) {
             var neighbors = (position.y & 1) == 1
                 ? oddNeighbors
                 : evenNeighbors;
             return neighbors.Select(offset => offset + position);
         }
+
         public IEnumerable<ICell> GetNeighboringCells(Vector3Int position) {
             foreach (var neighbor in GetNeighboringPositions(position)) {
                 if (TryGetCell(neighbor, out var cell)) {
@@ -124,11 +134,11 @@ namespace Runtime {
         }
 
         public void MoveEntity(Vector3Int oldPosition, Vector3Int newPosition, GameObject entity) {
-            if (!TryGetCell(oldPosition, out var oldCell)) {
+            if (!cells.TryGetValue(oldPosition, out var oldCell)) {
                 Debug.LogWarning($"Position {oldPosition} is out of bounds");
                 return;
             }
-            if (!TryGetCell(newPosition, out var newCell)) {
+            if (!cells.TryGetValue(newPosition, out var newCell)) {
                 Debug.LogWarning($"Position {oldPosition} is out of bounds");
                 return;
             }

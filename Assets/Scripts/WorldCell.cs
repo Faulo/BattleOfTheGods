@@ -18,5 +18,7 @@ namespace Runtime {
         public TileBase ground { get; }
 
         public List<GameObject> entities { get; }
+
+        IReadOnlyList<GameObject> ICell.entities => entities;
     }
 }
