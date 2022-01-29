@@ -28,22 +28,26 @@ namespace Runtime {
             grave = new List<CardInstance>();
 
             foreach(var card in cards) {
-
-                CardInstance prefab = default;
-
-                if (card.type == CardTypes.CIV)
-                    prefab = cardCiv;
-                else if (card.type == CardTypes.NAT)
-                    prefab = cardNat;
-
-                CardInstance instance = Instantiate(prefab, deckParent);
-                instance.Init(card);
+                var instance = InstantiateCard(card);
                 if (instance.TryGetComponent<CardView>(out CardView view))
                     view.Init(instance);
                 deck.Add(instance);
             }
 
             ShuffleDeck();
+        }
+
+        public CardInstance InstantiateCard(CardData card) {
+            CardInstance prefab = default;
+
+            if (card.type == CardTypes.CIV)
+                prefab = cardCiv;
+            else if (card.type == CardTypes.NAT)
+                prefab = cardNat;
+
+            CardInstance instance = Instantiate(prefab, deckParent);
+            instance.Init(card);
+            return instance;
         }
 
         private void ShuffleDeck() 

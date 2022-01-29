@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cb52ddad35772f4f93b7195525a863f, type: 3}
   m_Name: Tile_Dirt
   m_EditorClassIdentifier: 
-  sprite: {fileID: -267577850, guid: 50f6aceb15454524ab11803046e79e24, type: 3}
+  sprite: {fileID: 21300000, guid: 0bbdb41b899177b4bb5de8ce7e129953, type: 3}
+  tileColor: {r: 0.745283, g: 0.34646568, b: 0.13710396, a: 1}
   prefab: {fileID: 6345978842368535105, guid: 0b17acf1bda277448951b96c49520c99, type: 3}
-  tileOptions: 0
+  tileOptions: 3
   tileCollider: 0
+  movementCost: 1

@@ -121,7 +121,7 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1746776648438089323}
   m_Enabled: 1
-  m_CellSize: {x: 0.8659766, y: 1, z: 0}
+  m_CellSize: {x: 1, y: 1, z: 0}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 1
   m_CellSwizzle: 3
@@ -140,7 +140,7 @@ MonoBehaviour:
   grid: {fileID: 1746776648438089322}
   groundTilemap: {fileID: 1746776648599625900}
   entitiesContainer: {fileID: 1746776648059201325}
-  currentSeason: 0
+  m_season: 0
   minSeasonDuration: 0.5
   autoAdvanceSeasons: 1
   autoAdvanceSeasonDuration: 0.02
@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 1746776648599625900}
   - component: {fileID: 1746776648599625901}
   m_Layer: 0
-  m_Name: Ground
+  m_Name: Tiles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -275,7 +275,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: bd52a396b5bd73c4f8cd33660833842c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

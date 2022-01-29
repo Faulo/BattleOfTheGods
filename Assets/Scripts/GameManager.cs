@@ -22,7 +22,8 @@ namespace Runtime {
         [SerializeField] Config config;
 
         public Player player { get; private set; }
-        
+        public Player opponent { get; private set; }
+        public WaveManager waveManager { get; private set; }
         private void Awake() {
             instance = this;
             _input = new Input();
@@ -48,7 +49,9 @@ namespace Runtime {
         public States state { get; private set; }
         void StartGame() {
             player = FindObjectOfType<Player>();
-
+            waveManager = FindObjectOfType<WaveManager>();
+            if (waveManager != null) //very good code. It's true.
+                opponent = waveManager.GetComponent<Player>();
             if (player == null)
                 Debug.LogError("did not find player");
             StartCoroutine(GameLoop());
@@ -67,6 +70,13 @@ namespace Runtime {
                 player.energy = player.maxEnergy;
                 log.text += "Start turn \n";
                 yield return PlayCards();
+
+                if (waveManager != null &&
+                    opponent != null) {
+                    log.text += "Opponent Action \n";
+                    yield return PlayOpponentCards();
+                }
+
                 log.text += "Start simulation \n";
                 yield return EvaluateTurn();
                 log.text += "Check win \n";
@@ -77,6 +87,42 @@ namespace Runtime {
             }
         }
 
+        IEnumerator PlayOpponentCards() {
+            if (waveManager.currentIndex < waveManager.scenario.waves.Length) {
+
+                yield return PlayCurrentWave();
+                waveManager.currentIndex++;
+            }
+        }
+        public IEnumerator PlayCurrentWave() {
+            yield return null;
+            Wave wave = waveManager.scenario.waves[waveManager.currentIndex];
+            foreach (var tuple in wave.cardsWithTarget) {
+                CardInstance card = CardManager.instance.InstantiateCard(tuple.card);
+                log.text += $"opponent plays {card.data.name} at {tuple.target} \n";
+                card.transform.SetParent(waveManager.cards);
+                ICell cell = World.instance.GetCellByPosition(tuple.target);
+
+                bool playable = true;
+
+                foreach (var cond in card.playConditions) {
+                    var conditionData = new PlayCondition.PlayConditionData(cell, card);
+                    playable = playable && cond.Check(conditionData);
+                    //play visuals for condition & yield
+                    yield return null;
+                }
+
+                if (playable) {
+                    foreach (var eff in card.effects) {
+                        var effectData = new CardEffect.CardEffectData(cell, card);
+                        eff.OnPlay(effectData);
+                        //play visuals for effect & yield
+                        yield return null;
+                    }
+
+                }
+            }
+        }
         bool CheckWin() {
             return false;
         }
@@ -97,7 +143,7 @@ namespace Runtime {
                 if (currentSelectedCell != default &&
                     currentSelectedCard != default) 
                 {
-                    yield return ExecuteCardRoutine();
+                    yield return ExecuteCardRoutine(currentSelectedCard, currentSelectedCell, true);
                 } 
                 else if (currentSelectedCell == default &&
                          currentSelectedCard != default) 
@@ -115,14 +161,11 @@ namespace Runtime {
             }
         }
 
-        IEnumerator ExecuteCardRoutine() {
-            //only gets started if both a card and cell exist!
-            CardInstance card = currentSelectedCard;
-            ICell cell = currentSelectedCell;
-
+        IEnumerator ExecuteCardRoutine(CardInstance card, ICell cell, bool useEnergy = true) {
             bool playable = true;
 
-            if (card.cost > player.energy)
+            if (card.cost > player.energy &&
+                useEnergy)
                 playable = false;
 
             foreach(var cond in card.playConditions) {
@@ -139,10 +182,11 @@ namespace Runtime {
                     //play visuals for effect & yield
                     yield return null;
                 }
-                player.energy -= card.cost;
+                if (useEnergy)
+                    player.energy -= card.cost;
+
                 CardManager.instance.SendToGraveyard(card);
             }
-
             state = States.PlayingCardsIdle;
         }
 

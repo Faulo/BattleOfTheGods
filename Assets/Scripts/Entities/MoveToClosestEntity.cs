@@ -19,9 +19,9 @@ namespace Runtime.Entities {
                 .OrderBy(targetEntity => World.Distance(entity.gridPosition, targetEntity.gridPosition))
                 .FirstOrDefault();
             if (targetEntity != null) {
-                foreach (var position in World.instance.CalculatePath(entity.gridPosition, targetEntity.gridPosition)) {
-                    World.instance.MoveEntity(entity, position);
-                    break;
+                if (World.instance.TryCalculatePath(entity.gridPosition, targetEntity.gridPosition, out var path)) {
+                    // Debug.Log($"{entity}: {string.Join(" > ", path)}");
+                    World.instance.MoveEntity(entity, path[0]);
                 }
             }
         }

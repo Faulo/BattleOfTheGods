@@ -11,7 +11,10 @@ namespace Runtime.Cards.CardConditions {
         [SerializeField] EntityCategories[] denyingCategories;
         [SerializeField] EntityCategories[] requiredCategories;
         public override bool Check(PlayConditionData data) {
-            return !data.cell.entities.Any(e => denyingCategories.Contains(e.type.category)) &&
+            if (data.cell.entities.Count() <= 0)
+                return true;
+
+            return  data.cell.entities.All(e => !denyingCategories.Contains(e.type.category)) &&
                     data.cell.entities.Any(e => requiredCategories.Contains(e.type.category));
         }
     }
