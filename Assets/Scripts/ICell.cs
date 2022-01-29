@@ -8,5 +8,6 @@ namespace Runtime {
 
         ITile tile { get; }
         IEnumerable<IEntity> entities { get; }
+        Faction owningFaction { get; }
     }
 }

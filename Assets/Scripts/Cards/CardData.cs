@@ -22,8 +22,8 @@ namespace Runtime.Cards {
         public int cost => _cost;
         [SerializeField] int _cost;
 
-        public CardTypes type => _type;
-        [SerializeField] CardTypes _type;
+        public Faction type => _type;
+        [SerializeField] Faction _type;
 
     }
 }

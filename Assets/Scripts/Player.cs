@@ -5,8 +5,8 @@ using Runtime.Cards;
 namespace Runtime {
     public class Player : MonoBehaviour {
 
-        public CardTypes type => _type;
-        [SerializeField] CardTypes _type;
+        public Faction type => _type;
+        [SerializeField] Faction _type;
         public float energy { get; set; }
         public float maxEnergy { get; set; }
 

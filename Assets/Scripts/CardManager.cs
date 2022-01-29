@@ -40,9 +40,9 @@ namespace Runtime {
         public CardInstance InstantiateCard(CardData card) {
             CardInstance prefab = default;
 
-            if (card.type == CardTypes.CIV)
+            if (card.type == Faction.Civilization)
                 prefab = cardCiv;
-            else if (card.type == CardTypes.NAT)
+            else if (card.type == Faction.Nature)
                 prefab = cardNat;
 
             CardInstance instance = Instantiate(prefab, deckParent);
