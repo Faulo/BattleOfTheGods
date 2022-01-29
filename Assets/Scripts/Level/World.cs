@@ -84,20 +84,11 @@ namespace Runtime {
         float autoAdvanceSeasonDuration = 1;
 
 
-        [Header("Tweening")]
-        [SerializeField, Range(0, 60)]
-        float spawnDuration = 1;
-        [SerializeField]
-        LeanTweenType spawnEaseType = LeanTweenType.easeInOutBounce;
-        [SerializeField, Range(0, 60)]
-        float moveDuration = 1;
-        [SerializeField]
-        LeanTweenType moveEaseType = LeanTweenType.easeInOutBounce;
-
         public IEnumerable<ICell> cellValues => cells.Values.Cast<ICell>();
         readonly Dictionary<Vector3Int, WorldCell> cells = new Dictionary<Vector3Int, WorldCell>();
         readonly Dictionary<Vector3Int, WorldTile> tiles = new Dictionary<Vector3Int, WorldTile>();
         readonly List<WorldEntity> entities = new List<WorldEntity>();
+        readonly List<WorldEntity> destructionQueue = new List<WorldEntity>();
 
         protected void OnValidate() {
             if (!grid) {
@@ -155,10 +146,24 @@ namespace Runtime {
         }
 
         public IEnumerator AdvanceSeasonRoutine() {
+            DestroyQueue();
+
             currentSeason = (Season)(((int)currentSeason + 1) % 4);
+
             onStartSeasonChange?.Invoke(currentSeason);
+
             yield return Wait.forSeconds[minSeasonDuration];
+
             onFinishSeasonChange?.Invoke(currentSeason);
+
+            DestroyQueue();
+        }
+        void DestroyQueue() {
+            foreach (var entity in destructionQueue) {
+                entities.Remove(entity);
+                Destroy(entity.gameObject);
+            }
+            destructionQueue.Clear();
         }
 
         public Vector3Int WorldToGrid(Vector3 position) => groundTilemap.WorldToCell(position);
@@ -181,19 +186,11 @@ namespace Runtime {
             entities.Add(entity);
 
             onSpawnEntity?.Invoke(entity);
-
-            instance.transform.localScale = Vector3.zero;
-            LeanTween
-                .scale(instance, Vector3.one, spawnDuration)
-                .setEase(spawnEaseType);
         }
         public void DestroyEntity(IEntity entity) {
-            if (entities.Remove(entity as WorldEntity)) {
+            destructionQueue.Add(entity as WorldEntity);
 
-                Destroy(entity.gameObject);
-
-                onDestroyEntity?.Invoke(entity);
-            }
+            onDestroyEntity?.Invoke(entity);
         }
 
         static readonly Vector3Int[] evenNeighbors = new[] {
@@ -238,10 +235,6 @@ namespace Runtime {
             (entity as WorldEntity).gridPosition = newPosition;
 
             onMoveEntity?.Invoke(entity);
-
-            LeanTween
-                .move(entity.gameObject, newCell.worldPosition, moveDuration)
-                .setEase(moveEaseType);
         }
 
         public IEntity GetEntityByEntityObject(GameObject entityObject)
