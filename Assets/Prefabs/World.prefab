@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1746776647364947183}
   - component: {fileID: 1746776647364947182}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 1746776648438089317}
   - component: {fileID: 1746776648438089322}
   - component: {fileID: 1746776648438089316}
+  - component: {fileID: 2336065642121360403}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -142,6 +143,21 @@ MonoBehaviour:
   currentSeason: 0
   autoAdvanceSeasons: 1
   autoAdvanceSeasonDuration: 0.02
+--- !u!114 &2336065642121360403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746776648438089323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27992cbf9e121de4b96fe4a54763e700, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickable:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &1746776648599625875
 GameObject:
   m_ObjectHideFlags: 0

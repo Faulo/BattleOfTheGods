@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Runtime.Entities;
 
 namespace Runtime.Cards {
     [CreateAssetMenu(fileName = "CardData.asset")]
@@ -11,6 +12,9 @@ namespace Runtime.Cards {
 
         public string cardBody => _cardBody;
         [TextArea] [SerializeField] string _cardBody;
+
+        public EntityData assignedEntity => _assignedEntity;
+        [SerializeField] EntityData _assignedEntity;
 
         public int cost => _cost;
         [SerializeField] int _cost;
