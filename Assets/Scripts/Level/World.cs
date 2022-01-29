@@ -181,29 +181,31 @@ namespace Runtime {
         #region Grid interactions
         public Vector3Int WorldToGrid(Vector3 position) => groundTilemap.WorldToCell(position);
         public Vector3 GridToWorld(Vector3Int position) => groundTilemap.CellToWorld(position);
+        public static Vector2Int GridToAxial(Vector3Int position) {
+            int q = position.x;
+            int r = position.y - ((position.x + (position.x & 1)) / 2);
+            return new Vector2Int(q, r);
+        }
+        public static Vector3Int AxialToGrid(Vector2Int position) {
+            int col = position.x;
+            int row = position.y + ((position.x + (position.x & 1)) / 2);
+            return new Vector3Int(col, row);
+        }
 
-        static readonly Vector3Int[] evenNeighbors = new[] {
-            new Vector3Int(1, 0),
-            new Vector3Int(0, -1),
-            new Vector3Int(-1, -1),
-            new Vector3Int(-1, 0),
-            new Vector3Int(0, 1),
-            new Vector3Int(-1, 1),
-        };
-        static readonly Vector3Int[] oddNeighbors = new[] {
-            new Vector3Int(1, 1),
-            new Vector3Int(1, 0),
-            new Vector3Int(0, -1),
-            new Vector3Int(-1, 0),
-            new Vector3Int(1, -1),
-            new Vector3Int(0, 1),
+        static readonly Vector2Int[] axialNeighbors = new[] {
+            new Vector2Int(1, 0),
+            new Vector2Int(1, -1),
+            new Vector2Int(0, -1),
+            new Vector2Int(-1, 0),
+            new Vector2Int(-1, 1),
+            new Vector2Int(0, 1),
         };
 
         public static IEnumerable<Vector3Int> GetNeighboringPositions(Vector3Int position) {
-            var neighbors = (position.y & 1) == 1
-                ? oddNeighbors
-                : evenNeighbors;
-            return neighbors.Select(offset => offset + position);
+            var axial = GridToAxial(position);
+            return axialNeighbors
+                .Select(offset => offset + axial)
+                .Select(AxialToGrid);
         }
 
         public static IEnumerable<Vector3Int> GetCircularPositions(Vector3Int position, int radius) {
@@ -220,15 +222,10 @@ namespace Runtime {
                 }
             }
         }
-
-        /// <summary>
-        /// TODO: calculate actual hex distance
-        /// </summary>
-        /// <param name="positionA"></param>
-        /// <param name="positionB"></param>
-        /// <returns></returns>
-        public static float Distance(Vector3Int positionA, Vector3Int positionB)
-            => (positionA - positionB).magnitude;
+        public static int Distance(Vector3Int positionA, Vector3Int positionB)
+            => AxialMagnitude(GridToAxial(positionA) - GridToAxial(positionB));
+        public static int AxialMagnitude(Vector2Int position)
+            => (Math.Abs(position.x) + Math.Abs(position.x + position.y) + Math.Abs(position.y)) / 2;
         #endregion
 
         #region Entity interactions
