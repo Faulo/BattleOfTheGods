@@ -15,6 +15,10 @@ namespace Runtime.Tiles {
         [SerializeField]
         Tile.ColliderType tileCollider = Tile.ColliderType.None;
 
+        [Header("Gameplay")]
+        [SerializeField]
+        public float movementCost = 1;
+
         public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData) {
             base.GetTileData(position, tilemap, ref tileData);
             tileData.sprite = sprite;

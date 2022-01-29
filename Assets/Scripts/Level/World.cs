@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Runtime.Entities;
 using Runtime.Extensions;
+using Runtime.Tiles;
 using Slothsoft.UnityExtensions;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -22,19 +23,21 @@ namespace Runtime {
 
             public ITile tile => instance.GetTileByPosition(gridPosition);
             public IEnumerable<IEntity> entities => instance.GetEntitiesByPosition(gridPosition);
+            public override string ToString() => $"{tile} ({string.Join(", ", entities.Select(e => e.type.name))})";
         }
 
         readonly struct WorldTile : ITile {
-            public WorldTile(Vector3Int gridPosition, GameObject gameObject, TileBase type) {
+            public WorldTile(Vector3Int gridPosition, GameObject gameObject, ScriptableTile type) {
                 this.gameObject = gameObject;
                 this.type = type;
                 this.gridPosition = gridPosition;
             }
             public GameObject gameObject { get; }
-            public TileBase type { get; }
+            public ScriptableTile type { get; }
             public Vector3Int gridPosition { get; }
             public Vector3 worldPosition => gameObject.transform.position;
             public ICell ownerCell => instance.GetCellByPosition(gridPosition);
+            public override string ToString() => $"{type.name} {gridPosition}";
         }
         class WorldEntity : IEntity {
             public WorldEntity(Vector3Int gridPosition, GameObject gameObject, EntityData type) {
@@ -47,6 +50,7 @@ namespace Runtime {
             public Vector3Int gridPosition { get; set; }
             public Vector3 worldPosition => gameObject.transform.position;
             public ICell ownerCell => instance.GetCellByPosition(gridPosition);
+            public override string ToString() => $"{type.name} {gridPosition}";
         }
 
         static World m_instance;
@@ -105,7 +109,7 @@ namespace Runtime {
 
         void SetUpCells() {
             foreach (var gridPosition in groundTilemap.cellBounds.allPositionsWithin) {
-                var type = groundTilemap.GetTile(gridPosition);
+                var type = groundTilemap.GetTile<ScriptableTile>(gridPosition);
                 if (type) {
                     var worldPosition = groundTilemap.CellToWorld(gridPosition);
 
@@ -136,16 +140,6 @@ namespace Runtime {
                     yield return AdvanceSeasonRoutine();
                 }
                 yield return Wait.forSeconds[autoAdvanceSeasonDuration];
-            }
-        }
-
-        public bool TryGetCell(Vector3Int gridPosition, out ICell cell) {
-            if (cells.TryGetValue(gridPosition, out var c)) {
-                cell = c;
-                return true;
-            } else {
-                cell = default;
-                return false;
             }
         }
 
@@ -294,16 +288,76 @@ namespace Runtime {
         public IEnumerable<IEntity> GetEntitiesByType(EntityData type)
             => entities.Where(entity => entity.type == type);
 
+        public bool TryGetCell(Vector3Int gridPosition, out ICell cell) {
+            if (cells.TryGetValue(gridPosition, out var c)) {
+                cell = c;
+                return true;
+            } else {
+                cell = default;
+                return false;
+            }
+        }
         public ICell GetCellByPosition(Vector3Int gridPosition)
             => cells[gridPosition];
 
+        public bool TryGetTile(Vector3Int gridPosition, out ITile tile) {
+            if (tiles.TryGetValue(gridPosition, out var t)) {
+                tile = t;
+                return true;
+            } else {
+                tile = default;
+                return false;
+            }
+        }
         public ITile GetTileByTileObject(GameObject tileObject)
             => tiles.Values.First(tile => tile.gameObject == tileObject);
         public ITile GetTileByPosition(Vector3Int position)
             => tiles[position];
 
-        public IEnumerable<Vector3Int> CalculatePath(Vector3Int oldPosition, Vector3Int newPosition) {
-            yield return newPosition;
+        public bool TryCalculatePath(Vector3Int oldPosition, Vector3Int newPosition, out List<Vector3Int> path) {
+            if (oldPosition == newPosition) {
+                path = default;
+                return false;
+            }
+
+            var openSet = new HashSet<Vector3Int> { oldPosition };
+
+            var cameFrom = new Dictionary<Vector3Int, Vector3Int>();
+
+            var gScore = new Dictionary<Vector3Int, float> {
+                [oldPosition] = 0
+            };
+
+            var fScore = new Dictionary<Vector3Int, float> {
+                [oldPosition] = 1
+            };
+
+            while (openSet.Count > 0) {
+                var current = openSet.OrderBy(position => fScore[position]).First();
+                if (current == newPosition) {
+                    path = new List<Vector3Int> { };
+                    while (current != oldPosition) {
+                        path.Add(current);
+                        current = cameFrom[current];
+                    };
+                    path.Reverse();
+                    return true;
+                }
+                openSet.Remove(current);
+                foreach (var neighbor in GetNeighboringPositions(current)) {
+                    if (TryGetTile(neighbor, out var tile)) {
+                        float tentative_gScore = gScore[current] + Distance(current, neighbor);
+                        if (!gScore.ContainsKey(neighbor) || tentative_gScore < gScore[neighbor]) {
+                            cameFrom[neighbor] = current;
+                            gScore[neighbor] = tentative_gScore;
+                            fScore[neighbor] = tentative_gScore + tile.type.movementCost;
+                            openSet.Add(neighbor);
+                        }
+                    }
+                }
+            }
+            path = default;
+            return false;
         }
 
         #endregion
