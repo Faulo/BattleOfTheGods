@@ -69,7 +69,7 @@ namespace Runtime {
             }
 
             void UpdateColor() {
-                var color = new Color(type.tileId / 256f, m_borderId / 256f, m_emissionId / 256f, 0);
+                var color = new Color(type.tileId / 256f, m_borderId / 2f, m_emissionId / 256f, 0);
                 instance.groundTilemap.SetColor(gridPosition, color);
             }
 
@@ -114,6 +114,16 @@ namespace Runtime {
         Tilemap groundTilemap = default;
         [SerializeField]
         Transform entitiesContainer = default;
+
+        [Header("Cell Settings")]
+        [SerializeField, Range(0, 1)]
+        float maxDistanceToCenter = 0.25f;
+        public Vector3 randomDistanceToCenter {
+            get {
+                var offset = UnityEngine.Random.insideUnitCircle * maxDistanceToCenter;
+                return new Vector3(offset.x, 0, offset.y);
+            }
+        }
 
         [Header("Seasons")]
         [SerializeField]
@@ -273,7 +283,7 @@ namespace Runtime {
                 return;
             }
 
-            var instance = Instantiate(type.prefab, cell.worldPosition, Quaternion.identity, entitiesContainer);
+            var instance = Instantiate(type.prefab, cell.worldPosition + randomDistanceToCenter, Quaternion.identity, entitiesContainer);
 
             var entity = new WorldEntity(position, instance, type);
 
