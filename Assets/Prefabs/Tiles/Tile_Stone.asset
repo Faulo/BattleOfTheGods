@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tile_Stone
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 0bbdb41b899177b4bb5de8ce7e129953, type: 3}
-  tileColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
+  tileColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 0.003921569}
   prefab: {fileID: 6345978842368535105, guid: 5901800ee3dad0e42a00226e078ad549, type: 3}
   tileOptions: 3
   tileCollider: 0
