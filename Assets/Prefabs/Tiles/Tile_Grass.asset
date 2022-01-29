@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tile_Grass
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 0bbdb41b899177b4bb5de8ce7e129953, type: 3}
-  tileColor: {r: 0.29935116, g: 0.5283019, b: 0.2267711, a: 1}
+  tileColor: {r: 0.29935116, g: 0.5283019, b: 0.2267711, a: 0}
   prefab: {fileID: 6345978842368535105, guid: 8db1de25a5d0e5747abb0a2f1d2bf755, type: 3}
   tileOptions: 3
   tileCollider: 0
