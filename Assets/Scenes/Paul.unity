@@ -242,7 +242,8 @@ MonoBehaviour:
   deckParent: {fileID: 1167746755}
   handParent: {fileID: 876732037}
   graveParent: {fileID: 661477159}
-  cardPrefab: {fileID: -1544490580164325053, guid: f6bc7ec7de6bf7c4d8e35571613c29b5, type: 3}
+  cardCiv: {fileID: 959701700974159377, guid: 6aa6f589b817cdf41ae7f105e9606f88, type: 3}
+  cardNat: {fileID: -1544490580164325053, guid: f6bc7ec7de6bf7c4d8e35571613c29b5, type: 3}
 --- !u!1 &103650869
 GameObject:
   m_ObjectHideFlags: 0
