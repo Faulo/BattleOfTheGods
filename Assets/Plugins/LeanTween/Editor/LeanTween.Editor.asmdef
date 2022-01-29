@@ -1,15 +1,12 @@
 {
-    "name": "Runtime",
+    "name": "LeanTween.Editor",
     "rootNamespace": "",
     "references": [
-        "MyBox",
-        "Slothsoft.UnityExtensions.Runtime",
-        "Unity.TextMeshPro",
-        "Unity.InputSystem",
-        "FMODUnity",
-        "LeanTween"
+        "GUID:85ee147fc81bb3a4489824ca19feaa06"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

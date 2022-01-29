@@ -20,7 +20,8 @@ namespace Runtime {
             }
         }
 
-        public event Action<Season> onSeasonChange;
+        public event Action<Season> onStartSeasonChange;
+        public event Action<Season> onFinishSeasonChange;
 
         [Header("MonoBehaviour configuration")]
         [SerializeField]
@@ -29,15 +30,30 @@ namespace Runtime {
         Tilemap groundTilemap = default;
         [SerializeField]
         Transform entitiesContainer = default;
-        [Header("Debug settings")]
-        [SerializeField]
-        public Season currentSeason = Season.Spring;
-        [SerializeField]
-        public bool autoAdvanceSeasons = false;
-        [SerializeField, Range(0, 60)]
-        public float autoAdvanceSeasonDuration = 1;
 
-        public IEnumerable<WorldCell> cellValues => cells.Values;
+        [Header("Seasons")]
+        [SerializeField]
+        Season currentSeason = Season.Spring;
+        [SerializeField, Range(0, 60)]
+        float minSeasonDuration = 1;
+        [Space]
+        [SerializeField]
+        bool autoAdvanceSeasons = false;
+        [SerializeField, Range(0, 60)]
+        float autoAdvanceSeasonDuration = 1;
+
+
+        [Header("Tweening")]
+        [SerializeField, Range(0, 60)]
+        float spawnDuration = 1;
+        [SerializeField]
+        LeanTweenType spawnEaseType = LeanTweenType.easeInOutBounce;
+        [SerializeField, Range(0, 60)]
+        float moveDuration = 1;
+        [SerializeField]
+        LeanTweenType moveEaseType = LeanTweenType.easeInOutBounce;
+
+        public IEnumerable<ICell> cellValues => cells.Values.Cast<ICell>();
         readonly Dictionary<Vector3Int, WorldCell> cells = new Dictionary<Vector3Int, WorldCell>();
 
         protected void OnValidate() {
@@ -71,7 +87,7 @@ namespace Runtime {
         IEnumerator Start() {
             while (true) {
                 if (autoAdvanceSeasons) {
-                    AdvanceSeason();
+                    yield return AdvanceSeasonRoutine();
                 }
                 yield return Wait.forSeconds[autoAdvanceSeasonDuration];
             }
@@ -87,9 +103,11 @@ namespace Runtime {
             }
         }
 
-        public void AdvanceSeason() {
+        public IEnumerator AdvanceSeasonRoutine() {
             currentSeason = (Season)(((int)currentSeason + 1) % 4);
-            onSeasonChange?.Invoke(currentSeason);
+            onStartSeasonChange?.Invoke(currentSeason);
+            yield return Wait.forSeconds[minSeasonDuration];
+            onFinishSeasonChange?.Invoke(currentSeason);
         }
 
         public Vector3Int WorldToGrid(Vector3 position) => groundTilemap.WorldToCell(position);
@@ -99,6 +117,10 @@ namespace Runtime {
             if (cells.TryGetValue(position, out var cell)) {
                 var instance = Instantiate(prefab, cell.worldPosition, Quaternion.identity, entitiesContainer);
                 cell.entities.Add(instance);
+                instance.transform.localScale = Vector3.zero;
+                LeanTween
+                    .scale(instance, Vector3.one, spawnDuration)
+                    .setEase(spawnEaseType);
             }
         }
 
@@ -145,7 +167,10 @@ namespace Runtime {
             }
             oldCell.entities.Remove(entity);
             newCell.entities.Add(entity);
-            entity.transform.position = newCell.worldPosition;
+
+            LeanTween
+                .move(entity, newCell.worldPosition, moveDuration)
+                .setEase(moveEaseType);
         }
     }
 }
