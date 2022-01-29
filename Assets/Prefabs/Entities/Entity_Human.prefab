@@ -178,4 +178,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff4ad852b54f2fe44aa471f4231a3d34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cullingThreshold: 2
+  cullingThreshold: 3

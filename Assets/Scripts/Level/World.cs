@@ -23,6 +23,7 @@ namespace Runtime {
             public ITile tile => instance.GetTileByPosition(gridPosition);
             public IEnumerable<IEntity> entities => instance.GetEntitiesByPosition(gridPosition);
         }
+
         readonly struct WorldTile : ITile {
             public WorldTile(Vector3Int gridPosition, GameObject gameObject, TileBase type) {
                 this.gameObject = gameObject;
@@ -58,11 +59,11 @@ namespace Runtime {
             }
         }
 
-        public static event Action<Season> onStartSeasonChange;
-        public static event Action<Season> onFinishSeasonChange;
         public static event Action<IEntity> onSpawnEntity;
         public static event Action<IEntity> onMoveEntity;
         public static event Action<IEntity> onDestroyEntity;
+
+        public delegate void OnSeasonChange();
 
         [Header("MonoBehaviour configuration")]
         [SerializeField]
@@ -74,7 +75,8 @@ namespace Runtime {
 
         [Header("Seasons")]
         [SerializeField]
-        Season currentSeason = Season.Spring;
+        Season m_season = Season.Spring;
+        public Season season => m_season;
         [SerializeField, Range(0, 60)]
         float minSeasonDuration = 1;
         [Space]
@@ -87,8 +89,10 @@ namespace Runtime {
         public IEnumerable<ICell> cellValues => cells.Values.Cast<ICell>();
         readonly Dictionary<Vector3Int, WorldCell> cells = new Dictionary<Vector3Int, WorldCell>();
         readonly Dictionary<Vector3Int, WorldTile> tiles = new Dictionary<Vector3Int, WorldTile>();
-        readonly List<WorldEntity> entities = new List<WorldEntity>();
-        readonly List<WorldEntity> destructionQueue = new List<WorldEntity>();
+        readonly HashSet<WorldEntity> entities = new HashSet<WorldEntity>();
+        readonly HashSet<WorldEntity> instantiationQueue = new HashSet<WorldEntity>();
+        readonly Dictionary<WorldEntity, Vector3Int> moveQueue = new Dictionary<WorldEntity, Vector3Int>();
+        readonly HashSet<WorldEntity> destructionQueue = new HashSet<WorldEntity>();
 
         protected void OnValidate() {
             if (!grid) {
@@ -146,19 +150,27 @@ namespace Runtime {
         }
 
         public IEnumerator AdvanceSeasonRoutine() {
-            DestroyQueue();
+            ProcessQueues();
 
-            currentSeason = (Season)(((int)currentSeason + 1) % 4);
+            m_season = (Season)(((int)m_season + 1) % 4);
 
-            onStartSeasonChange?.Invoke(currentSeason);
+            BroadcastMessage(nameof(OnSeasonChange));
 
             yield return Wait.forSeconds[minSeasonDuration];
 
-            onFinishSeasonChange?.Invoke(currentSeason);
-
-            DestroyQueue();
+            ProcessQueues();
         }
-        void DestroyQueue() {
+        void ProcessQueues() {
+            foreach (var entity in instantiationQueue) {
+                entities.Add(entity);
+            }
+            instantiationQueue.Clear();
+
+            foreach (var (entity, position) in moveQueue) {
+                entity.gridPosition = position;
+            }
+            moveQueue.Clear();
+
             foreach (var entity in destructionQueue) {
                 entities.Remove(entity);
                 Destroy(entity.gameObject);
@@ -166,9 +178,57 @@ namespace Runtime {
             destructionQueue.Clear();
         }
 
+        #region Grid interactions
         public Vector3Int WorldToGrid(Vector3 position) => groundTilemap.WorldToCell(position);
         public Vector3 GridToWorld(Vector3Int position) => groundTilemap.CellToWorld(position);
+        public static Vector2Int GridToAxial(Vector3Int position) {
+            int q = position.x;
+            int r = position.y - ((position.x + (position.x & 1)) / 2);
+            return new Vector2Int(q, r);
+        }
+        public static Vector3Int AxialToGrid(Vector2Int position) {
+            int col = position.x;
+            int row = position.y + ((position.x + (position.x & 1)) / 2);
+            return new Vector3Int(col, row);
+        }
 
+        static readonly Vector2Int[] axialNeighbors = new[] {
+            new Vector2Int(1, 0),
+            new Vector2Int(1, -1),
+            new Vector2Int(0, -1),
+            new Vector2Int(-1, 0),
+            new Vector2Int(-1, 1),
+            new Vector2Int(0, 1),
+        };
+
+        public static IEnumerable<Vector3Int> GetNeighboringPositions(Vector3Int position) {
+            var axial = GridToAxial(position);
+            return axialNeighbors
+                .Select(offset => offset + axial)
+                .Select(AxialToGrid);
+        }
+
+        public static IEnumerable<Vector3Int> GetCircularPositions(Vector3Int position, int radius) {
+            yield return position;
+
+            var positions = new HashSet<Vector3Int> { position };
+            for (int i = 0; i < radius; i++) {
+                foreach (var newPosition in positions.ToList()) {
+                    foreach (var setPosition in GetNeighboringPositions(newPosition)) {
+                        if (positions.Add(setPosition)) {
+                            yield return setPosition;
+                        }
+                    }
+                }
+            }
+        }
+        public static int Distance(Vector3Int positionA, Vector3Int positionB)
+            => AxialMagnitude(GridToAxial(positionA) - GridToAxial(positionB));
+        public static int AxialMagnitude(Vector2Int position)
+            => (Math.Abs(position.x) + Math.Abs(position.x + position.y) + Math.Abs(position.y)) / 2;
+        #endregion
+
+        #region Entity interactions
         public void InstantiateEntity(ICell cell, EntityData type)
             => InstantiateEntity(cell.gridPosition, type);
         public void InstantiateEntity(ITile tile, EntityData type)
@@ -183,40 +243,29 @@ namespace Runtime {
 
             var entity = new WorldEntity(position, instance, type);
 
-            entities.Add(entity);
+            instantiationQueue.Add(entity);
 
             onSpawnEntity?.Invoke(entity);
+        }
+        public void MoveEntity(IEntity entity, Vector3Int newPosition) {
+            if (!cells.TryGetValue(newPosition, out var newCell)) {
+                Debug.LogWarning($"Position {newPosition} is out of bounds");
+                return;
+            }
+
+            moveQueue[entity as WorldEntity] = newPosition;
+
+            onMoveEntity?.Invoke(entity);
         }
         public void DestroyEntity(IEntity entity) {
             destructionQueue.Add(entity as WorldEntity);
 
             onDestroyEntity?.Invoke(entity);
         }
+        #endregion
 
-        static readonly Vector3Int[] evenNeighbors = new[] {
-            new Vector3Int(1, 0),
-            new Vector3Int(0, -1),
-            new Vector3Int(-1, -1),
-            new Vector3Int(-1, 0),
-            new Vector3Int(0, 1),
-            new Vector3Int(-1, 1),
-        };
-        static readonly Vector3Int[] oddNeighbors = new[] {
-            new Vector3Int(1, 1),
-            new Vector3Int(1, 0),
-            new Vector3Int(0, -1),
-            new Vector3Int(-1, 0),
-            new Vector3Int(1, -1),
-            new Vector3Int(0, 1),
-        };
 
-        public IEnumerable<Vector3Int> GetNeighboringPositions(Vector3Int position) {
-            var neighbors = (position.y & 1) == 1
-                ? oddNeighbors
-                : evenNeighbors;
-            return neighbors.Select(offset => offset + position);
-        }
-
+        #region data retrieval
         public IEnumerable<ICell> GetNeighboringCells(ICell cell)
             => GetNeighboringCells(cell.gridPosition);
         public IEnumerable<ICell> GetNeighboringCells(Vector3Int position) {
@@ -226,23 +275,24 @@ namespace Runtime {
                 }
             }
         }
-        public void MoveEntity(IEntity entity, Vector3Int newPosition) {
-            if (!cells.TryGetValue(newPosition, out var newCell)) {
-                Debug.LogWarning($"Position {newPosition} is out of bounds");
-                return;
+        public IEnumerable<ICell> GetCircularCells(Vector3Int position, int radius) {
+            foreach (var neighbor in GetCircularPositions(position, radius)) {
+                if (TryGetCell(neighbor, out var cell)) {
+                    yield return cell;
+                }
             }
-
-            (entity as WorldEntity).gridPosition = newPosition;
-
-            onMoveEntity?.Invoke(entity);
         }
 
-        public IEntity GetEntityByEntityObject(GameObject entityObject)
-            => entities.First(entity => entity.gameObject == entityObject);
-        public IEnumerable<IEntity> GetEntitiesByPosition(Vector3Int gridPosition)
-            => entities.Where(entity => entity.gridPosition == gridPosition);
+        public IEntity GetEntityByEntityObject(GameObject entityObject) => entities
+            .Union(instantiationQueue)
+            .First(entity => entity.gameObject == entityObject);
+
         public IEnumerable<IEntity> GetEntitiesByCell(ICell cell)
             => GetEntitiesByPosition(cell.gridPosition);
+        public IEnumerable<IEntity> GetEntitiesByPosition(Vector3Int gridPosition)
+            => entities.Where(entity => entity.gridPosition == gridPosition);
+        public IEnumerable<IEntity> GetEntitiesByType(EntityData type)
+            => entities.Where(entity => entity.type == type);
 
         public ICell GetCellByPosition(Vector3Int gridPosition)
             => cells[gridPosition];
@@ -251,5 +301,11 @@ namespace Runtime {
             => tiles.Values.First(tile => tile.gameObject == tileObject);
         public ITile GetTileByPosition(Vector3Int position)
             => tiles[position];
+
+        public IEnumerable<Vector3Int> CalculatePath(Vector3Int oldPosition, Vector3Int newPosition) {
+            yield return newPosition;
+        }
+
+        #endregion
     }
 }
