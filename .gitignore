@@ -23,3 +23,22 @@ $RECYCLE.BIN/
 !/Packages/
 InitTestScene*
 PerformanceTestRunInfo*
+
+# == FMOD ==
+# Never ignore DLLs in the FMOD subfolder.
+!/Assets/Plugins/FMOD/**/lib/*
+
+# Don't ignore images and gizmos used by FMOD in the Unity Editor.
+!/Assets/Gizmos/FMOD/*
+!/Assets/Editor Default Resources/FMOD/*
+                    
+# Ignore the Cache folder since it is updated locally.
+/Assets/Plugins/FMOD/Cache/*
+                    
+# Ignore bank files in the StreamingAssets folder.
+/Assets/StreamingAssets/**/*.bank
+/Assets/StreamingAssets/**/*.bank.meta
+                    
+# If the source bank files are kept outside of the StreamingAssets folder then these can be ignored.
+# Log files can be ignored.
+fmod_editor.log
