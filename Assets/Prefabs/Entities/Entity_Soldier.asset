@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9469f443ed48b8a4caa786d5a26c2b31, type: 3}
-  m_Name: Entity_HolyTree
+  m_Name: Entity_Soldier
   m_EditorClassIdentifier: 
-  prefab: {fileID: 6892728675404860095, guid: c981bb67e390ac04c8ca5bbb27b5281c, type: 3}
-  _category: 1
+  prefab: {fileID: 194900252394113172, guid: ca594660818bbad46b31af22b2329b87, type: 3}
+  _category: 4

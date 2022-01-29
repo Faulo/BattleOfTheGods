@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8ce524a3dfa53f41a07ee4ab124aa61, type: 3}
+  m_Script: {fileID: 11500000, guid: bdd05c1563b14e64bb53766d64dbce0a, type: 3}
   m_Name: NoSettlementOnTile
   m_EditorClassIdentifier: 
-  denyingCategories: 00000000
-  requiredCategories: 
+  blockingCategories: 00000000

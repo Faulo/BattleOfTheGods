@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e61c3979d4baba4fbb44a1913644a53, type: 3}
-  m_Name: Howl
+  m_Name: Recruit
   m_EditorClassIdentifier: 
   conditions:
-  - {fileID: 11400000, guid: 14ab0f29ad495cd48881398ff71cb06e, type: 2}
+  - {fileID: 11400000, guid: 28b5e417ef553a044ae628a02dc6e68e, type: 2}
   effects:
-  - {fileID: 11400000, guid: 57f263b1a0cc9474ca92ee21561c840d, type: 2}
-  _cardBody: Create 1 Wolf at target Sanctum
-  _assignedEntity: {fileID: 0}
-  _sprite: {fileID: 21300000, guid: 0146e610d5f95164f9b2e9e5f71ea6da, type: 3}
+  - {fileID: 11400000, guid: a40736b75ef4e7b46824130db45b1b1a, type: 2}
+  _cardBody: 
+  _assignedEntity: {fileID: 11400000, guid: 0c0d0814472e88f4bb84834199737400, type: 2}
+  _sprite: {fileID: 0}
   _cost: 2
-  _type: 1
+  _type: 0

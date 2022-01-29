@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e61c3979d4baba4fbb44a1913644a53, type: 3}
-  m_Name: Overgrow
+  m_Name: Create Garrison
   m_EditorClassIdentifier: 
   conditions:
-  - {fileID: 0}
-  effects: []
-  _cardBody: Create 1 Shrub in target area which is not settlement
+  - {fileID: 11400000, guid: 2bebef5fbc4f4764ca5d50d4526ec796, type: 2}
+  effects:
+  - {fileID: 11400000, guid: fbaa84f1efd009f4aaf76372f3596947, type: 2}
+  _cardBody: 
   _assignedEntity: {fileID: 0}
-  _sprite: {fileID: 21300000, guid: 3474cd57823d85944a752018f67e4737, type: 3}
-  _cost: 1
-  _type: 1
+  _sprite: {fileID: 0}
+  _cost: 3
+  _type: 0
