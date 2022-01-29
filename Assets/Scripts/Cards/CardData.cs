@@ -16,6 +16,9 @@ namespace Runtime.Cards {
         public EntityData assignedEntity => _assignedEntity;
         [SerializeField] EntityData _assignedEntity;
 
+        public Sprite sprite => _sprite;
+        [SerializeField] Sprite _sprite;
+
         public int cost => _cost;
         [SerializeField] int _cost;
 
