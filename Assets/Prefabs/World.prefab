@@ -144,6 +144,10 @@ MonoBehaviour:
   minSeasonDuration: 1
   autoAdvanceSeasons: 1
   autoAdvanceSeasonDuration: 0.02
+  spawnDuration: 0.5
+  spawnEaseType: 25
+  moveDuration: 0.5
+  moveEaseType: 7
 --- !u!114 &5429896727265091871
 MonoBehaviour:
   m_ObjectHideFlags: 0

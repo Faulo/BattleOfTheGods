@@ -31,15 +31,27 @@ namespace Runtime {
         [SerializeField]
         Transform entitiesContainer = default;
 
-        [Header("Debug settings")]
+        [Header("Seasons")]
         [SerializeField]
-        public Season currentSeason = Season.Spring;
+        Season currentSeason = Season.Spring;
         [SerializeField, Range(0, 60)]
-        public float minSeasonDuration = 1;
+        float minSeasonDuration = 1;
+        [Space]
         [SerializeField]
-        public bool autoAdvanceSeasons = false;
+        bool autoAdvanceSeasons = false;
         [SerializeField, Range(0, 60)]
-        public float autoAdvanceSeasonDuration = 1;
+        float autoAdvanceSeasonDuration = 1;
+
+
+        [Header("Tweening")]
+        [SerializeField, Range(0, 60)]
+        float spawnDuration = 1;
+        [SerializeField]
+        LeanTweenType spawnEaseType = LeanTweenType.easeInOutBounce;
+        [SerializeField, Range(0, 60)]
+        float moveDuration = 1;
+        [SerializeField]
+        LeanTweenType moveEaseType = LeanTweenType.easeInOutBounce;
 
         public IEnumerable<ICell> cellValues => cells.Values.Cast<ICell>();
         readonly Dictionary<Vector3Int, WorldCell> cells = new Dictionary<Vector3Int, WorldCell>();
@@ -105,6 +117,10 @@ namespace Runtime {
             if (cells.TryGetValue(position, out var cell)) {
                 var instance = Instantiate(prefab, cell.worldPosition, Quaternion.identity, entitiesContainer);
                 cell.entities.Add(instance);
+                instance.transform.localScale = Vector3.zero;
+                LeanTween
+                    .scale(instance, Vector3.one, spawnDuration)
+                    .setEase(spawnEaseType);
             }
         }
 
@@ -151,7 +167,10 @@ namespace Runtime {
             }
             oldCell.entities.Remove(entity);
             newCell.entities.Add(entity);
-            entity.transform.position = newCell.worldPosition;
+
+            LeanTween
+                .move(entity, newCell.worldPosition, moveDuration)
+                .setEase(moveEaseType);
         }
     }
 }
