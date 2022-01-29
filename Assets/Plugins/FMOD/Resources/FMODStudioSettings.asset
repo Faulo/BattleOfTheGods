@@ -535,9 +535,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SwitchSettingsMigration: 1
   HasSourceProject: 0
-  HasPlatforms: 0
+  HasPlatforms: 1
   sourceProjectPath: ../FMOD/Card_Game_Strategy/Card_Game_Strategy.fspro
-  sourceBankPath: Assets/Audio/FMODBanks/Desktop
+  sourceBankPath: Assets/Audio/FMODBanks
   SourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1
