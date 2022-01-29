@@ -1,10 +1,12 @@
-using System.Linq;
+using Slothsoft.UnityExtensions;
 using UnityEngine;
 
 namespace Runtime.Entities {
-    public class CullOverpopulation : MonoBehaviour {
+    public class SpawnEntityOnEntity : MonoBehaviour {
+        [SerializeField, Expandable]
+        EntityData spawnType = default;
         [SerializeField, Range(0, 10)]
-        int cullingThreshold = 2;
+        int maxSpawnDistance = 0;
 
         bool isInitialized = false;
         IEntity entity;
@@ -19,10 +21,11 @@ namespace Runtime.Entities {
                 return;
             }
 
-            int count = entity.ownerCell.entities.Count();
-            if (count >= cullingThreshold) {
-                World.instance.DestroyEntity(entity);
-            }
+            var targetCell = World.instance
+                .GetCircularCells(entity.gridPosition, maxSpawnDistance)
+                .RandomElement();
+
+            World.instance.InstantiateEntity(targetCell, spawnType);
         }
     }
 }
