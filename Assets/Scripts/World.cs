@@ -37,6 +37,7 @@ namespace Runtime {
         [SerializeField, Range(0, 60)]
         public float autoAdvanceSeasonDuration = 1;
 
+        public IEnumerable<WorldCell> cellValues => cells.Values;
         readonly Dictionary<Vector3Int, WorldCell> cells = new Dictionary<Vector3Int, WorldCell>();
 
         protected void OnValidate() {

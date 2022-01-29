@@ -5,7 +5,7 @@ using Runtime.Cards;
 using System;
 using UnityEngine.InputSystem;
 using TMPro;
-
+using System.Linq;
 namespace Runtime {
     public class GameManager : MonoBehaviour
     {
@@ -18,11 +18,15 @@ namespace Runtime {
         ICell currentSelectedCell;
         public string noCellReason { get; private set; }
         [SerializeField] TextMeshProUGUI debugText;
+        [SerializeField] Config config;
 
+        public Player player { get; private set; }
+        
         private void Awake() {
             instance = this;
             _input = new Input();
             _input.Enable();
+            Config.current = config;
         }
         private void Update() {
             if (debugText != default)
@@ -42,6 +46,10 @@ namespace Runtime {
             EndingTurn }
         public States state { get; private set; }
         void StartGame() {
+            player = FindObjectOfType<Player>();
+
+            if (player == null)
+                Debug.LogError("did not find player");
             StartCoroutine(GameLoop());
         }
 
@@ -53,6 +61,9 @@ namespace Runtime {
         IEnumerator GameLoop() {
             while (true) 
             {
+                player.maxEnergy += Config.current.energyIncreasePerTurn;
+                player.maxEnergy = Math.Min(Config.current.maxEnergy, player.maxEnergy);
+                player.energy = player.maxEnergy;
                 yield return PlayCards();
                 yield return EvaluateTurn();
 
@@ -78,17 +89,21 @@ namespace Runtime {
                 yield return new WaitWhile(() => state == States.PlayingCardsIdle);
                 //do highlighting?
                 yield return new WaitWhile(() => state == States.PlayingCardsTargeting);
+
                 if (currentSelectedCell != default &&
-                    currentSelectedCard != default) {
+                    currentSelectedCard != default) 
+                {
                     yield return ExecuteCardRoutine();
-                } else if (currentSelectedCell == default) {
+                } 
+                else if (currentSelectedCell == default) 
+                {
                     //feedback for not selecting cell
                     state = States.PlayingCardsIdle;
                 }
                 yield return new WaitWhile(() => state == States.PlayingCardsExecuting);
 
-                if (state != States.PlayingCardsExecuting ||
-                    state != States.PlayingCardsExecuting ||
+                if (state != States.PlayingCardsIdle &&
+                    state != States.PlayingCardsExecuting &&
                     state != States.PlayingCardsTargeting)
                     break;
             }
@@ -100,6 +115,10 @@ namespace Runtime {
             ICell cell = currentSelectedCell;
 
             bool playable = true;
+
+            if (card.cost > player.energy)
+                playable = false;
+
             foreach(var cond in card.playConditions) {
                 var conditionData = new PlayCondition.PlayConditionData(cell, card);
                 playable = playable && cond.Check(conditionData);
@@ -122,17 +141,26 @@ namespace Runtime {
         }
 
         private void WaitForPlayCard() {
-            CardInstance.clicked += OnCardPlay;
+            CardInstance.clicked += OnCardClick;
             this.state = States.PlayingCardsIdle;
             currentSelectedCard = default;
         }
 
-        private void OnCardPlay(CardInstance obj) {
-            CardInstance.clicked -= OnCardPlay;
-            currentSelectedCard = obj;
-            WorldInput.clicked += OnCellSelect;
-            this.state = States.PlayingCardsTargeting;
-            
+        private void OnCardClick(CardInstance obj) {
+
+            if (CanPlayCard(obj, out IEnumerable<WorldCell> legalCells)) {
+                CardInstance.clicked -= OnCardClick;
+                currentSelectedCard = obj;
+                WorldInput.clicked += OnCellSelect;
+                this.state = States.PlayingCardsTargeting;
+            } else {
+                //feedback why you can't play the card!
+            }
+        }
+
+        bool CanPlayCard(CardInstance card, out IEnumerable<WorldCell> legalCells) {
+            legalCells = World.instance.cellValues.Where(c => card.playConditions.All(cond => cond.Check(new PlayCondition.PlayConditionData(c, card))));
+            return legalCells.Count() > 0;
         }
 
         private void OnCellSelect(Vector3 obj) {
