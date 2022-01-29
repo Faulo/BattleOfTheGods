@@ -12,5 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b24c4ddc50274744a0d934445b20722, type: 3}
   m_Name: Config
   m_EditorClassIdentifier: 
-  _energyIncreasePerTurn: 1
-  _maxEnergy: 10
+  _energyIncreasePerTurn: 0
+  _maxEnergy: 4
+  _defaultEnergy: 4
+  _openingHandSize: 4
+  defaultDeck:
+  - {fileID: 11400000, guid: 4e8c3c79ae1bcae4e9b7f941f91c2d26, type: 2}
+  - {fileID: 11400000, guid: 4e8c3c79ae1bcae4e9b7f941f91c2d26, type: 2}
+  - {fileID: 11400000, guid: 919dc68645b722b4e9912cbb993879e0, type: 2}
+  - {fileID: 11400000, guid: 919dc68645b722b4e9912cbb993879e0, type: 2}
+  - {fileID: 11400000, guid: 8383940da3b28464eb53ed7f63ca2e2e, type: 2}
+  - {fileID: 11400000, guid: 8383940da3b28464eb53ed7f63ca2e2e, type: 2}
+  - {fileID: 11400000, guid: e9487b52e22265b44a0041d27850b091, type: 2}
+  - {fileID: 11400000, guid: e9487b52e22265b44a0041d27850b091, type: 2}
+  - {fileID: 11400000, guid: a265dffba89bbf146aa3957b98082074, type: 2}
+  - {fileID: 11400000, guid: a265dffba89bbf146aa3957b98082074, type: 2}

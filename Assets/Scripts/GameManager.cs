@@ -50,6 +50,7 @@ namespace Runtime {
         void StartGame() {
             player = FindObjectOfType<Player>();
             waveManager = FindObjectOfType<WaveManager>();
+            player.maxEnergy = Config.current.defaultEnergy;
             if (waveManager != null) //very good code. It's true.
                 opponent = waveManager.GetComponent<Player>();
             if (player == null)
@@ -62,21 +63,29 @@ namespace Runtime {
             state = States.EvaluatingTurn;
         }
 
-        IEnumerator GameLoop() {
+        IEnumerator GameLoop() 
+        {
+            CardManager.instance.Init(Config.current.defaultDeck);
+
+            for (int i = 0; i < Config.current.openingHandSize; i++)
+                CardManager.instance.Draw();
+
             while (true) 
             {
-                player.maxEnergy += Config.current.energyIncreasePerTurn;
-                player.maxEnergy = Math.Min(Config.current.maxEnergy, player.maxEnergy);
-                player.energy = player.maxEnergy;
-                log.text += "Start turn \n";
-                yield return PlayCards();
-
                 if (waveManager != null &&
                     opponent != null) {
                     log.text += "Opponent Action \n";
                     yield return PlayOpponentCards();
                 }
 
+                player.maxEnergy += Config.current.energyIncreasePerTurn;
+                player.maxEnergy = Math.Min(Config.current.maxEnergy, player.maxEnergy);
+                player.energy = player.maxEnergy;
+                CardManager.instance.Draw();
+                log.text += "Start turn \n";
+                yield return PlayCards();
+
+                
                 log.text += "Start simulation \n";
                 yield return EvaluateTurn();
                 log.text += "Check win \n";

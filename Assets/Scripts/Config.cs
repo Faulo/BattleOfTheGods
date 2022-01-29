@@ -12,6 +12,14 @@ namespace Runtime {
         public float maxEnergy => _maxEnergy;
         [SerializeField] float _maxEnergy = 10;
 
+        public int defaultEnergy => _defaultEnergy;
+        [SerializeField] int _defaultEnergy = 3;
+
+        public int openingHandSize => _openingHandSize;
+        [SerializeField] int _openingHandSize = 4;
+
+        public List<Cards.CardData> defaultDeck;
+
         public static Config current;
     }
 }
