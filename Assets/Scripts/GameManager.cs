@@ -152,7 +152,7 @@ namespace Runtime {
 
         private void OnCardClick(CardInstance obj) {
 
-            if (CanPlayCard(obj, out IEnumerable<WorldCell> legalCells, out string feedback)) {
+            if (CanPlayCard(obj, out IEnumerable<ICell> legalCells, out string feedback)) {
                 CardInstance.clicked -= OnCardClick;
                 currentSelectedCard = obj;
                 WorldInput.clicked += OnCellSelect;
@@ -163,7 +163,7 @@ namespace Runtime {
             }
         }
 
-        bool CanPlayCard(CardInstance card, out IEnumerable<WorldCell> legalCells, out string feedback) {
+        bool CanPlayCard(CardInstance card, out IEnumerable<ICell> legalCells, out string feedback) {
             legalCells = World.instance.cellValues.Where(c => card.playConditions.All(cond => cond.Check(new PlayCondition.PlayConditionData(c, card))));
             if (player.energy < card.cost) {
                 feedback = "Energy low";
