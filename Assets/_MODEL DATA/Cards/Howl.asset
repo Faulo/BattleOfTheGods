@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e61c3979d4baba4fbb44a1913644a53, type: 3}
+  m_Name: Howl
+  m_EditorClassIdentifier: 
+  conditions:
+  - {fileID: 11400000, guid: 14ab0f29ad495cd48881398ff71cb06e, type: 2}
+  effects: []
+  _cardBody: Create 1 Wolf at target Sanctum
+  _assignedEntity: {fileID: 0}
+  _sprite: {fileID: 0}
+  _cost: 0
+  _type: 0
