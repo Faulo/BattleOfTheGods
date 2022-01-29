@@ -9,11 +9,15 @@ namespace Runtime {
         [SerializeField]
         LayerMask clickable;
 
+        Input input;
         Camera cam;
 
         protected void OnEnable() {
-            GameManager.input.GameplayActionMap.Move.performed += Move_performed;
-            GameManager.input.GameplayActionMap.Click.performed += Click_performed;
+            input = new Input();
+            input.Enable();
+            input.GameplayActionMap.Move.performed += Move_performed;
+            input.GameplayActionMap.Click.performed += Click_performed;
+
             cam = FindObjectOfType<Camera>();
             if (cam == default) {
                 Debug.LogError("Could not find camera, disabling world input.");
@@ -22,8 +26,9 @@ namespace Runtime {
         }
 
         protected void OnDisable() {
-            GameManager.input.GameplayActionMap.Move.performed -= Move_performed;
-            GameManager.input.GameplayActionMap.Click.performed -= Click_performed;
+            input.GameplayActionMap.Move.performed -= Move_performed;
+            input.GameplayActionMap.Click.performed -= Click_performed;
+            input.Disable();
         }
 
         void Move_performed(InputAction.CallbackContext obj) {

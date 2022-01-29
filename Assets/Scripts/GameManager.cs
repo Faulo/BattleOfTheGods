@@ -9,9 +9,6 @@ namespace Runtime {
     public class GameManager : MonoBehaviour {
         public static GameManager instance;
 
-        public static Input input => instance._input;
-        Input _input;
-
         CardInstance currentSelectedCard;
         ICell currentClickedCell;
         public string noCellReason { get; private set; }
@@ -24,8 +21,6 @@ namespace Runtime {
         public WaveManager waveManager { get; private set; }
         void Awake() {
             instance = this;
-            _input = new Input();
-            _input.Enable();
             Config.current = config;
         }
         void Update() {
