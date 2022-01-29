@@ -179,10 +179,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -888153011
-      Data2: 1083623489
-      Data3: 1416254855
-      Data4: 400576684
+      Data1: -1902048630
+      Data2: 1251062326
+      Data3: -854088264
+      Data4: -251473019
     Path: event:/Ambience/Humans/Town_Ambience
   Event: 
   PlayEvent: 1
