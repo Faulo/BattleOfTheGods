@@ -74,4 +74,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceeab641143662c48bf3b0bfc13ae6db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityPrefab: {fileID: 4997825342097703106, guid: 9e516a12638c88b45856798d16d94bbe, type: 3}
+  entityType: {fileID: 11400000, guid: 8b25e39b52aeb504089f91f9af8a2d6b, type: 2}
+  season: 0

@@ -7,9 +7,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3989890719061508303, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
+      propertyPath: type
+      value: 
+      objectReference: {fileID: 11400000, guid: 1d714711d4f954a47a584752fa15de2d, type: 2}
     - target: {fileID: 6056427924523954932, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
       propertyPath: m_Name
-      value: HolyTree
+      value: Entity_HolyTree
       objectReference: {fileID: 0}
     - target: {fileID: 6685812060094602663, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
       propertyPath: m_RootOrder
