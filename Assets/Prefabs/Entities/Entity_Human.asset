@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9469f443ed48b8a4caa786d5a26c2b31, type: 3}
-  m_Name: HolyTree
+  m_Name: Entity_Human
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 4392651576207767684, guid: c981bb67e390ac04c8ca5bbb27b5281c, type: 3}
+  prefab: {fileID: 6233877890936336491, guid: d89af4881d9c4f648b3e87d751f17d4f, type: 3}

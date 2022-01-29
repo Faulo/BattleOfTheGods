@@ -1,24 +1,31 @@
+using Runtime.Entities;
+using Slothsoft.UnityExtensions;
 using UnityEngine;
 
 namespace Runtime.Tiles {
     public class SpawnEntityOnSeasonChange : MonoBehaviour {
-        [SerializeField]
-        GameObject entityPrefab = default;
+        [SerializeField, Expandable]
+        EntityData entityType = default;
         [SerializeField]
         Season season = Season.Spring;
 
+        ITile tile;
+
         protected void OnEnable() {
-            World.instance.onStartSeasonChange += HandleSeasonChange;
+            World.onStartSeasonChange += HandleSeasonChange;
         }
         protected void OnDisable() {
-            World.instance.onStartSeasonChange -= HandleSeasonChange;
+            World.onStartSeasonChange -= HandleSeasonChange;
         }
+        protected void Start() {
+            tile = World.instance.GetTileByTileObject(gameObject);
+        }
+
         void HandleSeasonChange(Season season) {
             if (season != this.season) {
                 return;
             }
-            var position = World.instance.WorldToGrid(transform.position);
-            World.instance.InstantiateEntity(position, entityPrefab);
+            World.instance.InstantiateEntity(tile, entityType);
         }
         /*
         protected void OnDrawGizmos() {

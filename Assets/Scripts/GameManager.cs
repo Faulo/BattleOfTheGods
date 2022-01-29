@@ -65,13 +65,15 @@ namespace Runtime {
                 player.maxEnergy += Config.current.energyIncreasePerTurn;
                 player.maxEnergy = Math.Min(Config.current.maxEnergy, player.maxEnergy);
                 player.energy = player.maxEnergy;
-                log.text += "Start turn";
+                log.text += "Start turn \n";
                 yield return PlayCards();
+                log.text += "Start simulation \n";
                 yield return EvaluateTurn();
-
+                log.text += "Check win \n";
                 if (CheckWin()) {
                     break;
                 }
+                log.text += "End turn \n";
             }
         }
 

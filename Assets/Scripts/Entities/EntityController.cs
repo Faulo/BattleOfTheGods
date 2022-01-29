@@ -1,14 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
+using Slothsoft.UnityExtensions;
 using UnityEngine;
 
 namespace Runtime.Entities {
     public class EntityController : MonoBehaviour {
-
-        public EntityData data { get; private set; }
-
-        public void Init(EntityData data) {
-            this.data = data;
-        }
+        [SerializeField, Expandable]
+        public EntityData type = default;
     }
 }
