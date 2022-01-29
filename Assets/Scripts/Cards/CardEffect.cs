@@ -9,7 +9,13 @@ namespace Runtime.Cards {
 
         public class CardEffectData 
         {
+            public ICell cell { get; private set; }
+            public CardInstance card { get; private set; }
 
+            public CardEffectData(ICell targetCell, CardInstance card) {
+                this.cell = targetCell;
+                this.card = card;
+            }
         }
     }
 }

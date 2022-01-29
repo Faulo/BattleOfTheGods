@@ -6,7 +6,7 @@ using System;
 namespace Runtime {
     public class WorldInput : MonoBehaviour {
 
-        public Action<Vector3> clicked;
+        public static Action<Vector3> clicked;
         [SerializeField] LayerMask clickable;
         Camera cam;
 
@@ -30,7 +30,7 @@ namespace Runtime {
 
             if (Physics.Raycast(r, out RaycastHit hitInfo, Mathf.Infinity, clickable)) {
                 clicked?.Invoke(hitInfo.point);
-                Debug.Log($"clicked {hitInfo.point}");
+                //Debug.Log($"clicked {hitInfo.point}");
             }
         }
 

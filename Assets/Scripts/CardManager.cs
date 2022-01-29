@@ -8,6 +8,11 @@ using Slothsoft.UnityExtensions;
 namespace Runtime {
     public class CardManager : MonoBehaviour
     {
+        public static CardManager instance;
+
+        private void Awake() {
+            instance = this;
+        }
 
         public List<CardInstance> hand;
         public List<CardInstance> deck;
@@ -46,6 +51,15 @@ namespace Runtime {
                 hand.Add(inst);
             }
 
+            UpdateCardParents();
+        }
+
+        public void SendToGraveyard(CardInstance card) {
+            grave.Add(card);
+            if (hand.Contains(card))
+                hand.Remove(card);
+            if (deck.Contains(card))
+                deck.Remove(card);
             UpdateCardParents();
         }
 

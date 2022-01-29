@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: HolySeed
   m_EditorClassIdentifier: 
   conditions: []
-  effects: []
+  effects:
+  - {fileID: 11400000, guid: a7fdf726e0321af41ad1246dba294b90, type: 2}
   _cardBody: Create 1 Holy Tree in distance of max 2 from occupied area
+  _assignedEntity: {fileID: 11400000, guid: 1d714711d4f954a47a584752fa15de2d, type: 2}
   _cost: 5
   _type: 1

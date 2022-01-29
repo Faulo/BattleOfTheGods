@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Runtime.Entities;
 using System;
 namespace Runtime.Cards
 {
@@ -13,7 +14,7 @@ namespace Runtime.Cards
         public int cost => data.cost;
         public List<CardEffect> effects => new List<CardEffect>(data.effects);
         public List<PlayCondition> playConditions => new List<PlayCondition>(data.conditions);
-
+        public EntityData assignedEntity => data.assignedEntity;
         public string body => data.cardBody;
 
         public void Init(CardData data) {

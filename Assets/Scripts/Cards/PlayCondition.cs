@@ -9,13 +9,15 @@ namespace Runtime.Cards {
 
         public class PlayConditionData
         {
-            public ICell target;
+            public ICell cell { get; private set; }
+            public CardInstance card { get; private set; }
 
             private PlayConditionData() { }
 
-            public PlayConditionData (ICell target) 
+            public PlayConditionData (ICell target, CardInstance card) 
             {
-                this.target = target;
+                this.cell = target;
+                this.card = card;
             }
         }
     }
