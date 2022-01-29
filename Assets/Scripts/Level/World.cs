@@ -12,7 +12,7 @@ using UnityEngine.Tilemaps;
 
 namespace Runtime {
     public class World : MonoBehaviour {
-        readonly struct WorldCell : ICell {
+        class WorldCell : ICell {
             public WorldCell(Vector3Int gridPosition, Vector3 worldPosition) {
                 this.gridPosition = gridPosition;
                 this.worldPosition = worldPosition;
@@ -23,10 +23,19 @@ namespace Runtime {
 
             public ITile tile => instance.GetTileByPosition(gridPosition);
             public IEnumerable<IEntity> entities => instance.GetEntitiesByPosition(gridPosition);
+
+            public int influence = 0;
+            public Faction owningFaction => Math.Sign(influence) switch {
+                1 => Faction.Civilization,
+                0 => Faction.Unknown,
+                -1 => Faction.Nature,
+                _ => throw new NotImplementedException(),
+            };
+
             public override string ToString() => $"{tile} ({string.Join(", ", entities.Select(e => e.type.name))})";
         }
 
-        readonly struct WorldTile : ITile {
+        class WorldTile : ITile {
             public WorldTile(Vector3Int gridPosition, GameObject gameObject, ScriptableTile type) {
                 this.gameObject = gameObject;
                 this.type = type;
@@ -37,6 +46,33 @@ namespace Runtime {
             public Vector3Int gridPosition { get; }
             public Vector3 worldPosition => gameObject.transform.position;
             public ICell ownerCell => instance.GetCellByPosition(gridPosition);
+
+            int m_borderId;
+            public int border {
+                get => m_borderId;
+                set {
+                    if (m_borderId != value) {
+                        m_borderId = value;
+                        UpdateColor();
+                    }
+                }
+            }
+            int m_emissionId;
+            public int emission {
+                get => m_emissionId;
+                set {
+                    if (m_emissionId != value) {
+                        m_emissionId = value;
+                        UpdateColor();
+                    }
+                }
+            }
+
+            void UpdateColor() {
+                var color = new Color(type.tileId / 256f, m_borderId / 256f, m_emissionId / 256f, 0);
+                instance.groundTilemap.SetColor(gridPosition, color);
+            }
+
             public override string ToString() => $"{type.name} {gridPosition}";
         }
         class WorldEntity : IEntity {
@@ -66,8 +102,10 @@ namespace Runtime {
         public static event Action<IEntity> onSpawnEntity;
         public static event Action<IEntity> onMoveEntity;
         public static event Action<IEntity> onDestroyEntity;
+        public static event Action<ICell> onChangeFaction;
 
         public delegate void OnSeasonChange();
+        public delegate void OnAwardInfluence();
 
         [Header("MonoBehaviour configuration")]
         [SerializeField]
@@ -116,8 +154,8 @@ namespace Runtime {
                     var obj = groundTilemap.GetInstantiatedObject(gridPosition);
                     Assert.IsTrue(obj, $"Missing object for tile {type} at position {worldPosition}");
 
-                    tiles[gridPosition] = new WorldTile(gridPosition, obj, type);
                     cells[gridPosition] = new WorldCell(gridPosition, worldPosition);
+                    tiles[gridPosition] = new WorldTile(gridPosition, obj, type);
                 }
             }
             foreach (var entityController in entitiesContainer.GetComponentsInChildren<EntityController>()) {
@@ -148,11 +186,13 @@ namespace Runtime {
 
             m_season = (Season)(((int)m_season + 1) % 4);
 
-            BroadcastMessage(nameof(OnSeasonChange));
+            BroadcastMessage(nameof(OnSeasonChange), SendMessageOptions.DontRequireReceiver);
 
             yield return Wait.forSeconds[minSeasonDuration];
 
             ProcessQueues();
+
+            BroadcastMessage(nameof(OnAwardInfluence), SendMessageOptions.DontRequireReceiver);
         }
         void ProcessQueues() {
             foreach (var entity in instantiationQueue) {
@@ -360,6 +400,20 @@ namespace Runtime {
             return false;
         }
 
+        #endregion
+
+        #region influence
+        public void AddInfluence(Vector3Int position, int influence) {
+            if (!cells.TryGetValue(position, out var cell)) {
+                Debug.LogWarning($"Position {position} is out of bounds");
+                return;
+            }
+            var currentFaction = cell.owningFaction;
+            cell.influence += influence;
+            if (cell.owningFaction != currentFaction) {
+                onChangeFaction?.Invoke(cell);
+            }
+        }
         #endregion
     }
 }

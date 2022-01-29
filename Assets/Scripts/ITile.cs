@@ -8,5 +8,8 @@ namespace Runtime {
         Vector3Int gridPosition { get; }
         Vector3 worldPosition { get; }
         ICell ownerCell { get; }
+
+        int border { get; set; }
+        int emission { get; set; }
     }
 }

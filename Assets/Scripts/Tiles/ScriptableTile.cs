@@ -8,8 +8,8 @@ namespace Runtime.Tiles {
         [Header("Scriptable Tile")]
         [SerializeField, Expandable]
         Sprite sprite = default;
-        [SerializeField]
-        Color tileColor = Color.white;
+        [SerializeField, Range(0, 255)]
+        public int tileId = 0;
         [SerializeField, Expandable]
         GameObject prefab = default;
         [SerializeField]
@@ -30,7 +30,7 @@ namespace Runtime.Tiles {
                 : tilemap.GetTransformMatrix(position);
             tileData.flags = tileOptions;
             tileData.colliderType = tileCollider;
-            tileData.color = tileColor;
+            tileData.color = new Color(tileId / 256f, 0, 0, 0);
         }
         public override bool StartUp(Vector3Int position, ITilemap tilemap, GameObject go) {
             base.StartUp(position, tilemap, go);
