@@ -11,6 +11,7 @@ namespace Runtime.Entities {
         Sanctum,
         Civilian,
         Beast,
-        Armed
+        Armed,
+        Default
     }
 }
