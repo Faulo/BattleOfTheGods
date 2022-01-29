@@ -14,7 +14,9 @@ namespace Runtime {
         private Input _input;
 
         private void Awake() {
+            instance = this;
             _input = new Input();
+            _input.Enable();
         }
 
         public enum States { PlayingCardsIdle, PlayingCardsTargeting, PlayingCardsExecuting, EvaluatingTurn }

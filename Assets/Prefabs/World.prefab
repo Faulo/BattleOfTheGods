@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1746776647364947183}
   - component: {fileID: 1746776647364947182}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,6 +155,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27992cbf9e121de4b96fe4a54763e700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickable:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &1746776648599625875
 GameObject:
   m_ObjectHideFlags: 0
