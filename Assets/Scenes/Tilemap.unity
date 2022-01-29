@@ -23655,5 +23655,9 @@ PrefabInstance:
       propertyPath: m_Tiles.Array.data[965].second.m_TileObjectToInstantiateIndex
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5429896727265091871, guid: 270a68486f047ea43895f04d5ae820fe, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Ambience/Humans/Town_Ambience
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 270a68486f047ea43895f04d5ae820fe, type: 3}
