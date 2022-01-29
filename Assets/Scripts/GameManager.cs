@@ -79,7 +79,7 @@ namespace Runtime {
 
         IEnumerator EvaluateTurn() {
             this.state = States.EvaluatingTurn;
-            yield return null;
+            yield return World.instance.AdvanceSeasonRoutine();
             this.state = States.EndingTurn;
         }
 
