@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Runtime.Entities;
 using Runtime.Extensions;
 using Slothsoft.UnityExtensions;
 using UnityEngine;
@@ -10,6 +11,43 @@ using UnityEngine.Tilemaps;
 
 namespace Runtime {
     public class World : MonoBehaviour {
+        readonly struct WorldCell : ICell {
+            public WorldCell(Vector3Int gridPosition, Vector3 worldPosition) {
+                this.gridPosition = gridPosition;
+                this.worldPosition = worldPosition;
+            }
+
+            public Vector3Int gridPosition { get; }
+            public Vector3 worldPosition { get; }
+
+            public ITile tile => instance.GetTileByPosition(gridPosition);
+            public IEnumerable<IEntity> entities => instance.GetEntitiesByPosition(gridPosition);
+        }
+        readonly struct WorldTile : ITile {
+            public WorldTile(Vector3Int gridPosition, GameObject gameObject, TileBase type) {
+                this.gameObject = gameObject;
+                this.type = type;
+                this.gridPosition = gridPosition;
+            }
+            public GameObject gameObject { get; }
+            public TileBase type { get; }
+            public Vector3Int gridPosition { get; }
+            public Vector3 worldPosition => gameObject.transform.position;
+            public ICell ownerCell => instance.GetCellByPosition(gridPosition);
+        }
+        class WorldEntity : IEntity {
+            public WorldEntity(Vector3Int gridPosition, GameObject gameObject, EntityData type) {
+                this.gameObject = gameObject;
+                this.type = type;
+                this.gridPosition = gridPosition;
+            }
+            public GameObject gameObject { get; }
+            public EntityData type { get; }
+            public Vector3Int gridPosition { get; set; }
+            public Vector3 worldPosition => gameObject.transform.position;
+            public ICell ownerCell => instance.GetCellByPosition(gridPosition);
+        }
+
         static World m_instance;
         public static World instance {
             get {
@@ -20,8 +58,11 @@ namespace Runtime {
             }
         }
 
-        public event Action<Season> onStartSeasonChange;
-        public event Action<Season> onFinishSeasonChange;
+        public static event Action<Season> onStartSeasonChange;
+        public static event Action<Season> onFinishSeasonChange;
+        public static event Action<IEntity> onSpawnEntity;
+        public static event Action<IEntity> onMoveEntity;
+        public static event Action<IEntity> onDestroyEntity;
 
         [Header("MonoBehaviour configuration")]
         [SerializeField]
@@ -55,6 +96,8 @@ namespace Runtime {
 
         public IEnumerable<ICell> cellValues => cells.Values.Cast<ICell>();
         readonly Dictionary<Vector3Int, WorldCell> cells = new Dictionary<Vector3Int, WorldCell>();
+        readonly Dictionary<Vector3Int, WorldTile> tiles = new Dictionary<Vector3Int, WorldTile>();
+        readonly List<WorldEntity> entities = new List<WorldEntity>();
 
         protected void OnValidate() {
             if (!grid) {
@@ -67,16 +110,24 @@ namespace Runtime {
 
         void SetUpCells() {
             foreach (var gridPosition in groundTilemap.cellBounds.allPositionsWithin) {
-                var tile = groundTilemap.GetTile(gridPosition);
-                if (tile) {
+                var type = groundTilemap.GetTile(gridPosition);
+                if (type) {
                     var worldPosition = groundTilemap.CellToWorld(gridPosition);
-                    cells[gridPosition] = new WorldCell(gridPosition, worldPosition, tile);
+
+                    var obj = groundTilemap.GetInstantiatedObject(gridPosition);
+                    Assert.IsTrue(obj, $"Missing object for tile {type} at position {worldPosition}");
+
+                    tiles[gridPosition] = new WorldTile(gridPosition, obj, type);
+                    cells[gridPosition] = new WorldCell(gridPosition, worldPosition);
                 }
             }
-            foreach (Transform entity in entitiesContainer) {
-                var gridPosition = groundTilemap.WorldToCell(entity.position);
-                Assert.IsTrue(cells.ContainsKey(gridPosition), $"Entity {entity} is out of bounds");
-                cells[gridPosition].entities.Add(entity.gameObject);
+            foreach (var entityController in entitiesContainer.GetComponentsInChildren<EntityController>()) {
+                var gridPosition = groundTilemap.WorldToCell(entityController.transform.position);
+                Assert.IsTrue(cells.ContainsKey(gridPosition), $"Entity {entityController} is out of bounds");
+
+                var entity = new WorldEntity(gridPosition, entityController.gameObject, entityController.type);
+
+                entities.Add(entity);
             }
         }
 
@@ -113,14 +164,35 @@ namespace Runtime {
         public Vector3Int WorldToGrid(Vector3 position) => groundTilemap.WorldToCell(position);
         public Vector3 GridToWorld(Vector3Int position) => groundTilemap.CellToWorld(position);
 
-        public void InstantiateEntity(Vector3Int position, GameObject prefab) {
-            if (cells.TryGetValue(position, out var cell)) {
-                var instance = Instantiate(prefab, cell.worldPosition, Quaternion.identity, entitiesContainer);
-                cell.entities.Add(instance);
-                instance.transform.localScale = Vector3.zero;
-                LeanTween
-                    .scale(instance, Vector3.one, spawnDuration)
-                    .setEase(spawnEaseType);
+        public void InstantiateEntity(ICell cell, EntityData type)
+            => InstantiateEntity(cell.gridPosition, type);
+        public void InstantiateEntity(ITile tile, EntityData type)
+            => InstantiateEntity(tile.gridPosition, type);
+        public void InstantiateEntity(Vector3Int position, EntityData type) {
+            if (!cells.TryGetValue(position, out var cell)) {
+                Debug.LogWarning($"Position {position} is out of bounds");
+                return;
+            }
+
+            var instance = Instantiate(type.prefab, cell.worldPosition, Quaternion.identity, entitiesContainer);
+
+            var entity = new WorldEntity(position, instance, type);
+
+            entities.Add(entity);
+
+            onSpawnEntity?.Invoke(entity);
+
+            instance.transform.localScale = Vector3.zero;
+            LeanTween
+                .scale(instance, Vector3.one, spawnDuration)
+                .setEase(spawnEaseType);
+        }
+        public void DestroyEntity(IEntity entity) {
+            if (entities.Remove(entity as WorldEntity)) {
+
+                Destroy(entity.gameObject);
+
+                onDestroyEntity?.Invoke(entity);
             }
         }
 
@@ -148,6 +220,8 @@ namespace Runtime {
             return neighbors.Select(offset => offset + position);
         }
 
+        public IEnumerable<ICell> GetNeighboringCells(ICell cell)
+            => GetNeighboringCells(cell.gridPosition);
         public IEnumerable<ICell> GetNeighboringCells(Vector3Int position) {
             foreach (var neighbor in GetNeighboringPositions(position)) {
                 if (TryGetCell(neighbor, out var cell)) {
@@ -155,22 +229,34 @@ namespace Runtime {
                 }
             }
         }
-
-        public void MoveEntity(Vector3Int oldPosition, Vector3Int newPosition, GameObject entity) {
-            if (!cells.TryGetValue(oldPosition, out var oldCell)) {
-                Debug.LogWarning($"Position {oldPosition} is out of bounds");
-                return;
-            }
+        public void MoveEntity(IEntity entity, Vector3Int newPosition) {
             if (!cells.TryGetValue(newPosition, out var newCell)) {
-                Debug.LogWarning($"Position {oldPosition} is out of bounds");
+                Debug.LogWarning($"Position {newPosition} is out of bounds");
                 return;
             }
-            oldCell.entities.Remove(entity);
-            newCell.entities.Add(entity);
+
+            (entity as WorldEntity).gridPosition = newPosition;
+
+            onMoveEntity?.Invoke(entity);
 
             LeanTween
-                .move(entity, newCell.worldPosition, moveDuration)
+                .move(entity.gameObject, newCell.worldPosition, moveDuration)
                 .setEase(moveEaseType);
         }
+
+        public IEntity GetEntityByEntityObject(GameObject entityObject)
+            => entities.First(entity => entity.gameObject == entityObject);
+        public IEnumerable<IEntity> GetEntitiesByPosition(Vector3Int gridPosition)
+            => entities.Where(entity => entity.gridPosition == gridPosition);
+        public IEnumerable<IEntity> GetEntitiesByCell(ICell cell)
+            => GetEntitiesByPosition(cell.gridPosition);
+
+        public ICell GetCellByPosition(Vector3Int gridPosition)
+            => cells[gridPosition];
+
+        public ITile GetTileByTileObject(GameObject tileObject)
+            => tiles.Values.First(tile => tile.gameObject == tileObject);
+        public ITile GetTileByPosition(Vector3Int position)
+            => tiles[position];
     }
 }
