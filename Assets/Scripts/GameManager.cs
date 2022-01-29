@@ -97,13 +97,30 @@ namespace Runtime {
         public IEnumerator PlayCurrentWave() {
             yield return null;
             Wave wave = waveManager.scenario.waves[waveManager.currentIndex];
-            foreach (var tuple in wave.cardsWithTarget) 
-            {
+            foreach (var tuple in wave.cardsWithTarget) {
                 CardInstance card = CardManager.instance.InstantiateCard(tuple.card);
                 log.text += $"opponent plays {card.data.name} at {tuple.target} \n";
                 card.transform.SetParent(waveManager.cards);
                 ICell cell = World.instance.GetCellByPosition(tuple.target);
-                yield return ExecuteCardRoutine(card, cell, opponent, false);
+
+                bool playable = true;
+
+                foreach (var cond in card.playConditions) {
+                    var conditionData = new PlayCondition.PlayConditionData(cell, card);
+                    playable = playable && cond.Check(conditionData);
+                    //play visuals for condition & yield
+                    yield return null;
+                }
+
+                if (playable) {
+                    foreach (var eff in card.effects) {
+                        var effectData = new CardEffect.CardEffectData(cell, card);
+                        eff.OnPlay(effectData);
+                        //play visuals for effect & yield
+                        yield return null;
+                    }
+
+                }
             }
         }
         bool CheckWin() {
@@ -126,7 +143,7 @@ namespace Runtime {
                 if (currentSelectedCell != default &&
                     currentSelectedCard != default) 
                 {
-                    yield return ExecuteCardRoutine(currentSelectedCard, currentSelectedCell, player, true);
+                    yield return ExecuteCardRoutine(currentSelectedCard, currentSelectedCell, true);
                 } 
                 else if (currentSelectedCell == default &&
                          currentSelectedCard != default) 
@@ -144,7 +161,7 @@ namespace Runtime {
             }
         }
 
-        IEnumerator ExecuteCardRoutine(CardInstance card, ICell cell, Player player, bool useEnergy = true) {
+        IEnumerator ExecuteCardRoutine(CardInstance card, ICell cell, bool useEnergy = true) {
             bool playable = true;
 
             if (card.cost > player.energy &&
@@ -168,12 +185,9 @@ namespace Runtime {
                 if (useEnergy)
                     player.energy -= card.cost;
 
-                if (player == this.player)
-                    CardManager.instance.SendToGraveyard(card);
+                CardManager.instance.SendToGraveyard(card);
             }
-
-            if (player == this.player)
-                state = States.PlayingCardsIdle;
+            state = States.PlayingCardsIdle;
         }
 
         private void WaitForPlayCard() {
