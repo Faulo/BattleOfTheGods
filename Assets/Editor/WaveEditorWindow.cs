@@ -56,8 +56,9 @@ namespace Editor {
                     wave.cardsWithTarget.Add(new CardTargetTuple());
                 }
                 EditorGUILayout.Separator();
-                
-                for (int i = 0; i < wave.cardsWithTarget.Count; i++) {
+
+                for (int i = 0; i < wave.cardsWithTarget.Count; i++) 
+                {
                     Rect curr = EditorGUILayout.GetControlRect();
                     if (i % 3 == 0) {
                         curr = EditorGUILayout.BeginHorizontal();
@@ -75,10 +76,10 @@ namespace Editor {
                         e.card.sprite != null) {
                         //EditorGUI.DrawPreviewTexture(imageTarget, e.card.sprite.texture);
                         GUILayout.Box(
-                            e.card.sprite.texture, 
-                            GUILayout.Width(imageTarget.width), 
+                            e.card.sprite.texture,
+                            GUILayout.Width(imageTarget.width),
                             GUILayout.Height(imageTarget.height));
-                        
+
                     } else {
                         EditorGUILayout.LabelField("No card or card image");
                     }
