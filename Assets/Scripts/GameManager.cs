@@ -83,6 +83,7 @@ namespace Runtime {
                     yield return ExecuteCardRoutine();
                 } else if (currentSelectedCell == default) {
                     //feedback for not selecting cell
+                    state = States.PlayingCardsIdle;
                 }
                 yield return new WaitWhile(() => state == States.PlayingCardsExecuting);
 
