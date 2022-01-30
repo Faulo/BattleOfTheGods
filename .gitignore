@@ -26,5 +26,6 @@ PerformanceTestRunInfo*
 
 # == FMOD ==
 /Assets/Plugins/FMOD/Resources/FMODStudioSettings.asset
-/Assets/Plugins/FMOD/Cache
+/Assets/Plugins/FMOD/Cache*
+/Assets/StreamingAssets*
 fmod_editor.log
