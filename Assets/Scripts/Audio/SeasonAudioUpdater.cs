@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using FMOD;
 using FMOD.Studio;
+using UnityEngine;
 
 namespace Runtime.Audio {
     public class SeasonAudioUpdater : MonoBehaviour {
@@ -13,17 +10,16 @@ namespace Runtime.Audio {
         void Start() {
             FMODUnity.RuntimeManager.StudioSystem.getParameterDescriptionByName("Seasons", out seasonsDescription);
             seasonsID = seasonsDescription.id;
-            FMODUnity.RuntimeManager.StudioSystem.setParameterByID(seasonsID, ((int)World.instance.season)+1);
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByID(seasonsID, ((int)World.instance.season) + 1);
 
         }
-        void OnSeasonChange() {
+        protected void OnSeasonChange() {
 
             if (World.instance.season == Season.Spring) {
                 FMODUnity.RuntimeManager.StudioSystem.setParameterByID(seasonsID, 0);
             }
-            FMODUnity.RuntimeManager.StudioSystem.setParameterByID(seasonsID, ((int)World.instance.season)+1);
-            UnityEngine.Debug.Log(World.instance.season);
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByID(seasonsID, ((int)World.instance.season) + 1);
+            // Debug.Log(World.instance.season);
         }
-
     }
 }
