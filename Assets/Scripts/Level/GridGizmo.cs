@@ -1,4 +1,3 @@
-using Runtime.Entities;
 using Slothsoft.UnityExtensions;
 using UnityEngine;
 
@@ -15,14 +14,6 @@ namespace Runtime.Tiles {
         Method method = default;
         [SerializeField]
         int radius = 1;
-
-        bool isInitialized = false;
-        ITile tile;
-
-        protected void Start() {
-            isInitialized = true;
-            tile = World.instance.GetTileByTileObject(gameObject);
-        }
 
         protected void OnDrawGizmos() {
             var gridPosition = World.instance.WorldToGrid(transform.position);
