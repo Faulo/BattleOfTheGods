@@ -10,14 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e61c3979d4baba4fbb44a1913644a53, type: 3}
-  m_Name: Merchant
+  m_Name: Summon Bush
   m_EditorClassIdentifier: 
-  conditions:
-  - {fileID: 11400000, guid: 2bebef5fbc4f4764ca5d50d4526ec796, type: 2}
+  conditions: []
   effects:
-  - {fileID: 11400000, guid: 38f07f0f7d2abde49873f6a07c9bab73, type: 2}
-  _cardBody: Create Merchant at target settlement.
+  - {fileID: 0}
+  _cardBody: 
   _assignedEntity: {fileID: 0}
-  _sprite: {fileID: 21300000, guid: 4210f764d0d1d9c4d80a861f4d8086ed, type: 3}
-  _cost: 2
+  _sprite: {fileID: 21300000, guid: 3474cd57823d85944a752018f67e4737, type: 3}
+  _cost: 1
   _type: 0
