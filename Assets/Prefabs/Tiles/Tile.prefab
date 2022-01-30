@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1489484634021693454}
+  - component: {fileID: 8338979019467749730}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -31,3 +32,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8338979019467749730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8460571604764077623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff9166b0255a7c84aadc18b6143fe2b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particlesPrefab: {fileID: 822830057381978124, guid: 891405be4fa21694291decd2ad3df8f0, type: 3}
+  particleCountPerInfluence: 5
+  natureColor: {r: 0.22745098, g: 0.33333334, b: 0.16470589, a: 1}
+  civColor: {r: 0.019607844, g: 0.49803922, b: 0.74509805, a: 1}

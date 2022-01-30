@@ -13,6 +13,8 @@ using UnityEngine.Tilemaps;
 namespace Runtime {
     public class World : MonoBehaviour {
         class WorldCell : ICell {
+            public event Action<int> onGainInfluence;
+
             public WorldCell(Vector3Int gridPosition, Vector3 worldPosition) {
                 this.gridPosition = gridPosition;
                 this.worldPosition = worldPosition;
@@ -30,6 +32,7 @@ namespace Runtime {
                     int maxAbsoluteInfluenceValue = Config.current
                         ? Config.current.maxAbsoluteInfluenceValue
                         : 1;
+                    onGainInfluence?.Invoke(value - m_influence);
                     m_influence = Math.Clamp(value, -maxAbsoluteInfluenceValue, maxAbsoluteInfluenceValue);
                 }
             }
