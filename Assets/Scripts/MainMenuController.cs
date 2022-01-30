@@ -9,7 +9,7 @@ namespace Runtime {
         }
 
         public void StartHuman() {
-            SceneManager.LoadScene("Human");
+            SceneManager.LoadScene("Humans");
         }
 
         public void Quit() {

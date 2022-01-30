@@ -14,8 +14,8 @@ namespace Runtime {
         CardInstance currentSelectedCard;
         ICell currentClickedCell;
         public string noCellReason { get; private set; }
-        [SerializeField] TextMeshProUGUI debugText;
-        [SerializeField] TextMeshProUGUI log;
+        TextMeshProUGUI debugText => UIController.debugText;
+        TextMeshProUGUI log => UIController.log;
         [SerializeField] Config config;
 
         public Player player { get; private set; }
@@ -99,8 +99,12 @@ namespace Runtime {
         }
 
         IEnumerator EndGame(Faction winner) {
-            Debug.Log($"Game Over the winner is {winner}");
-            log.text += $"Game Over the winner is {winner} \n";
+            string t = $"Game Over the winner is {winner}";
+            Debug.Log(t);
+            log.text += t;
+
+            UIController.gameOverMessage.text = t;
+            UIController.gameOverPanel.SetActive(true);
             BroadcastMessage(nameof(OnGameOver), winner, SendMessageOptions.DontRequireReceiver);
             yield return null;
         }
