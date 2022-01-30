@@ -123,23 +123,24 @@ namespace Runtime {
                 var card = CardManager.instance.InstantiateCard(tuple.card);
                 log.text += $"opponent plays {card.data.name} at {tuple.target} \n";
                 card.transform.SetParent(waveManager.cards);
-                var cell = World.instance.GetCellByPosition(tuple.target);
+                if (World.instance.TryGetCell(tuple.target, out ICell cell)) {
 
-                bool playable = true;
+                    bool playable = true;
 
-                foreach (var cond in card.playConditions) {
-                    var conditionData = new PlayCondition.PlayConditionData(cell, card);
-                    playable = playable && cond.Check(conditionData);
-                    //play visuals for condition & yield
-                    yield return null;
-                }
-
-                if (playable) {
-                    foreach (var eff in card.effects) {
-                        var effectData = new CardEffect.CardEffectData(cell, card);
-                        eff.OnPlay(effectData);
-                        //play visuals for effect & yield
+                    foreach (var cond in card.playConditions) {
+                        var conditionData = new PlayCondition.PlayConditionData(cell, card);
+                        playable = playable && cond.Check(conditionData);
+                        //play visuals for condition & yield
                         yield return null;
+                    }
+
+                    if (playable) {
+                        foreach (var eff in card.effects) {
+                            var effectData = new CardEffect.CardEffectData(cell, card);
+                            eff.OnPlay(effectData);
+                            //play visuals for effect & yield
+                            yield return null;
+                        }
                     }
                 }
             }

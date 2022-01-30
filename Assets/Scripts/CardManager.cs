@@ -9,7 +9,8 @@ namespace Runtime {
     public class CardManager : MonoBehaviour
     {
         public static CardManager instance;
-
+        public static Transform waveParent => instance._waveParent;
+        [SerializeField] Transform _waveParent;
         private void Awake() {
             instance = this;
         }
