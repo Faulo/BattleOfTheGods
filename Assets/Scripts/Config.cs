@@ -18,6 +18,9 @@ namespace Runtime {
         public int openingHandSize => _openingHandSize;
         [SerializeField] int _openingHandSize = 4;
 
+        public int maxAbsoluteInfluenceValue => _maxAbsoluteInfluenceValue;
+        [SerializeField] int _maxAbsoluteInfluenceValue = 15;
+
         public List<Cards.CardData> defaultDeck;
 
         public static Config current;

@@ -24,7 +24,16 @@ namespace Runtime {
             public ITile tile => instance.GetTileByPosition(gridPosition);
             public IEnumerable<IEntity> entities => instance.GetEntitiesByPosition(gridPosition);
 
-            public int influence = 0;
+            public int influence {
+                get => m_influence;
+                set {
+                    int maxAbsoluteInfluenceValue = Config.current
+                        ? Config.current.maxAbsoluteInfluenceValue
+                        : 1;
+                    m_influence = Math.Clamp(value, -maxAbsoluteInfluenceValue, maxAbsoluteInfluenceValue);
+                }
+            }
+            int m_influence = 0;
             public Faction owningFaction => Math.Sign(influence) switch {
                 1 => Faction.Civilization,
                 0 => Faction.Nobody,
@@ -529,7 +538,6 @@ namespace Runtime {
         #region influence
         public void AddInfluence(Vector3Int position, int influence) {
             if (!cells.TryGetValue(position, out var cell)) {
-                Debug.LogWarning($"Position {position} is out of bounds");
                 return;
             }
             var currentFaction = cell.owningFaction;

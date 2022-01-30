@@ -470,7 +470,9 @@ MonoBehaviour:
   entitiesContainer: {fileID: 1746776648059201325}
   maxDistanceToCenter: 0.25
   m_season: 0
-  minSeasonDuration: 0.5
+  seasonDuration: 0.5
+  combatDuration: 0.5
+  influenceDuration: 0.25
   autoAdvanceSeasons: 0
   autoAdvanceSeasonDuration: 0.02
 --- !u!114 &1555408601570603770
