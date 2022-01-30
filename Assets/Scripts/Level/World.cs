@@ -32,7 +32,9 @@ namespace Runtime {
                     int maxAbsoluteInfluenceValue = Config.current
                         ? Config.current.maxAbsoluteInfluenceValue
                         : 1;
-                    onGainInfluence?.Invoke(value - m_influence);
+                    if (instance.emitInfluenceEvents) {
+                        onGainInfluence?.Invoke(value - m_influence);
+                    }
                     m_influence = Math.Clamp(value, -maxAbsoluteInfluenceValue, maxAbsoluteInfluenceValue);
                 }
             }
@@ -154,6 +156,8 @@ namespace Runtime {
         bool autoAdvanceSeasons = false;
         [SerializeField, Range(0, 60)]
         float autoAdvanceSeasonDuration = 1;
+        [SerializeField]
+        bool emitInfluenceEvents = true;
 
 
         public IEnumerable<ICell> cellValues => cells.Values.Cast<ICell>();
