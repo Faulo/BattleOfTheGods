@@ -9,6 +9,9 @@ namespace Runtime {
     public class GameManager : MonoBehaviour {
         public static GameManager instance;
 
+        public static event Action playPhaseStarted;
+        public static event Action playPhaseEnded;
+
         public delegate void OnGameOver(Faction winner);
 
         CardInstance currentSelectedCard;
@@ -83,6 +86,8 @@ namespace Runtime {
                     yield return PlayOpponentCards();
                 }
 
+                playPhaseStarted?.Invoke();
+
                 player.maxEnergy += Config.current.energyIncreasePerTurn;
                 player.maxEnergy = Math.Min(Config.current.maxEnergy, player.maxEnergy);
                 player.energy = player.maxEnergy;
@@ -90,7 +95,7 @@ namespace Runtime {
                 log.text += "Start turn \n";
                 yield return PlayCards();
 
-
+                playPhaseEnded?.Invoke();
                 log.text += "Start simulation \n";
                 yield return EvaluateTurn();
                 log.text += "Check win \n";
