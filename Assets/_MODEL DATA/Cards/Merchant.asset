@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e61c3979d4baba4fbb44a1913644a53, type: 3}
+  m_Name: Merchant
+  m_EditorClassIdentifier: 
+  conditions:
+  - {fileID: 11400000, guid: 2bebef5fbc4f4764ca5d50d4526ec796, type: 2}
+  effects:
+  - {fileID: 11400000, guid: 38f07f0f7d2abde49873f6a07c9bab73, type: 2}
+  _cardBody: 
+  _assignedEntity: {fileID: 0}
+  _sprite: {fileID: 21300000, guid: 4210f764d0d1d9c4d80a861f4d8086ed, type: 3}
+  _cost: 0
+  _type: 0
