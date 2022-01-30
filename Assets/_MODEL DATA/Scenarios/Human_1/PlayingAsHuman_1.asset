@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6baf7a939d52b3d4b801064305731b8a, type: 3}
+  m_Name: PlayingAsHuman_1
+  m_EditorClassIdentifier: 
+  waves:
+  - {fileID: 11400000, guid: 954afc4f8728e7a4eabd7f400edaec25, type: 2}
+  - {fileID: 11400000, guid: 5e4a87d0ef051e943afa9f09cd24b9c5, type: 2}
+  - {fileID: 11400000, guid: b0e5f9fd4e918f34584a258c354f9eb8, type: 2}
+  - {fileID: 11400000, guid: b0e5f9fd4e918f34584a258c354f9eb8, type: 2}
+  - {fileID: 11400000, guid: 83bbd7978b5ad794f9e8967a9ba77cda, type: 2}
+  - {fileID: 11400000, guid: b0e5f9fd4e918f34584a258c354f9eb8, type: 2}
+  - {fileID: 11400000, guid: b0e5f9fd4e918f34584a258c354f9eb8, type: 2}
+  - {fileID: 11400000, guid: b0e5f9fd4e918f34584a258c354f9eb8, type: 2}
+  - {fileID: 11400000, guid: ec6d4311f8ce7e546b6ba80e107f86d3, type: 2}
