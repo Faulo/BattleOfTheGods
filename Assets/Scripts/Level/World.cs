@@ -252,13 +252,20 @@ namespace Runtime {
                         factions[entity.type.faction].Add(entity);
                     }
                 }
+
+                if (factions[Faction.Civilization].Count == 0 || factions[Faction.Nature].Count == 0) {
+                    continue;
+                }
+
                 foreach (var (attacker, defender) in new[] { (Faction.Civilization, Faction.Nature), (Faction.Nature, Faction.Civilization) }) {
                     int attack = factions[attacker].Sum(entity => entity.type.attack);
                     if (factions[attacker].Any(entity => entity.type.canStartCombat) && factions[defender].Count > 0) {
+                        //Debug.Log($"Attackers: {string.Join(", ", factions[attacker])}");
                         onAttackByFaction?.Invoke(cell, attacker, attack);
                         foreach (var entity in factions[defender].OrderBy(entity => entity.type.health)) {
                             if (attack >= entity.type.health) {
                                 attack -= entity.type.health;
+                                //Debug.Log($"Ded: {entity}");
                                 DestroyEntity(entity);
                             } else {
                                 break;

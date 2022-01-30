@@ -438,6 +438,7 @@ Transform:
   - {fileID: 2332203121184379318}
   - {fileID: 531373310}
   - {fileID: 984452830}
+  - {fileID: 6842182879617513711}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -474,7 +475,7 @@ MonoBehaviour:
   combatDuration: 0.5
   influenceDuration: 0.25
   autoAdvanceSeasons: 0
-  autoAdvanceSeasonDuration: 0.02
+  autoAdvanceSeasonDuration: 0.5
 --- !u!114 &1555408601570603770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11720,6 +11721,67 @@ MonoBehaviour:
   moveEaseType: 16
   destroyDuration: 0.5
   destroyEaseType: 25
+--- !u!1 &5644884433933246268
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6842182879617513711}
+  - component: {fileID: 2356014413898618229}
+  - component: {fileID: 1053893902718936272}
+  m_Layer: 0
+  m_Name: CombatVisualizer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6842182879617513711
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5644884433933246268}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1746776648438089317}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2356014413898618229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5644884433933246268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76ff5ec0472c1c74a8d79276daf3e811, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1053893902718936272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5644884433933246268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccca262585ebb054994c9837bfdc5e22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particlesPrefab: {fileID: 5310539948776022672, guid: 050b5c617288c0a4bbb0efa267a0aef0, type: 3}
+  particleCountPerAttack: 100
+  natureColor: {r: 0.227451, g: 0.33333334, b: 0.16470589, a: 1}
+  civColor: {r: 0.019607844, g: 0.49803925, b: 0.74509805, a: 1}
 --- !u!1 &6159638013339632048
 GameObject:
   m_ObjectHideFlags: 0

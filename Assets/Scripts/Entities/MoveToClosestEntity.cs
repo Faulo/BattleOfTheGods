@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Slothsoft.UnityExtensions;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Runtime.Entities {
     public class MoveToClosestEntity : MonoBehaviour {
@@ -37,6 +38,7 @@ namespace Runtime.Entities {
                     foreach (var visited in visitedEntities) {
                         candidates.Remove(visited);
                     }
+                    Assert.AreNotEqual(0, candidates.Count);
                 }
             }
 
@@ -44,7 +46,7 @@ namespace Runtime.Entities {
                 .OrderBy(targetEntity => World.Distance(entity.gridPosition, targetEntity.gridPosition))
                 .FirstOrDefault();
             if (targetEntity != null) {
-                if (World.instance.TryCalculatePath(entity.gridPosition, targetEntity.gridPosition, out var path) && path.Count > minimumDistanceToTarget) {
+                if (World.instance.TryCalculatePath(entity.gridPosition, targetEntity.gridPosition, out var path) && path.Count >= minimumDistanceToTarget) {
                     // Debug.Log($"{entity}: {string.Join(" > ", path)}");
                     World.instance.MoveEntity(entity, path[0]);
                 } else {

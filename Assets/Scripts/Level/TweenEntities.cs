@@ -46,8 +46,15 @@ namespace Runtime.Level {
                 .setEase(spawnEaseType);
         }
         void HandleMove(IEntity entity) {
+            var oldPosition = entity.gameObject.transform.position;
+            var newPosition = entity.ownerCell.worldPosition + World.instance.randomDistanceToCenter;
+            entity.gameObject.transform.rotation = Quaternion.Euler(
+                0,
+                180 + Quaternion.LookRotation(newPosition - oldPosition).eulerAngles.y,
+                0
+            );
             LeanTween
-                .move(entity.gameObject, entity.ownerCell.worldPosition + World.instance.randomDistanceToCenter, moveDuration)
+                .move(entity.gameObject, newPosition, moveDuration)
                 .setEase(moveEaseType);
         }
         void HandleDestroy(IEntity entity) {
