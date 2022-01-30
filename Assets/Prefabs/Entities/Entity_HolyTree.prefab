@@ -114,8 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   influencePerTurn: -15
-  range: 0
-  influenceByRange: feffffffffffffff
+  influenceOverRange: f1fffffff6fffffffbffffff
 --- !u!114 &1481070383300092633
 MonoBehaviour:
   m_ObjectHideFlags: 0

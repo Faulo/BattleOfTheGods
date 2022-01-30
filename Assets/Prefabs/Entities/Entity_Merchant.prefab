@@ -160,39 +160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bac52dbec38b9d4dabb7bdffb2715e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  influencePerTurn: 5
-  range: 1
-  influenceByRange: 
---- !u!114 &-237857875692216998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4172173619166967726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -1769993457
-      Data2: 1214047956
-      Data3: -1241621839
-      Data4: -1479638219
-    Path: event:/Ambience/Humans/Merchant_Ambience
-  Event: 
-  PlayEvent: 1
-  StopEvent: 2
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
+  influencePerTurn: 0
+  influenceOverRange: 05000000
 --- !u!114 &5868700144224023076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,36 +175,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetType: {fileID: 11400000, guid: de984d2d2870af14185d892a9e9c3c81, type: 2}
---- !u!114 &8045533435069086406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4172173619166967726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 1918613958
-      Data2: 1289689646
-      Data3: -846283851
-      Data4: 1769683006
-    Path: event:/SFX/Humans/Merchant_Play_Card_SFX
-  Event: 
-  PlayEvent: 1
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!4 &7872233660760521178 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 60097213861379200, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}

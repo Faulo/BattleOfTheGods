@@ -139,6 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   influencePerTurn: 15
+  influenceOverRange: 0f0000000a00000005000000
 --- !u!4 &7627129794631565250 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 60097213861379200, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
