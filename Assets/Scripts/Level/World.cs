@@ -225,17 +225,18 @@ namespace Runtime {
         #region Grid interactions
         public Vector3Int WorldToGrid(Vector3 position) => groundTilemap.WorldToCell(position);
         public Vector3 GridToWorld(Vector3Int position) => groundTilemap.CellToWorld(position);
-        public static Vector2Int GridToAxial(Vector3Int position) {
-            int q = position.x;
-            int r = position.y - ((position.x + (position.x & 1)) / 2);
-            return new Vector2Int(q, r);
-        }
+
+        #region axial coordinates
         public static Vector3Int AxialToGrid(Vector2Int position) {
-            int col = position.x;
-            int row = position.y + ((position.x + (position.x & 1)) / 2);
+            int col = position.x + ((position.y - (position.y & 1)) / 2);
+            int row = position.y;
             return new Vector3Int(col, row);
         }
-
+        public static Vector2Int GridToAxial(Vector3Int position) {
+            int q = position.x - ((position.y - (position.y & 1)) / 2);
+            int r = position.y;
+            return new Vector2Int(q, r);
+        }
         static readonly Vector2Int[] axialNeighbors = new[] {
             new Vector2Int(1, 0),
             new Vector2Int(1, -1),
@@ -244,85 +245,12 @@ namespace Runtime {
             new Vector2Int(-1, 1),
             new Vector2Int(0, 1),
         };
-        static readonly Vector3Int[] cubeNeighbours = new[] {
-            new Vector3Int(1,0,-1),
-            new Vector3Int(1,-1,0),
-            new Vector3Int(0,-1,1),
-            new Vector3Int(-1,0,1),
-            new Vector3Int(-1,1,0),
-            new Vector3Int(0,1,-1)
-        };
-
-        private static Vector3Int CubeAdd(Vector3Int pos, Vector3Int dir) {
-            return new Vector3Int(pos.x + dir.x, pos.y + dir.x, pos.z + dir.y);
-        }
-        private static Vector3Int CubeNeighbour (Vector3Int pos, int neighbour) {
-            Assert.IsTrue(neighbour >= 0 && neighbour < 6, "Invalid neighbour index in cube coordinates");
-            return CubeAdd(pos, cubeNeighbours[neighbour]);
-        }
         public static IEnumerable<Vector3Int> GetNeighboringPositions(Vector3Int position) {
             var axial = GridToAxial(position);
             return axialNeighbors
                 .Select(offset => offset + axial)
                 .Select(AxialToGrid);
         }
-
-        private static Vector3Int CubeScale(Vector3Int pos, int factor) {
-            return new Vector3Int(pos.x * factor, pos.y * factor, pos.z * factor);
-        }
-
-        public static IEnumerable<Vector3Int> GetRing (Vector3Int center, int distance) {
-            if (distance == 0)
-                return new HashSet<Vector3Int> { center };
-
-            HashSet<Vector3Int> output = new HashSet<Vector3Int>();
-            center = UnityCellToCube(center);
-            Vector3Int curr = CubeAdd(center, CubeScale(cubeNeighbours[4], distance));
-
-            for (int i = 0; i < 6; i++) {
-                for (int j = 0; j < distance; j++) {
-                    output.Add(CubeToUnityCell(curr));
-                    curr = CubeNeighbour(curr, i);
-                }
-            }
-
-            return output;
-        }
-        public static IEnumerable<Vector3Int> GetInDistance(Vector3Int center, int distance, bool excludeSelf = false) {
-            HashSet<Vector3Int> output = new HashSet<Vector3Int>();
-            center = UnityCellToCube(center);
-            for (int x = -distance; x <= distance; x++) {
-                for (int z = Mathf.Max(-distance, -x - distance); z <= Mathf.Min(distance, -x + distance); z++) {
-                    if (excludeSelf && x == 0 && z == 0)
-                        continue;
-                    int y = -x - z;
-                    Vector3Int toAdd = new Vector3Int(center.x + x, center.y + y, center.z + z);
-
-                    output.Add(CubeToUnityCell(toAdd));
-                }
-            }
-
-            return output;
-        }
-
-        //From: https://github.com/Unity-Technologies/2d-extras/issues/69
-        private static Vector3Int UnityCellToCube(Vector3Int cell) {
-            var yCell = cell.x;
-            var xCell = cell.y;
-            var x = yCell - (xCell - (xCell & 1)) / 2;
-            var z = xCell;
-            var y = -x - z;
-            return new Vector3Int(x, y, z);
-        }
-        private static Vector3Int CubeToUnityCell(Vector3Int cube) {
-            var x = cube.x;
-            var z = cube.z;
-            var col = x + (z - (z & 1)) / 2;
-            var row = z;
-
-            return new Vector3Int(col, row, 0);
-        }
-        [Obsolete]
         public static IEnumerable<Vector3Int> GetCircularPositions(Vector3Int position, int radius) {
             yield return position;
 
@@ -341,6 +269,83 @@ namespace Runtime {
             => AxialMagnitude(GridToAxial(positionA) - GridToAxial(positionB));
         public static int AxialMagnitude(Vector2Int position)
             => (Math.Abs(position.x) + Math.Abs(position.x + position.y) + Math.Abs(position.y)) / 2;
+        #endregion
+
+        #region cube coordinates
+
+        static Vector3Int CubeScale(Vector3Int pos, int factor) {
+            return new Vector3Int(pos.x * factor, pos.y * factor, pos.z * factor);
+        }
+        //From: https://github.com/Unity-Technologies/2d-extras/issues/69
+        public static Vector3Int GridToCube(Vector3Int cell) {
+            int yCell = cell.x;
+            int xCell = cell.y;
+            int x = yCell - ((xCell - (xCell & 1)) / 2);
+            int z = xCell;
+            int y = -x - z;
+            return new Vector3Int(x, y, z);
+        }
+        public static Vector3Int CubeToGrid(Vector3Int cube) {
+            int x = cube.x;
+            int z = cube.z;
+            int col = x + ((z - (z & 1)) / 2);
+            int row = z;
+
+            return new Vector3Int(col, row, 0);
+        }
+        static readonly Vector3Int[] cubeNeighbours = new[] {
+            new Vector3Int(1, 0, -1),
+            new Vector3Int(1, -1, 0),
+            new Vector3Int(0, -1, 1),
+            new Vector3Int(-1, 0, 1),
+            new Vector3Int(-1, 1, 0),
+            new Vector3Int(0, 1, -1)
+        };
+        static Vector3Int CubeNeighbour(Vector3Int pos, int neighbour) {
+            Assert.IsTrue(neighbour >= 0 && neighbour < 6, "Invalid neighbour index in cube coordinates");
+            return CubeAdd(pos, cubeNeighbours[neighbour]);
+        }
+        static Vector3Int CubeAdd(Vector3Int pos, Vector3Int dir) {
+            return new Vector3Int(pos.x + dir.x, pos.y + dir.x, pos.z + dir.y);
+        }
+        public static IEnumerable<Vector3Int> GetRing(Vector3Int center, int distance) {
+            if (distance == 0) {
+                return new HashSet<Vector3Int> { center };
+            }
+
+            var output = new HashSet<Vector3Int>();
+            center = GridToCube(center);
+            var curr = CubeAdd(center, CubeScale(cubeNeighbours[4], distance));
+
+            for (int i = 0; i < 6; i++) {
+                for (int j = 0; j < distance; j++) {
+                    output.Add(CubeToGrid(curr));
+                    curr = CubeNeighbour(curr, i);
+                }
+            }
+
+            return output;
+        }
+        public static IEnumerable<Vector3Int> GetInDistance(Vector3Int center, int distance, bool excludeSelf = false) {
+            var output = new HashSet<Vector3Int>();
+            center = GridToCube(center);
+            for (int x = -distance; x <= distance; x++) {
+                for (int z = Mathf.Max(-distance, -x - distance); z <= Mathf.Min(distance, -x + distance); z++) {
+                    if (excludeSelf && x == 0 && z == 0) {
+                        continue;
+                    }
+
+                    int y = -x - z;
+                    var toAdd = new Vector3Int(center.x + x, center.y + y, center.z + z);
+
+                    output.Add(CubeToGrid(toAdd));
+                }
+            }
+
+            return output;
+        }
+        #endregion
+
         #endregion
 
         #region Entity interactions
