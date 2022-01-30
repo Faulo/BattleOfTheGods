@@ -2,6 +2,6 @@
     public enum Faction {
         Civilization,
         Nature,
-        Unknown,
+        Nobody,
     }
 }

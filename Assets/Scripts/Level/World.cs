@@ -27,7 +27,7 @@ namespace Runtime {
             public int influence = 0;
             public Faction owningFaction => Math.Sign(influence) switch {
                 1 => Faction.Civilization,
-                0 => Faction.Unknown,
+                0 => Faction.Nobody,
                 -1 => Faction.Nature,
                 _ => throw new NotImplementedException(),
             };
