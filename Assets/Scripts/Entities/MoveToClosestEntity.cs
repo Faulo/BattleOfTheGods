@@ -7,13 +7,19 @@ namespace Runtime.Entities {
         [SerializeField, Expandable]
         EntityData targetType = default;
 
+        bool isInitialized = false;
         IEntity entity;
 
         protected void Start() {
+            isInitialized = true;
             entity = World.instance.GetEntityByEntityObject(gameObject);
         }
 
         protected void OnSeasonChange() {
+            if (!isInitialized) {
+                return;
+            }
+
             var targetEntity = World.instance
                 .GetEntitiesByType(targetType)
                 .OrderBy(targetEntity => World.Distance(entity.gridPosition, targetEntity.gridPosition))
