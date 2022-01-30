@@ -9,6 +9,8 @@ namespace Runtime {
     public class GameManager : MonoBehaviour {
         public static GameManager instance;
 
+        public delegate void OnGameOver(Faction winner);
+
         CardInstance currentSelectedCard;
         ICell currentClickedCell;
         public string noCellReason { get; private set; }
@@ -99,6 +101,7 @@ namespace Runtime {
         IEnumerator EndGame(Faction winner) {
             Debug.Log($"Game Over the winner is {winner}");
             log.text += $"Game Over the winner is {winner} \n";
+            BroadcastMessage(nameof(OnGameOver), winner, SendMessageOptions.DontRequireReceiver);
             yield return null;
         }
 
