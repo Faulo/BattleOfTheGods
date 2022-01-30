@@ -9,11 +9,13 @@ namespace Runtime {
     public class GameManager : MonoBehaviour {
         public static GameManager instance;
 
+        public delegate void OnGameOver(Faction winner);
+
         CardInstance currentSelectedCard;
         ICell currentClickedCell;
         public string noCellReason { get; private set; }
-        [SerializeField] TextMeshProUGUI debugText;
-        [SerializeField] TextMeshProUGUI log;
+        TextMeshProUGUI debugText => UIController.debugText;
+        TextMeshProUGUI log => UIController.log;
         [SerializeField] Config config;
 
         public Player player { get; private set; }
@@ -68,7 +70,7 @@ namespace Runtime {
             for (int i = 0; i < Config.current.openingHandSize; i++) {
                 CardManager.instance.Draw();
             }
-
+            Faction winner;
             while (true) {
                 if (waveManager != null &&
                     opponent != null) {
@@ -87,11 +89,24 @@ namespace Runtime {
                 log.text += "Start simulation \n";
                 yield return EvaluateTurn();
                 log.text += "Check win \n";
-                if (CheckWin()) {
+                if (CheckWin(out winner)) {
                     break;
                 }
                 log.text += "End turn \n";
             }
+
+            yield return EndGame(winner);
+        }
+
+        IEnumerator EndGame(Faction winner) {
+            string t = $"Game Over the winner is {winner}";
+            Debug.Log(t);
+            log.text += t;
+
+            UIController.gameOverMessage.text = t;
+            UIController.gameOverPanel.SetActive(true);
+            BroadcastMessage(nameof(OnGameOver), winner, SendMessageOptions.DontRequireReceiver);
+            yield return null;
         }
 
         IEnumerator PlayOpponentCards() {
@@ -126,11 +141,29 @@ namespace Runtime {
                         //play visuals for effect & yield
                         yield return null;
                     }
-
                 }
             }
         }
-        bool CheckWin() {
+        bool CheckWin(out Faction winner) {
+            winner = Faction.Nobody;
+            var cells = World.instance.cellValues;
+            int totalCells = cells.Count();
+            Dictionary<Faction, int> ownCount = new Dictionary<Faction, int>();
+            
+            foreach (ICell cell in cells) {
+                if (!ownCount.ContainsKey(cell.owningFaction))
+                    ownCount.Add(cell.owningFaction, 0);
+                ownCount[cell.owningFaction]++;
+            }
+
+            //Win if any faction controls all cells!
+            foreach(Faction f in ownCount.Keys) {
+                if (ownCount[f] >= totalCells) {
+                    winner = f;
+                    return true;
+                }
+            }
+
             return false;
         }
 
@@ -241,6 +274,13 @@ namespace Runtime {
                 noCellReason = "Did not click on valid cell";
             }
             state = States.PlayingCardsExecuting;
+        }
+
+
+        public enum GameOutcome {
+            None,
+            NatureWins,
+            HumansWin
         }
     }
 }
