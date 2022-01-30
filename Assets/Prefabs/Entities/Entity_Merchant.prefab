@@ -174,6 +174,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetType: {fileID: 11400000, guid: de984d2d2870af14185d892a9e9c3c81, type: 2}
+  minimumDistanceToTarget: 0
+  rememberPreviousEntities: 1
 --- !u!4 &7872233660760521178 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 60097213861379200, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
