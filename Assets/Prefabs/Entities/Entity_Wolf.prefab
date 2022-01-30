@@ -136,6 +136,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   influenceOverRange: feffffffffffffff
+--- !u!114 &-2098692751681767274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104491419985748256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13815f4058509994d99efc65d299d122, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetType: {fileID: 11400000, guid: de984d2d2870af14185d892a9e9c3c81, type: 2}
+  minimumDistanceToTarget: 1
+  rememberPreviousEntities: 1
 --- !u!4 &6596280434018266964 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 60097213861379200, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
