@@ -73,7 +73,8 @@ namespace Runtime.Level {
                 LeanTween.alphaCanvas(tooltipPanel, 1, tooltipAppearDuration);
                 tooltipText.text = $"Terrain: <b>{currentlySelectedTile.type.name}</b>\r\n"
                     + $"Owner: <i>{ currentlySelectedTile.ownerCell.owningFaction}</i>\r\n"
-                    + $"Entities: {string.Join(", ", currentlySelectedTile.ownerCell.entities.Select(entity => entity.type.name))}";
+                    + $"Entities: {string.Join(", ", currentlySelectedTile.ownerCell.entities.Select(entity => entity.type.name))} \r\n"
+                    + $"Influence: <i>{m_currentlySelectedTile.ownerCell.owningFaction} { System.Math.Abs(m_currentlySelectedTile.ownerCell.influence)}</i>";
             }
         }
     }

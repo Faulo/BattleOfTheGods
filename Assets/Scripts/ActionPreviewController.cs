@@ -7,8 +7,17 @@ namespace Runtime {
         [SerializeField] LineRenderer lr;
         [SerializeField] Transform lineTarget, lineOrigin, canvasPos;
         [SerializeField] Image image;
+        Camera cam;
+        private void Awake() {
+            cam = FindObjectOfType<Camera>();
+        }
         private void Update() {
             lr.SetPositions(new Vector3[] { lineOrigin.position, lineTarget.position });
+
+            Vector3 lookPos = cam.transform.position;
+            lookPos.y = transform.position.y;
+
+            transform.LookAt(lookPos);
         }
 
       
