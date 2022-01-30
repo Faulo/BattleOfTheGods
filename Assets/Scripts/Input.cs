@@ -37,6 +37,15 @@ namespace Runtime
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""e543c535-b1a9-46c5-8c77-278cf1682818"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -50,6 +59,17 @@ namespace Runtime
                     ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7b5438f-bf03-4ec9-b8a8-3ce20e4afeb5"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -59,6 +79,7 @@ namespace Runtime
             // GameplayActionMap
             m_GameplayActionMap = asset.FindActionMap("GameplayActionMap", throwIfNotFound: true);
             m_GameplayActionMap_Click = m_GameplayActionMap.FindAction("Click", throwIfNotFound: true);
+            m_GameplayActionMap_Move = m_GameplayActionMap.FindAction("Move", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -119,11 +140,13 @@ namespace Runtime
         private readonly InputActionMap m_GameplayActionMap;
         private IGameplayActionMapActions m_GameplayActionMapActionsCallbackInterface;
         private readonly InputAction m_GameplayActionMap_Click;
+        private readonly InputAction m_GameplayActionMap_Move;
         public struct GameplayActionMapActions
         {
             private @Input m_Wrapper;
             public GameplayActionMapActions(@Input wrapper) { m_Wrapper = wrapper; }
             public InputAction @Click => m_Wrapper.m_GameplayActionMap_Click;
+            public InputAction @Move => m_Wrapper.m_GameplayActionMap_Move;
             public InputActionMap Get() { return m_Wrapper.m_GameplayActionMap; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -136,6 +159,9 @@ namespace Runtime
                     @Click.started -= m_Wrapper.m_GameplayActionMapActionsCallbackInterface.OnClick;
                     @Click.performed -= m_Wrapper.m_GameplayActionMapActionsCallbackInterface.OnClick;
                     @Click.canceled -= m_Wrapper.m_GameplayActionMapActionsCallbackInterface.OnClick;
+                    @Move.started -= m_Wrapper.m_GameplayActionMapActionsCallbackInterface.OnMove;
+                    @Move.performed -= m_Wrapper.m_GameplayActionMapActionsCallbackInterface.OnMove;
+                    @Move.canceled -= m_Wrapper.m_GameplayActionMapActionsCallbackInterface.OnMove;
                 }
                 m_Wrapper.m_GameplayActionMapActionsCallbackInterface = instance;
                 if (instance != null)
@@ -143,6 +169,9 @@ namespace Runtime
                     @Click.started += instance.OnClick;
                     @Click.performed += instance.OnClick;
                     @Click.canceled += instance.OnClick;
+                    @Move.started += instance.OnMove;
+                    @Move.performed += instance.OnMove;
+                    @Move.canceled += instance.OnMove;
                 }
             }
         }
@@ -150,6 +179,7 @@ namespace Runtime
         public interface IGameplayActionMapActions
         {
             void OnClick(InputAction.CallbackContext context);
+            void OnMove(InputAction.CallbackContext context);
         }
     }
 }

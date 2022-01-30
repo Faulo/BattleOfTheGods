@@ -1,21 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Runtime.Cards;
-using System;
-using UnityEngine.InputSystem;
-using TMPro;
 using System.Linq;
+using Runtime.Cards;
+using TMPro;
+using UnityEngine;
 namespace Runtime {
-    public class GameManager : MonoBehaviour
-    {
+    public class GameManager : MonoBehaviour {
         public static GameManager instance;
 
-        public static Input input => instance._input;
-        private Input _input;
-
         CardInstance currentSelectedCard;
-        ICell currentSelectedCell;
+        ICell currentClickedCell;
         public string noCellReason { get; private set; }
         [SerializeField] TextMeshProUGUI debugText;
         [SerializeField] TextMeshProUGUI log;
@@ -24,54 +19,57 @@ namespace Runtime {
         public Player player { get; private set; }
         public Player opponent { get; private set; }
         public WaveManager waveManager { get; private set; }
-        private void Awake() {
+        void Awake() {
             instance = this;
-            _input = new Input();
-            _input.Enable();
             Config.current = config;
         }
-        private void Update() {
-            if (debugText != default)
+        void Update() {
+            if (debugText != default) {
                 debugText.text = state.ToString();
+            }
         }
 
-        private void Start() {
+        void Start() {
             StartGame();
         }
 
-        public enum States { 
-            PlayingCardsIdle, 
-            PlayingCardsTargeting, 
-            PlayingCardsExecuting, 
-            EvaluatingTurn, 
-            EndingPlayCard, 
-            EndingTurn }
+        public enum States {
+            PlayingCardsIdle,
+            PlayingCardsTargeting,
+            PlayingCardsExecuting,
+            EvaluatingTurn,
+            EndingPlayCard,
+            EndingTurn
+        }
         public States state { get; private set; }
         void StartGame() {
             player = FindObjectOfType<Player>();
             waveManager = FindObjectOfType<WaveManager>();
             player.maxEnergy = Config.current.defaultEnergy;
             if (waveManager != null) //very good code. It's true.
+{
                 opponent = waveManager.GetComponent<Player>();
-            if (player == null)
+            }
+
+            if (player == null) {
                 Debug.LogError("did not find player");
+            }
+
             StartCoroutine(GameLoop());
         }
 
-        public void SetTurnEvaluate() 
-        {
+        public void SetTurnEvaluate() {
             state = States.EvaluatingTurn;
         }
 
-        IEnumerator GameLoop() 
-        {
+        IEnumerator GameLoop() {
             CardManager.instance.Init(Config.current.defaultDeck);
 
-            for (int i = 0; i < Config.current.openingHandSize; i++)
+            for (int i = 0; i < Config.current.openingHandSize; i++) {
                 CardManager.instance.Draw();
+            }
 
-            while (true) 
-            {
+            while (true) {
                 if (waveManager != null &&
                     opponent != null) {
                     log.text += "Opponent Action \n";
@@ -85,7 +83,7 @@ namespace Runtime {
                 log.text += "Start turn \n";
                 yield return PlayCards();
 
-                
+
                 log.text += "Start simulation \n";
                 yield return EvaluateTurn();
                 log.text += "Check win \n";
@@ -105,12 +103,12 @@ namespace Runtime {
         }
         public IEnumerator PlayCurrentWave() {
             yield return null;
-            Wave wave = waveManager.scenario.waves[waveManager.currentIndex];
+            var wave = waveManager.scenario.waves[waveManager.currentIndex];
             foreach (var tuple in wave.cardsWithTarget) {
-                CardInstance card = CardManager.instance.InstantiateCard(tuple.card);
+                var card = CardManager.instance.InstantiateCard(tuple.card);
                 log.text += $"opponent plays {card.data.name} at {tuple.target} \n";
                 card.transform.SetParent(waveManager.cards);
-                ICell cell = World.instance.GetCellByPosition(tuple.target);
+                var cell = World.instance.GetCellByPosition(tuple.target);
 
                 bool playable = true;
 
@@ -137,9 +135,9 @@ namespace Runtime {
         }
 
         IEnumerator EvaluateTurn() {
-            this.state = States.EvaluatingTurn;
+            state = States.EvaluatingTurn;
             yield return World.instance.AdvanceSeasonRoutine();
-            this.state = States.EndingTurn;
+            state = States.EndingTurn;
         }
 
         IEnumerator PlayCards() {
@@ -149,24 +147,22 @@ namespace Runtime {
                 //do highlighting?
                 yield return new WaitWhile(() => state == States.PlayingCardsTargeting);
 
-                if (currentSelectedCell != default &&
-                    currentSelectedCard != default) 
-                {
-                    yield return ExecuteCardRoutine(currentSelectedCard, currentSelectedCell, true);
-                } 
-                else if (currentSelectedCell == default &&
-                         currentSelectedCard != default) 
-                {
+                if (currentClickedCell != default &&
+                    currentSelectedCard != default) {
+                    yield return ExecuteCardRoutine(currentSelectedCard, currentClickedCell, true);
+                } else if (currentClickedCell == default &&
+                           currentSelectedCard != default) {
                     //feedback for not selecting cell
                     state = States.PlayingCardsIdle;
                 }
-                
+
                 yield return new WaitWhile(() => state == States.PlayingCardsExecuting);
 
                 if (state != States.PlayingCardsIdle &&
                     state != States.PlayingCardsExecuting &&
-                    state != States.PlayingCardsTargeting)
+                    state != States.PlayingCardsTargeting) {
                     break;
+                }
             }
         }
 
@@ -174,10 +170,11 @@ namespace Runtime {
             bool playable = true;
 
             if (card.cost > player.energy &&
-                useEnergy)
+                useEnergy) {
                 playable = false;
+            }
 
-            foreach(var cond in card.playConditions) {
+            foreach (var cond in card.playConditions) {
                 var conditionData = new PlayCondition.PlayConditionData(cell, card);
                 playable = playable && cond.Check(conditionData);
                 //play visuals for condition & yield
@@ -185,36 +182,36 @@ namespace Runtime {
             }
 
             if (playable) {
-                foreach(var eff in card.effects) {
+                foreach (var eff in card.effects) {
                     var effectData = new CardEffect.CardEffectData(cell, card);
                     eff.OnPlay(effectData);
                     //play visuals for effect & yield
                     yield return null;
                 }
-                if (useEnergy)
+                if (useEnergy) {
                     player.energy -= card.cost;
+                }
 
                 CardManager.instance.SendToGraveyard(card);
             }
             state = States.PlayingCardsIdle;
         }
 
-        private void WaitForPlayCard() {
+        void WaitForPlayCard() {
             CardInstance.clicked += OnCardClick;
-            this.state = States.PlayingCardsIdle;
+            state = States.PlayingCardsIdle;
             currentSelectedCard = default;
         }
 
-        private void OnCardClick(CardInstance obj) {
-
-            if (CanPlayCard(obj, out IEnumerable<ICell> legalCells, out string feedback)) {
+        void OnCardClick(CardInstance obj) {
+            if (CanPlayCard(obj, out var legalCells, out string feedback)) {
                 CardInstance.clicked -= OnCardClick;
                 currentSelectedCard = obj;
-                WorldInput.clicked += OnCellSelect;
-                this.state = States.PlayingCardsTargeting;
+                WorldInput.onClick += OnCellClick;
+                state = States.PlayingCardsTargeting;
             } else {
                 log.text += feedback + "\n";
-                this.state = States.PlayingCardsIdle;
+                state = States.PlayingCardsIdle;
             }
         }
 
@@ -233,17 +230,17 @@ namespace Runtime {
             return true;
         }
 
-        private void OnCellSelect(Vector3 obj) {
+        void OnCellClick(Vector3 position) {
             noCellReason = "";
-            WorldInput.clicked -= OnCellSelect;
-            Vector3Int gridPos = World.instance.WorldToGrid(obj);
-            if (World.instance.TryGetCell(gridPos, out ICell cell)) {
-                currentSelectedCell = cell;
+            WorldInput.onClick -= OnCellClick;
+            var gridPos = World.instance.WorldToGrid(position);
+            if (World.instance.TryGetCell(gridPos, out var cell)) {
+                currentClickedCell = cell;
             } else {
-                currentSelectedCell = default;
-                this.noCellReason = "Did not click on valid cell";
+                currentClickedCell = default;
+                noCellReason = "Did not click on valid cell";
             }
-            this.state = States.PlayingCardsExecuting;
+            state = States.PlayingCardsExecuting;
         }
     }
 }

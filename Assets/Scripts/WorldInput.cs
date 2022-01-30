@@ -1,38 +1,57 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System;
 namespace Runtime {
     public class WorldInput : MonoBehaviour {
+        public static Action<Vector3> onSelect;
+        public static Action<Vector3> onClick;
 
-        public static Action<Vector3> clicked;
-        [SerializeField] LayerMask clickable;
+        [SerializeField]
+        LayerMask clickable;
+
+        Input input;
         Camera cam;
 
-        private void OnEnable() {
-            GameManager.input.GameplayActionMap.Click.performed += Click_performed;
+        protected void OnEnable() {
+            input = new Input();
+            input.Enable();
+            input.GameplayActionMap.Move.performed += Move_performed;
+            input.GameplayActionMap.Click.performed += Click_performed;
+
             cam = FindObjectOfType<Camera>();
             if (cam == default) {
                 Debug.LogError("Could not find camera, disabling world input.");
-                this.gameObject.SetActive(false);
+                gameObject.SetActive(false);
             }
         }
 
-        private void OnDisable() {
-            GameManager.input.GameplayActionMap.Click.performed -= Click_performed;
+        protected void OnDisable() {
+            input.GameplayActionMap.Move.performed -= Move_performed;
+            input.GameplayActionMap.Click.performed -= Click_performed;
+            input.Disable();
         }
 
-        private void Click_performed(InputAction.CallbackContext obj) 
-        {
-            Vector2 clickPos = Mouse.current.position.ReadValue();
-            Ray r = cam.ScreenPointToRay(clickPos);
-
-            if (Physics.Raycast(r, out RaycastHit hitInfo, Mathf.Infinity, clickable)) {
-                clicked?.Invoke(hitInfo.point);
-                //Debug.Log($"clicked {hitInfo.point}");
+        void Move_performed(InputAction.CallbackContext obj) {
+            if (TryFindPoint(out var position)) {
+                onSelect?.Invoke(position);
             }
         }
 
+        void Click_performed(InputAction.CallbackContext obj) {
+            if (TryFindPoint(out var position)) {
+                onClick?.Invoke(position);
+            }
+        }
+
+        bool TryFindPoint(out Vector3 position) {
+            var clickPos = Mouse.current.position.ReadValue();
+            var ray = cam.ScreenPointToRay(clickPos);
+            if (Physics.Raycast(ray, out var info, Mathf.Infinity, clickable)) {
+                position = info.point;
+                return true;
+            }
+            position = default;
+            return false;
+        }
     }
 }
