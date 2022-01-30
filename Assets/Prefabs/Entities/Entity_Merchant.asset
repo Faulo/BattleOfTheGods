@@ -18,4 +18,4 @@ MonoBehaviour:
   canParticipateInCombat: 1
   canStartCombat: 0
   attack: 0
-  health: 1
+  health: 3
