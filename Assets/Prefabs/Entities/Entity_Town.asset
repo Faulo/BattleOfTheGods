@@ -13,3 +13,9 @@ MonoBehaviour:
   m_Name: Entity_Town
   m_EditorClassIdentifier: 
   prefab: {fileID: 4395584843182567862, guid: 22e90b1e09d0ce14dbeac45f9efbbdce, type: 3}
+  _category: 0
+  faction: 0
+  canParticipateInCombat: 0
+  canStartCombat: 0
+  attack: 0
+  health: 0
