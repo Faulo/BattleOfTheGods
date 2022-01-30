@@ -103,6 +103,7 @@ namespace Runtime {
         public static event Action<IEntity> onMoveEntity;
         public static event Action<IEntity> onDestroyEntity;
         public static event Action<ICell> onChangeFaction;
+        public static event Action<ICell, Faction, int> onAttackByFaction;
 
         public delegate void OnSeasonChange();
         public delegate void OnAwardInfluence();
@@ -130,7 +131,12 @@ namespace Runtime {
         Season m_season = Season.Spring;
         public Season season => m_season;
         [SerializeField, Range(0, 60)]
-        float minSeasonDuration = 1;
+        float seasonDuration = 0.25f;
+        [SerializeField, Range(0, 60)]
+        float combatDuration = 0.25f;
+        [SerializeField, Range(0, 60)]
+        float influenceDuration = 0.25f;
+
         [Space]
         [SerializeField]
         bool autoAdvanceSeasons = false;
@@ -192,19 +198,23 @@ namespace Runtime {
         }
 
         public IEnumerator AdvanceSeasonRoutine() {
-            ProcessQueues();
+            ProcessEntities();
 
             m_season = (Season)(((int)m_season + 1) % 4);
 
             BroadcastMessage(nameof(OnSeasonChange), SendMessageOptions.DontRequireReceiver);
+            yield return Wait.forSeconds[seasonDuration];
+            ProcessEntities();
 
-            yield return Wait.forSeconds[minSeasonDuration];
-
-            ProcessQueues();
+            ProcessCombat();
+            yield return Wait.forSeconds[combatDuration];
+            ProcessEntities();
 
             BroadcastMessage(nameof(OnAwardInfluence), SendMessageOptions.DontRequireReceiver);
+            yield return Wait.forSeconds[influenceDuration];
+            ProcessEntities();
         }
-        void ProcessQueues() {
+        void ProcessEntities() {
             foreach (var entity in instantiationQueue) {
                 entities.Add(entity);
             }
@@ -220,6 +230,34 @@ namespace Runtime {
                 Destroy(entity.gameObject);
             }
             destructionQueue.Clear();
+        }
+        void ProcessCombat() {
+            foreach (var cell in cells.Values) {
+                var factions = new Dictionary<Faction, List<IEntity>>() {
+                    [Faction.Civilization] = new List<IEntity>(),
+                    [Faction.Nature] = new List<IEntity>(),
+                    [Faction.Nobody] = new List<IEntity>(),
+                };
+                foreach (var entity in cell.entities) {
+                    if (entity.type.canParticipateInCombat) {
+                        factions[entity.type.faction].Add(entity);
+                    }
+                }
+                foreach (var (attacker, defender) in new[] { (Faction.Civilization, Faction.Nature), (Faction.Nature, Faction.Civilization) }) {
+                    int attack = factions[attacker].Sum(entity => entity.type.attack);
+                    if (factions[attacker].Any(entity => entity.type.canStartCombat) && factions[defender].Count > 0) {
+                        onAttackByFaction?.Invoke(cell, attacker, attack);
+                        foreach (var entity in factions[defender].OrderBy(entity => entity.type.health)) {
+                            if (attack >= entity.type.health) {
+                                attack -= entity.type.health;
+                                DestroyEntity(entity);
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         #region Grid interactions
