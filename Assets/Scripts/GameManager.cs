@@ -12,6 +12,9 @@ namespace Runtime {
         public static event Action playPhaseStarted;
         public static event Action playPhaseEnded;
 
+        public static event Action targetingPhaseStarted;
+        public static event Action targetingPhaseEnded;
+
         public delegate void OnGameOver(Faction winner);
 
         CardInstance currentSelectedCard;
@@ -20,7 +23,7 @@ namespace Runtime {
         TextMeshProUGUI debugText => UIController.debugText;
         TextMeshProUGUI log => UIController.log;
         [SerializeField] Config config;
-
+        public IEnumerable<ICell> currentLegalCells;
         public Player player { get; private set; }
         public Player opponent { get; private set; }
         public WaveManager waveManager { get; private set; }
@@ -202,8 +205,16 @@ namespace Runtime {
             while (true) {
                 WaitForPlayCard();
                 yield return new WaitWhile(() => state == States.PlayingCardsIdle);
-                //do highlighting?
+                currentLegalCells = new HashSet<ICell>();
+                if (currentSelectedCard != null &&
+                    CanPlayCard(currentSelectedCard, out currentLegalCells, out string feedback)) {
+                    targetingPhaseStarted?.Invoke();
+
+                }
+                
+
                 yield return new WaitWhile(() => state == States.PlayingCardsTargeting);
+                targetingPhaseEnded?.Invoke();
 
                 if (currentClickedCell != default &&
                     currentSelectedCard != default) {

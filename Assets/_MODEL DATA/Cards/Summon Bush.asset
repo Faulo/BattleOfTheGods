@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conditions: []
   effects:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 07174fb2ae6fd59499aaaf3c8c80ee49, type: 2}
   _cardBody: 
   _assignedEntity: {fileID: 0}
   _sprite: {fileID: 21300000, guid: 3474cd57823d85944a752018f67e4737, type: 3}
