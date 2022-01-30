@@ -12637,6 +12637,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Opponent
       objectReference: {fileID: 0}
+    - target: {fileID: 7111291927946946511, guid: 610e51b36669f744daa08cd6e5d5122e, type: 3}
+      propertyPath: scenario
+      value: 
+      objectReference: {fileID: 11400000, guid: 84889e040cf2bc34498f9fd1ad8bc08e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 610e51b36669f744daa08cd6e5d5122e, type: 3}
 --- !u!1001 &1876678574

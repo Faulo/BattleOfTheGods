@@ -13,12 +13,15 @@ namespace Runtime.Audio {
         void Start() {
             FMODUnity.RuntimeManager.StudioSystem.getParameterDescriptionByName("Seasons", out seasonsDescription);
             seasonsID = seasonsDescription.id;
-            FMODUnity.RuntimeManager.StudioSystem.setParameterByID(seasonsID, (int)World.instance.season);
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByID(seasonsID, ((int)World.instance.season)+1);
 
         }
         void OnSeasonChange() {
 
-            FMODUnity.RuntimeManager.StudioSystem.setParameterByID(seasonsID, (int)World.instance.season);
+            if (World.instance.season == Season.Spring) {
+                FMODUnity.RuntimeManager.StudioSystem.setParameterByID(seasonsID, 0);
+            }
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByID(seasonsID, ((int)World.instance.season)+1);
             UnityEngine.Debug.Log(World.instance.season);
         }
 

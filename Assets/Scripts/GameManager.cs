@@ -159,6 +159,8 @@ namespace Runtime {
 
             //Win if any faction controls all cells!
             foreach(Faction f in ownCount.Keys) {
+                if (f == Faction.Nobody)
+                    continue;
                 if (ownCount[f] >= totalCells) {
                     winner = f;
                     return true;
