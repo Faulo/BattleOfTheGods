@@ -141,3 +141,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   influencePerTurn: 3
+  influenceOverRange: 0300000001000000

@@ -1,13 +1,11 @@
+using System;
 using UnityEngine;
 
 namespace Runtime.Entities {
     public class ConstantInfluenceOnEntity : MonoBehaviour {
         [SerializeField]
-        int influencePerTurn = 1;
-        [SerializeField]
-        int range = 1;
-        [SerializeField]
-        int[] influenceByRange;
+        int[] influenceOverRange = Array.Empty<int>();
+
         bool isInitialized = false;
         IEntity entity;
 
@@ -21,16 +19,9 @@ namespace Runtime.Entities {
                 return;
             }
 
-            World.instance.AddInfluence(entity.gridPosition, influencePerTurn);
-            if (range > 0) {
-                foreach (var pos in World.GetInDistance(entity.gridPosition, range, true)) {
-                    World.instance.AddInfluence(pos, influencePerTurn);
-                }
-            }
-
-            for (int i = 0; i < influenceByRange.Length; i++) {
-                foreach(var pos in World.GetRing(entity.gridPosition, i+1)) {
-                    World.instance.AddInfluence(pos, influenceByRange[i]);
+            for (int i = 0; i < influenceOverRange.Length; i++) {
+                foreach (var pos in World.GetRing(entity.gridPosition, i)) {
+                    World.instance.AddInfluence(pos, influenceOverRange[i]);
                 }
             }
         }

@@ -160,7 +160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bac52dbec38b9d4dabb7bdffb2715e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  influencePerTurn: 5
+  influencePerTurn: 0
+  influenceOverRange: 05000000
 --- !u!114 &5868700144224023076
 MonoBehaviour:
   m_ObjectHideFlags: 0

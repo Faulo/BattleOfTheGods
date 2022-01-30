@@ -84,6 +84,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   influencePerTurn: -3
+  influenceOverRange: fdffffffffffffff
 --- !u!1001 &6553628122200044773
 PrefabInstance:
   m_ObjectHideFlags: 0

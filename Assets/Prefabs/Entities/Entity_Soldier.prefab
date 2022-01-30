@@ -78,7 +78,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bac52dbec38b9d4dabb7bdffb2715e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  influencePerTurn: 5
+  influencePerTurn: 0
+  influenceOverRange: 05000000
 --- !u!4 &6227686344821753568 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 60097213861379200, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
