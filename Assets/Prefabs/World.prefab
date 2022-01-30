@@ -193,7 +193,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 13.35
+  m_fontSize: 18
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -412,6 +412,7 @@ GameObject:
   - component: {fileID: 1746776648438089317}
   - component: {fileID: 1746776648438089322}
   - component: {fileID: 1746776648438089316}
+  - component: {fileID: 1555408601570603770}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -472,6 +473,18 @@ MonoBehaviour:
   minSeasonDuration: 0.5
   autoAdvanceSeasons: 0
   autoAdvanceSeasonDuration: 0.02
+--- !u!114 &1555408601570603770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746776648438089323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f537f91d8fb169c4da469c15555c0b04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1746776648599625875
 GameObject:
   m_ObjectHideFlags: 0
