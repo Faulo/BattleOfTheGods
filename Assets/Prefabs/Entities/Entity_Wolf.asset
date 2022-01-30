@@ -17,5 +17,5 @@ MonoBehaviour:
   faction: 1
   canParticipateInCombat: 1
   canStartCombat: 1
-  attack: 5
-  health: 3
+  attack: 3
+  health: 5
