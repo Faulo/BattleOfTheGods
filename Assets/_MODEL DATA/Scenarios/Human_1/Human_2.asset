@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94d37ebf5fc999542b3b814c61d2a525, type: 3}
   m_Name: Human_2
   m_EditorClassIdentifier: 
-  cardsWithTarget: []
+  cardsWithTarget:
+  - target: {x: 3, y: 6, z: 0}
+    card: {fileID: 11400000, guid: 8383940da3b28464eb53ed7f63ca2e2e, type: 2}
+  - target: {x: -4, y: 6, z: 0}
+    card: {fileID: 11400000, guid: 8383940da3b28464eb53ed7f63ca2e2e, type: 2}
