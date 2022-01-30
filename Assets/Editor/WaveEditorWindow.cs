@@ -12,7 +12,7 @@ namespace Editor {
 
         Wave wave;
         int currIndex;
-
+        Vector2 scrollPos;
         [MenuItem("WaveEditing/Wave Editor")]
         public static void Open() {
             WaveEditorWindow w = (WaveEditorWindow)EditorWindow.GetWindow(typeof(WaveEditorWindow));
@@ -56,7 +56,7 @@ namespace Editor {
                     wave.cardsWithTarget.Add(new CardTargetTuple());
                 }
                 EditorGUILayout.Separator();
-
+                scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
                 for (int i = 0; i < wave.cardsWithTarget.Count; i++) 
                 {
                     Rect curr = EditorGUILayout.GetControlRect();
@@ -98,6 +98,7 @@ namespace Editor {
                         EditorGUILayout.EndHorizontal();
                     }
                 }
+                EditorGUILayout.EndScrollView();
             }
         }
 
