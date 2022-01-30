@@ -473,9 +473,10 @@ MonoBehaviour:
   m_season: 0
   seasonDuration: 0.5
   combatDuration: 0.5
-  influenceDuration: 0.25
+  influenceDuration: 0.5
   autoAdvanceSeasons: 0
   autoAdvanceSeasonDuration: 0.5
+  emitInfluenceEvents: 1
 --- !u!114 &1555408601570603770
 MonoBehaviour:
   m_ObjectHideFlags: 0
