@@ -45,7 +45,7 @@ namespace Runtime {
         }
         public States state { get; private set; }
         void StartGame() {
-            player = FindObjectOfType<Player>();
+            player = FindObjectOfType<PlayerController>().GetComponent<Player>();
             waveManager = FindObjectOfType<WaveManager>();
             player.maxEnergy = Config.current.defaultEnergy;
             if (waveManager != null) //very good code. It's true.
@@ -65,7 +65,12 @@ namespace Runtime {
         }
 
         IEnumerator GameLoop() {
-            CardManager.instance.Init(Config.current.defaultDeck);
+            if (player.deck != null &&
+                player.deck.Count > 0) {
+                CardManager.instance.Init(player.deck);
+            } else {
+                CardManager.instance.Init(Config.current.defaultDeck);
+            }
 
             for (int i = 0; i < Config.current.openingHandSize; i++) {
                 CardManager.instance.Draw();
@@ -123,23 +128,24 @@ namespace Runtime {
                 var card = CardManager.instance.InstantiateCard(tuple.card);
                 log.text += $"opponent plays {card.data.name} at {tuple.target} \n";
                 card.transform.SetParent(waveManager.cards);
-                var cell = World.instance.GetCellByPosition(tuple.target);
+                if (World.instance.TryGetCell(tuple.target, out ICell cell)) {
 
-                bool playable = true;
+                    bool playable = true;
 
-                foreach (var cond in card.playConditions) {
-                    var conditionData = new PlayCondition.PlayConditionData(cell, card);
-                    playable = playable && cond.Check(conditionData);
-                    //play visuals for condition & yield
-                    yield return null;
-                }
-
-                if (playable) {
-                    foreach (var eff in card.effects) {
-                        var effectData = new CardEffect.CardEffectData(cell, card);
-                        eff.OnPlay(effectData);
-                        //play visuals for effect & yield
+                    foreach (var cond in card.playConditions) {
+                        var conditionData = new PlayCondition.PlayConditionData(cell, card);
+                        playable = playable && cond.Check(conditionData);
+                        //play visuals for condition & yield
                         yield return null;
+                    }
+
+                    if (playable) {
+                        foreach (var eff in card.effects) {
+                            var effectData = new CardEffect.CardEffectData(cell, card);
+                            eff.OnPlay(effectData);
+                            //play visuals for effect & yield
+                            yield return null;
+                        }
                     }
                 }
             }
@@ -158,6 +164,8 @@ namespace Runtime {
 
             //Win if any faction controls all cells!
             foreach(Faction f in ownCount.Keys) {
+                if (f == Faction.Nobody)
+                    continue;
                 if (ownCount[f] >= totalCells) {
                     winner = f;
                     return true;

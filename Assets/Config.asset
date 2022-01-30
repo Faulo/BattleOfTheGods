@@ -16,6 +16,7 @@ MonoBehaviour:
   _maxEnergy: 4
   _defaultEnergy: 4
   _openingHandSize: 4
+  _maxAbsoluteInfluenceValue: 10
   defaultDeck:
   - {fileID: 11400000, guid: 4e8c3c79ae1bcae4e9b7f941f91c2d26, type: 2}
   - {fileID: 11400000, guid: 44ec9b53b022fd2419b5bb46e47bdf3a, type: 2}

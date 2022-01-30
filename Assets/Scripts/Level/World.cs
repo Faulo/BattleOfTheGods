@@ -24,7 +24,16 @@ namespace Runtime {
             public ITile tile => instance.GetTileByPosition(gridPosition);
             public IEnumerable<IEntity> entities => instance.GetEntitiesByPosition(gridPosition);
 
-            public int influence = 0;
+            public int influence {
+                get {
+                    return _influence;
+                }
+                set {
+                    int v = Config.current.maxAbsoluteInfluenceValue;
+                    _influence = Math.Max(-v, Math.Min(v, value));
+                }
+            }
+            int _influence = 0;
             public Faction owningFaction => Math.Sign(influence) switch {
                 1 => Faction.Civilization,
                 0 => Faction.Nobody,
