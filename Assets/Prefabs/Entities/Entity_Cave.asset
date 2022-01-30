@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 6421985973264420616, guid: 161a2f7d8d19d974887dc979b71d9262, type: 3}
   _category: 1
+  faction: 1
+  canParticipateInCombat: 0
+  canStartCombat: 0
+  attack: 0
+  health: 0
