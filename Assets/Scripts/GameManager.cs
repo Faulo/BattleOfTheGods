@@ -45,7 +45,7 @@ namespace Runtime {
         }
         public States state { get; private set; }
         void StartGame() {
-            player = FindObjectOfType<Player>();
+            player = FindObjectOfType<PlayerController>().GetComponent<Player>();
             waveManager = FindObjectOfType<WaveManager>();
             player.maxEnergy = Config.current.defaultEnergy;
             if (waveManager != null) //very good code. It's true.
@@ -65,7 +65,12 @@ namespace Runtime {
         }
 
         IEnumerator GameLoop() {
-            CardManager.instance.Init(Config.current.defaultDeck);
+            if (player.deck != null &&
+                player.deck.Count > 0) {
+                CardManager.instance.Init(player.deck);
+            } else {
+                CardManager.instance.Init(Config.current.defaultDeck);
+            }
 
             for (int i = 0; i < Config.current.openingHandSize; i++) {
                 CardManager.instance.Draw();

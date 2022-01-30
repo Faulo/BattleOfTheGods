@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2963c949f399b3f4fb39794fd90dd601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 1
+  _type: 0
+  deck: []
 --- !u!114 &7111291927946946511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,6 +59,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a673df2939d7fd40b7c8475628a2c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scenario: {fileID: 11400000, guid: 77521a8e39605f44db8d05809c66436a, type: 2}
+  scenario: {fileID: 11400000, guid: 84889e040cf2bc34498f9fd1ad8bc08e, type: 2}
   currentIndex: 0
-  cards: {fileID: 0}
