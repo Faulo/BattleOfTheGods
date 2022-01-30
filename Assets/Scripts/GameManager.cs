@@ -79,6 +79,7 @@ namespace Runtime {
                 CardManager.instance.Draw();
             }
             Faction winner;
+            int turnsWithoutCards = 0;
             while (true) {
                 if (waveManager != null &&
                     opponent != null) {
@@ -99,17 +100,28 @@ namespace Runtime {
                 log.text += "Start simulation \n";
                 yield return EvaluateTurn();
                 log.text += "Check win \n";
-                if (CheckWin(out winner)) {
+                if (CheckWin(out winner) ||
+                    turnsWithoutCards >= 3) {
                     break;
                 }
                 log.text += "End turn \n";
+
+                if (CardManager.instance.hand.Count == 0 &&
+                    CardManager.instance.deck.Count == 0) {
+                    turnsWithoutCards++;
+                }
             }
 
             yield return EndGame(winner);
         }
 
         IEnumerator EndGame(Faction winner) {
-            string t = $"Game Over the winner is {winner}";
+            string t = $"";
+            if (winner != Faction.Nobody) {                
+                t = $"Game Over the winner is {winner}";
+            } else {
+                t = $"No cards left but no win (win within 3 turns after playing last card). Equilibrium or apocalypse?";
+            }
             Debug.Log(t);
             log.text += t;
 
