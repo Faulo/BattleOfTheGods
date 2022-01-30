@@ -66,6 +66,41 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 60097213861379200, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
   m_PrefabInstance: {fileID: 3480547679119669725}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7224234186502916905 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6056427924523954932, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
+  m_PrefabInstance: {fileID: 3480547679119669725}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-5065071691166808329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7224234186502916905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 724765694
+      Data2: 1129849539
+      Data3: -2029504604
+      Data4: -1483798876
+    Path: event:/Ambience/Nature/Pig_Ambience
+  Event: 
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &5346572200090519278
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -123,6 +123,36 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6056427924523954932, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
   m_PrefabInstance: {fileID: 6584033973183583188}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &-8042090661669312807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104491419985748256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -713943790
+      Data2: 1239895253
+      Data3: -998444885
+      Data4: -543398855
+    Path: event:/SFX/Nature/Wolf_Play_Card_SFX
+  Event: 
+  PlayEvent: 1
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!114 &-6566869954158632858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,6 +166,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   influencePerTurn: -5
+  range: 1
+  influenceByRange: 
+--- !u!114 &8226450454567108677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104491419985748256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -43572116
+      Data2: 1335864156
+      Data3: 274856352
+      Data4: -549977437
+    Path: event:/Ambience/Nature/Wolf_Ambience
+  Event: 
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!4 &6596280434018266964 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 60097213861379200, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
