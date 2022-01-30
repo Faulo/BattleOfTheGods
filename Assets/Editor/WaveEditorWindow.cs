@@ -96,15 +96,18 @@ namespace Editor {
                         if (GUILayout.Button("Select")) {
                             currIndex = i;
                             SceneView.duringSceneGui += SetPos;
+                            EditorUtility.SetDirty(wave);
                         }
                         if (GUILayout.Button("Remove")) {
                             wave.cardsWithTarget.RemoveAt(i);
+                            EditorUtility.SetDirty(wave);
                         }
                         EditorGUILayout.EndVertical();
 
                         if (i % 3 == 0) {
                             EditorGUILayout.EndHorizontal();
                         }
+
                     }
                     EditorGUILayout.EndScrollView();
                 }
@@ -120,6 +123,7 @@ namespace Editor {
                 Ray r = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
                 if (Physics.Raycast(r, out RaycastHit hit, LayerMask.GetMask("Floor"))) {
                     wave.cardsWithTarget[currIndex].target = World.instance.WorldToGrid(hit.point);
+                    EditorUtility.SetDirty(wave);
                 }
                 currIndex = -1;
             }

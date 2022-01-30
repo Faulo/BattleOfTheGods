@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94d37ebf5fc999542b3b814c61d2a525, type: 3}
   m_Name: Nature_2
   m_EditorClassIdentifier: 
-  cardsWithTarget: []
+  cardsWithTarget:
+  - target: {x: 2, y: 0, z: 0}
+    card: {fileID: 11400000, guid: 44ec9b53b022fd2419b5bb46e47bdf3a, type: 2}
+  - target: {x: 0, y: 2, z: 0}
+    card: {fileID: 11400000, guid: 89846f7da43bbaa42bf433324174e3cc, type: 2}
+  - target: {x: 0, y: -2, z: 0}
+    card: {fileID: 11400000, guid: 89846f7da43bbaa42bf433324174e3cc, type: 2}
