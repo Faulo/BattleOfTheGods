@@ -109,7 +109,7 @@ namespace Runtime {
         }
 
         public static event Action<IEntity> onSpawnEntity;
-        public static event Action<IEntity> onMoveEntity;
+        public static event Action<IEntity, Vector3Int> onMoveEntity;
         public static event Action<IEntity> onDestroyEntity;
         public static event Action<ICell> onChangeFaction;
         public static event Action<ICell, Faction, int> onAttackByFaction;
@@ -429,7 +429,7 @@ namespace Runtime {
 
             moveQueue[entity as WorldEntity] = newPosition;
 
-            onMoveEntity?.Invoke(entity);
+            onMoveEntity?.Invoke(entity, newPosition);
         }
         public void DestroyEntity(IEntity entity) {
             destructionQueue.Add(entity as WorldEntity);
