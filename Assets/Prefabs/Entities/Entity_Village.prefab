@@ -123,6 +123,36 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6056427924523954932, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
   m_PrefabInstance: {fileID: 8308871766380046960}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &-2053480101060497917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2829329027391248516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -888153011
+      Data2: 1083623489
+      Data3: 1416254855
+      Data4: 400576684
+    Path: event:/Ambience/Humans/Village_Ambience
+  Event: 
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!114 &2931256495668652325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,6 +166,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   influenceOverRange: 030000000200000001000000
+--- !u!114 &4568179991113312094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2829329027391248516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 463006342
+      Data2: 1229521683
+      Data3: -36585048
+      Data4: -1900160392
+    Path: event:/SFX/Humans/Village_Play_Card_SFX
+  Event: 
+  PlayEvent: 1
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!4 &8330120825892525808 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 60097213861379200, guid: 0afd248aa9906754092e3f56d6e3b46c, type: 3}
