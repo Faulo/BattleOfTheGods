@@ -13,6 +13,8 @@ using UnityEngine.Tilemaps;
 namespace Runtime {
     public class World : MonoBehaviour {
         class WorldCell : ICell {
+            public event Action<int> onGainInfluence;
+
             public WorldCell(Vector3Int gridPosition, Vector3 worldPosition) {
                 this.gridPosition = gridPosition;
                 this.worldPosition = worldPosition;
@@ -30,6 +32,7 @@ namespace Runtime {
                     int maxAbsoluteInfluenceValue = Config.current
                         ? Config.current.maxAbsoluteInfluenceValue
                         : 1;
+                    onGainInfluence?.Invoke(value - m_influence);
                     m_influence = Math.Clamp(value, -maxAbsoluteInfluenceValue, maxAbsoluteInfluenceValue);
                 }
             }
@@ -109,7 +112,7 @@ namespace Runtime {
         }
 
         public static event Action<IEntity> onSpawnEntity;
-        public static event Action<IEntity> onMoveEntity;
+        public static event Action<IEntity, Vector3Int> onMoveEntity;
         public static event Action<IEntity> onDestroyEntity;
         public static event Action<ICell> onChangeFaction;
         public static event Action<ICell, Faction, int> onAttackByFaction;
@@ -429,7 +432,7 @@ namespace Runtime {
 
             moveQueue[entity as WorldEntity] = newPosition;
 
-            onMoveEntity?.Invoke(entity);
+            onMoveEntity?.Invoke(entity, newPosition);
         }
         public void DestroyEntity(IEntity entity) {
             destructionQueue.Add(entity as WorldEntity);

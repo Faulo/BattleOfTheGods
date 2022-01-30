@@ -41,23 +41,26 @@ namespace Runtime.Level {
 
         void HandleSpawn(IEntity entity) {
             entity.gameObject.transform.localScale = Vector3.zero;
+            LeanTween.cancel(entity.gameObject);
             LeanTween
                 .scale(entity.gameObject, Vector3.one, spawnDuration)
                 .setEase(spawnEaseType);
         }
-        void HandleMove(IEntity entity) {
+        void HandleMove(IEntity entity, Vector3Int position) {
             var oldPosition = entity.gameObject.transform.position;
-            var newPosition = entity.ownerCell.worldPosition + World.instance.randomDistanceToCenter;
+            var newPosition = World.instance.GridToWorld(position) + World.instance.randomDistanceToCenter;
             entity.gameObject.transform.rotation = Quaternion.Euler(
                 0,
                 180 + Quaternion.LookRotation(newPosition - oldPosition).eulerAngles.y,
                 0
             );
+            LeanTween.cancel(entity.gameObject);
             LeanTween
                 .move(entity.gameObject, newPosition, moveDuration)
                 .setEase(moveEaseType);
         }
         void HandleDestroy(IEntity entity) {
+            LeanTween.cancel(entity.gameObject);
             LeanTween
                 .scale(entity.gameObject, Vector3.zero, destroyDuration)
                 .setEase(destroyEaseType);
