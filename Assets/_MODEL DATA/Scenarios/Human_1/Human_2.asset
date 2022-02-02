@@ -17,3 +17,5 @@ MonoBehaviour:
     card: {fileID: 11400000, guid: 8383940da3b28464eb53ed7f63ca2e2e, type: 2}
   - target: {x: -4, y: 6, z: 0}
     card: {fileID: 11400000, guid: 8383940da3b28464eb53ed7f63ca2e2e, type: 2}
+  - target: {x: -1, y: 3, z: 0}
+    card: {fileID: 11400000, guid: 919dc68645b722b4e9912cbb993879e0, type: 2}

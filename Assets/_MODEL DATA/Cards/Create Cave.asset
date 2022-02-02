@@ -16,7 +16,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a7b1eec0e5e4cf54e95568bf97674445, type: 2}
   effects:
   - {fileID: 11400000, guid: a7fdf726e0321af41ad1246dba294b90, type: 2}
-  _cardBody: 'If NAT on tile positive: Create 1 Cave'
+  _cardBody: Create 1 Cave (3/2/1)
   _assignedEntity: {fileID: 11400000, guid: e78db86c746d18541bb47326b74a2bde, type: 2}
   _sprite: {fileID: 21300000, guid: 7d43ec059be326642a6c800c95c3e61f, type: 3}
   _cost: 3

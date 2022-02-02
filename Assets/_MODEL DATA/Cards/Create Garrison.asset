@@ -16,8 +16,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2bebef5fbc4f4764ca5d50d4526ec796, type: 2}
   effects:
   - {fileID: 11400000, guid: fbaa84f1efd009f4aaf76372f3596947, type: 2}
-  _cardBody: Create Garrison on target settlement.
+  _cardBody: Create Garrison on target settlement (2/1/1).
   _assignedEntity: {fileID: 0}
   _sprite: {fileID: 21300000, guid: fb5257f718f68004bbff2fa46b0f32f8, type: 3}
-  _cost: 3
+  _cost: 2
   _type: 0

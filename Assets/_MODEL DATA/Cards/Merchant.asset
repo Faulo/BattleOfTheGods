@@ -16,7 +16,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2bebef5fbc4f4764ca5d50d4526ec796, type: 2}
   effects:
   - {fileID: 11400000, guid: 38f07f0f7d2abde49873f6a07c9bab73, type: 2}
-  _cardBody: Create Merchant at target settlement.
+  _cardBody: Create Merchant (2/2/1) at target settlement. Travels between towns.
   _assignedEntity: {fileID: 0}
   _sprite: {fileID: 21300000, guid: 4210f764d0d1d9c4d80a861f4d8086ed, type: 3}
   _cost: 2

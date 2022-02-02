@@ -16,7 +16,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 14ab0f29ad495cd48881398ff71cb06e, type: 2}
   effects:
   - {fileID: 11400000, guid: 57f263b1a0cc9474ca92ee21561c840d, type: 2}
-  _cardBody: Create 1 Wolf at target Sanctum
+  _cardBody: Create 1 Wolf (2/1) at target Sanctum. Attacks civilians.
   _assignedEntity: {fileID: 0}
   _sprite: {fileID: 21300000, guid: 0146e610d5f95164f9b2e9e5f71ea6da, type: 3}
   _cost: 2

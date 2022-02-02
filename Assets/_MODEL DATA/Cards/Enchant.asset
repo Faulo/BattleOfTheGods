@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e61c3979d4baba4fbb44a1913644a53, type: 3}
-  m_Name: Summon Bush
+  m_Name: Enchant
   m_EditorClassIdentifier: 
   conditions: []
-  effects:
-  - {fileID: 11400000, guid: 07174fb2ae6fd59499aaaf3c8c80ee49, type: 2}
-  _cardBody: Summon shrub (1/1/1). Can be built over.
-  _assignedEntity: {fileID: 11400000, guid: fdea6c2413322e44a88647193582819a, type: 2}
-  _sprite: {fileID: 21300000, guid: 3474cd57823d85944a752018f67e4737, type: 3}
-  _cost: 1
+  effects: []
+  _cardBody: Entities which enter enchanted tile morph to pig.
+  _assignedEntity: {fileID: 0}
+  _sprite: {fileID: 0}
+  _cost: 0
   _type: 0

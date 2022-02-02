@@ -16,7 +16,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a7b1eec0e5e4cf54e95568bf97674445, type: 2}
   effects:
   - {fileID: 11400000, guid: 1bced340355a9dd45a554c065740a5c8, type: 2}
-  _cardBody: Create 1 Town in distance of max 2 from occupied area
+  _cardBody: Create 1 Town (5/3/2/1)
   _assignedEntity: {fileID: 11400000, guid: de984d2d2870af14185d892a9e9c3c81, type: 2}
   _sprite: {fileID: 21300000, guid: a467e67e9e51e4241a9406dabb00dad9, type: 3}
   _cost: 4

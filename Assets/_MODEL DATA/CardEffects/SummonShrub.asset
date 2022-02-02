@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee55616b48a0424a841a7bd277fc96a, type: 3}
   m_Name: SummonShrub
   m_EditorClassIdentifier: 
-  entity: {fileID: 11400000, guid: 8a26330d490632748923eaf944cae2da, type: 2}
+  entity: {fileID: 11400000, guid: fdea6c2413322e44a88647193582819a, type: 2}

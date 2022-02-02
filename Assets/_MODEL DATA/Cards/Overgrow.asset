@@ -16,7 +16,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2bebef5fbc4f4764ca5d50d4526ec796, type: 2}
   effects:
   - {fileID: 11400000, guid: 0a4ccca64369c1b4f9f3417c39c85280, type: 2}
-  _cardBody: Summon on settlement. +5 Nature influence on settlement.
+  _cardBody: Summon on settlement. (5/0)
   _assignedEntity: {fileID: 0}
   _sprite: {fileID: 21300000, guid: 62e1d3e038ae85c41b9e14f969c15d68, type: 3}
   _cost: 2

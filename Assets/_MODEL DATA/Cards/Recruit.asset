@@ -16,8 +16,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 28b5e417ef553a044ae628a02dc6e68e, type: 2}
   effects:
   - {fileID: 11400000, guid: a40736b75ef4e7b46824130db45b1b1a, type: 2}
-  _cardBody: Create soldier on target garrison
+  _cardBody: Create soldier (2/1) on target garrison. Follows & protects civilians.
   _assignedEntity: {fileID: 11400000, guid: 0c0d0814472e88f4bb84834199737400, type: 2}
   _sprite: {fileID: 21300000, guid: a697c865e2f01a248a75b0965f41e950, type: 3}
-  _cost: 2
+  _cost: 3
   _type: 0

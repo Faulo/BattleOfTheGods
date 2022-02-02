@@ -12,4 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94d37ebf5fc999542b3b814c61d2a525, type: 3}
   m_Name: Human_3
   m_EditorClassIdentifier: 
-  cardsWithTarget: []
+  cardsWithTarget:
+  - target: {x: 0, y: 1, z: 0}
+    card: {fileID: 11400000, guid: 5103365ea99bb82498e02cf75a8042ff, type: 2}
+  - target: {x: -2, y: 1, z: 0}
+    card: {fileID: 11400000, guid: 5103365ea99bb82498e02cf75a8042ff, type: 2}
+  - target: {x: -2, y: 4, z: 0}
+    card: {fileID: 11400000, guid: 5103365ea99bb82498e02cf75a8042ff, type: 2}
+  - target: {x: 1, y: 4, z: 0}
+    card: {fileID: 11400000, guid: 5103365ea99bb82498e02cf75a8042ff, type: 2}
+  - target: {x: -1, y: 7, z: 0}
+    card: {fileID: 11400000, guid: 4e8c3c79ae1bcae4e9b7f941f91c2d26, type: 2}
+  - target: {x: -1, y: 5, z: 0}
+    card: {fileID: 11400000, guid: 8383940da3b28464eb53ed7f63ca2e2e, type: 2}

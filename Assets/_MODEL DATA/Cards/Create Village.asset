@@ -16,7 +16,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a7b1eec0e5e4cf54e95568bf97674445, type: 2}
   effects:
   - {fileID: 11400000, guid: 007a5b360fc69a64f8dd1f1de3e2f7e0, type: 2}
-  _cardBody: Create 1 Village in distance of max 2 from occupied area.
+  _cardBody: Create 1 Village (3/2/1)
   _assignedEntity: {fileID: 0}
   _sprite: {fileID: 21300000, guid: 34b0542c0c67f73489c437d871770f2f, type: 3}
   _cost: 2
