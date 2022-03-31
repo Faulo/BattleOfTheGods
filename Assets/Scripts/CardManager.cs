@@ -1,17 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
 using Runtime.Cards;
-using System;
 using Slothsoft.UnityExtensions;
+using UnityEngine;
 namespace Runtime {
-    public class CardManager : MonoBehaviour
-    {
+    public class CardManager : MonoBehaviour {
         public static CardManager instance;
         public static Transform waveParent => instance._waveParent;
         [SerializeField] Transform _waveParent;
-        private void Awake() {
+        void Awake() {
             instance = this;
         }
 
@@ -21,17 +18,19 @@ namespace Runtime {
 
         [SerializeField] Transform deckParent, handParent, graveParent;
         [SerializeField] CardInstance cardCiv, cardNat;
-        public void Init(List <CardData> cards) {
+        public void Init(List<CardData> cards) {
             Cleanup();
 
             hand = new List<CardInstance>();
             deck = new List<CardInstance>();
             grave = new List<CardInstance>();
 
-            foreach(var card in cards) {
+            foreach (var card in cards) {
                 var instance = InstantiateCard(card);
-                if (instance.TryGetComponent<CardView>(out CardView view))
+                if (instance.TryGetComponent<CardView>(out var view)) {
                     view.Init(instance);
+                }
+
                 deck.Add(instance);
             }
 
@@ -41,18 +40,18 @@ namespace Runtime {
         public CardInstance InstantiateCard(CardData card) {
             CardInstance prefab = default;
 
-            if (card.type == Faction.Civilization)
+            if (card.type == Faction.Civilization) {
                 prefab = cardCiv;
-            else if (card.type == Faction.Nature)
+            } else if (card.type == Faction.Nature) {
                 prefab = cardNat;
+            }
 
-            CardInstance instance = Instantiate(prefab, deckParent);
+            var instance = Instantiate(prefab, deckParent);
             instance.Init(card);
             return instance;
         }
 
-        private void ShuffleDeck() 
-        {
+        void ShuffleDeck() {
             deck = deck.Shuffle().ToList();
         }
 
@@ -69,27 +68,30 @@ namespace Runtime {
 
         public void SendToGraveyard(CardInstance card) {
             grave.Add(card);
-            if (hand.Contains(card))
+            if (hand.Contains(card)) {
                 hand.Remove(card);
-            if (deck.Contains(card))
+            }
+
+            if (deck.Contains(card)) {
                 deck.Remove(card);
+            }
+
             UpdateCardParents();
         }
 
-        private void UpdateCardParents() 
-        {
+        void UpdateCardParents() {
             foreach (var ci in deck) {
                 ci.transform.SetParent(deckParent, false);
             }
             foreach (var ci in hand) {
                 ci.transform.SetParent(handParent, false);
             }
-            foreach (var ci in grave) { 
-                ci.transform.SetParent(graveParent, false); 
+            foreach (var ci in grave) {
+                ci.transform.SetParent(graveParent, false);
             }
         }
 
-        private void Cleanup() {
+        void Cleanup() {
             if (hand != default) {
                 foreach (var ci in hand) {
                     Destroy(ci.gameObject);

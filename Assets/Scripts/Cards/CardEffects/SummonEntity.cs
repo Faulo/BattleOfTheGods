@@ -1,5 +1,5 @@
-using UnityEngine;
 using Runtime.Entities;
+using UnityEngine;
 namespace Runtime.Cards.CardEffects {
     [CreateAssetMenu(fileName = "SummonEntity.asset", menuName = "Card Effects/Summon Entity")]
     public class SummonEntity : CardEffect {

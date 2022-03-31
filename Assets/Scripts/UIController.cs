@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 namespace Runtime {
-public class UIController : MonoBehaviour
-{
+    public class UIController : MonoBehaviour {
         public static UIController instance;
 
 
@@ -20,7 +17,7 @@ public class UIController : MonoBehaviour
 
         public static TextMeshProUGUI log => instance._log;
         [SerializeField] TextMeshProUGUI _log;
-        private void Awake() {
+        void Awake() {
             instance = this;
             gameOverPanel.SetActive(false);
         }

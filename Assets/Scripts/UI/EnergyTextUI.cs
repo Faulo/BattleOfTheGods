@@ -1,15 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 namespace Runtime.UI {
 
 
-    
+
     public class EnergyTextUI : MonoBehaviour {
         TextMeshProUGUI text;
 
-        private void OnEnable() {
+        void OnEnable() {
             text = GetComponent<TextMeshProUGUI>();
         }
         void Update() {

@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using Runtime.Entities;
-using Slothsoft.UnityExtensions;
 using UnityEngine;
 
 namespace Runtime.Cards.CardConditions {

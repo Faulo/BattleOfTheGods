@@ -1,12 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Runtime.Entities;
+using UnityEngine;
 
 namespace Runtime.Cards {
     [CreateAssetMenu(fileName = "CardData.asset")]
-    public class CardData : ScriptableObject
-    {
+    public class CardData : ScriptableObject {
         public List<PlayCondition> conditions;
         public List<CardEffect> effects;
 

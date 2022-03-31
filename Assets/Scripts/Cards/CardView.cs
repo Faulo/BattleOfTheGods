@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Runtime.Cards {
@@ -13,23 +10,24 @@ namespace Runtime.Cards {
         public CardInstance instance { get; private set; }
         public void Init(CardInstance instance) {
             this.instance = instance;
-            this.header.text = instance.data.name;
-            this.body.text = instance.body;
-            this.cost.text = instance.cost.ToString();
-            this.gameObject.name = instance.data.name;
-            this.image.sprite = instance.data.sprite;
+            header.text = instance.data.name;
+            body.text = instance.body;
+            cost.text = instance.cost.ToString();
+            gameObject.name = instance.data.name;
+            image.sprite = instance.data.sprite;
             UpdateVisibilityByParent();
         }
 
-        private void OnTransformParentChanged() {
+        void OnTransformParentChanged() {
             UpdateVisibilityByParent();
         }
 
-        private void UpdateVisibilityByParent() {
-            if (this.transform.parent.gameObject.TryGetComponent<HandView>(out HandView view))
+        void UpdateVisibilityByParent() {
+            if (transform.parent.gameObject.TryGetComponent<HandView>(out var view)) {
                 gameObject.SetActive(true);
-            else
+            } else {
                 gameObject.SetActive(false);
+            }
         }
     }
 }

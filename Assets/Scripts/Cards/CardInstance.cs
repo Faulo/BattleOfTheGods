@@ -1,11 +1,9 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using Runtime.Entities;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Runtime.Entities;
-using System;
-namespace Runtime.Cards
-{
+namespace Runtime.Cards {
     public class CardInstance : MonoBehaviour, IPointerClickHandler {
 
         public static event Action<CardInstance> clicked;

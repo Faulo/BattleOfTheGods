@@ -1,20 +1,17 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 namespace Runtime.UI {
     [RequireComponent(typeof(Button))]
     public class EndTurnButton : MonoBehaviour {
         Button btn;
-        private void OnEnable() {
+        void OnEnable() {
             btn = GetComponent<Button>();
             btn.onClick.AddListener(EndTurnClicked);
         }
 
-        private void EndTurnClicked() => GameManager.instance.SetTurnEvaluate();
+        void EndTurnClicked() => GameManager.instance.SetTurnEvaluate();
 
-        private void OnDisable() {
+        void OnDisable() {
             btn.onClick.RemoveAllListeners();
         }
         void Update() {

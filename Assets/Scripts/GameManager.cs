@@ -120,7 +120,7 @@ namespace Runtime {
 
         IEnumerator EndGame(Faction winner) {
             string t = $"";
-            if (winner != Faction.Nobody) {                
+            if (winner != Faction.Nobody) {
                 t = $"Game Over the winner is {winner}";
             } else {
                 t = $"No cards left but no win (win within 3 turns after playing last card). Equilibrium or apocalypse?";
@@ -148,7 +148,7 @@ namespace Runtime {
                 var card = CardManager.instance.InstantiateCard(tuple.card);
                 log.text += $"opponent plays {card.data.name} at {tuple.target} \n";
                 card.transform.SetParent(waveManager.cards);
-                if (World.instance.TryGetCell(tuple.target, out ICell cell)) {
+                if (World.instance.TryGetCell(tuple.target, out var cell)) {
 
                     bool playable = true;
 
@@ -174,18 +174,22 @@ namespace Runtime {
             winner = Faction.Nobody;
             var cells = World.instance.cellValues;
             int totalCells = cells.Count();
-            Dictionary<Faction, int> ownCount = new Dictionary<Faction, int>();
-            
-            foreach (ICell cell in cells) {
-                if (!ownCount.ContainsKey(cell.owningFaction))
+            var ownCount = new Dictionary<Faction, int>();
+
+            foreach (var cell in cells) {
+                if (!ownCount.ContainsKey(cell.owningFaction)) {
                     ownCount.Add(cell.owningFaction, 0);
+                }
+
                 ownCount[cell.owningFaction]++;
             }
 
             //Win if any faction controls all cells!
-            foreach(Faction f in ownCount.Keys) {
-                if (f == Faction.Nobody)
+            foreach (var f in ownCount.Keys) {
+                if (f == Faction.Nobody) {
                     continue;
+                }
+
                 if (ownCount[f] >= totalCells) {
                     winner = f;
                     return true;
@@ -211,7 +215,7 @@ namespace Runtime {
                     targetingPhaseStarted?.Invoke();
 
                 }
-                
+
 
                 yield return new WaitWhile(() => state == States.PlayingCardsTargeting);
                 targetingPhaseEnded?.Invoke();
