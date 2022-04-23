@@ -1,17 +1,10 @@
 {
-    "m_Name": "Settings",
-    "m_Path": "ProjectSettings/Packages/net.slothsoft.unity-extensions/Settings.json",
     "m_Dictionary": {
         "m_DictionaryValues": [
             {
                 "type": "Slothsoft.UnityExtensions.Editor.PackageSettings.CSharpSettings, Slothsoft.UnityExtensions.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "key": "m_expandableSettings",
                 "value": "{\"m_Value\":{\"addNamespaceToCSharpFiles\":true,\"rewriteProjectFiles\":true,\"projectFileSettings\":[{\"affectedAssemblies\":[{\"fileID\":5897886265953266890,\"guid\":\"5cf007d335c0877488c1796edf65f8b0\",\"type\":3}],\"setCSharpVersionTo\":\"8.0\",\"m_setWarningLevelTo\":4}]}}"
-            },
-            {
-                "type": "Slothsoft.UnityExtensions.Editor.RenderPipelineConversionSettings, Slothsoft.UnityExtensions.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
-                "key": "m_expandableSettings",
-                "value": "{\"m_Value\":{\"directionalLightIntensityMultiplier\":5.0,\"pointLightIntensityMultiplier\":30.0,\"lightIntensityProperty\":\"m_Intensity\"}}"
             },
             {
                 "type": "Slothsoft.UnityExtensions.Editor.PackageSettings.PrefabUtilsSettings, Slothsoft.UnityExtensions.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
