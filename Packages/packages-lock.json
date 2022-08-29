@@ -283,7 +283,7 @@
       }
     },
     "net.slothsoft.unity-extensions": {
-      "version": "1.5.3",
+      "version": "1.6.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
