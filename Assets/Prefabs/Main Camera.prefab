@@ -214,4 +214,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attenuationObject: {fileID: 4334885130296733132}
-  ListenerNumber: -1
