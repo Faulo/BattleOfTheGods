@@ -17,9 +17,6 @@ $RECYCLE.BIN/
 !/.github
 !/*.md
 
-# == Doxygen ==
-!/Doxyfile
-
 # == Jenkins ==
 !/Jenkinsfile*
 
@@ -32,12 +29,19 @@ $RECYCLE.BIN/
 !/Packages/
 /Assets/InitTestScene*
 
+# == Blender ==
+*.blend1*
+
+# == Cubase ==
+!/Cubase Project/
+
 # == FMOD ==
 # Never ignore DLLs in the FMOD subfolder.
 !/[Aa]ssets/Plugins/FMOD/**/lib/*
 .cache
 .unsaved
 .user
+fmod_editor.log
 
 # Don't ignore images and gizmos used by FMOD in the Unity Editor.
 !/[Aa]ssets/Gizmos/FMOD/*
@@ -49,7 +53,4 @@ $RECYCLE.BIN/
 # Ignore bank files in the StreamingAssets folder.
 /[Aa]ssets/StreamingAssets/**/*.bank
 /[Aa]ssets/StreamingAssets/**/*.bank.meta
-                    
-# If the source bank files are kept outside of the StreamingAssets folder then these can be ignored.
-# Log files can be ignored.
-fmod_editor.log
+                 
