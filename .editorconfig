@@ -12,8 +12,9 @@ indent_style = space
 tab_width = 4
 
 # Einstellungen für neue Zeilen
+trim_trailing_whitespace = true
 end_of_line = crlf
-insert_final_newline = false
+insert_final_newline = true:none
 
 #### .NET-Codierungskonventionen ####
 
@@ -54,7 +55,6 @@ dotnet_style_prefer_inferred_anonymous_type_member_names = true:warning
 dotnet_style_prefer_inferred_tuple_names = true:warning
 dotnet_style_prefer_is_null_check_over_reference_equality_method = true:warning
 dotnet_style_prefer_simplified_interpolation = true:warning
-dotnet_style_prefer_simplified_boolean_expressions = true:silent
 
 # Einstellungen für Felder
 dotnet_style_readonly_field = false:warning
@@ -108,6 +108,11 @@ csharp_style_unused_value_expression_statement_preference = discard_variable:non
 
 # Einstellungen für using-Anweisungen
 csharp_using_directive_placement = outside_namespace:warning
+
+# New line preferences
+csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = false
+csharp_style_allow_blank_lines_between_consecutive_braces_experimental = false
+csharp_style_allow_embedded_statements_on_same_line_experimental = false
 
 #### C#-Formatierungsregeln ####
 
@@ -262,15 +267,16 @@ dotnet_diagnostic.UNT0013.severity = none		# Invalid or redundant SerializeField
 dotnet_diagnostic.UNT0014.severity = warning	# GetComponent called with non-Component or non-Interface type
 dotnet_diagnostic.UNT0015.severity = warning	# Incorrect method signature with InitializeOnLoadMethod or RuntimeInitializeOnLoadMethod attribute
 dotnet_diagnostic.UNT0016.severity = warning	# Unsafe way to get the method name
-dotnet_diagnostic.UNT0017.severity = warning	# SetPixels invocation is slow
+dotnet_diagnostic.UNT0017.severity = none		# SetPixels invocation is slow
 dotnet_diagnostic.UNT0018.severity = warning	# System.Reflection features in performance critical messages
 dotnet_diagnostic.UNT0019.severity = warning	# Unnecessary indirection call for GameObject.gameObject
 dotnet_diagnostic.UNT0020.severity = warning	# MenuItem attribute used on non-static method
-dotnet_diagnostic.UNT0021.severity = none		# Unity message should be protected [opt-in] (Disabled until https://github.com/microsoft/Microsoft.Unity.Analyzers/issues/187 is resolved)
+dotnet_diagnostic.UNT0021.severity = warning	# Unity message should be protected [opt-in]
 dotnet_diagnostic.UNT0022.severity = warning	# Inefficient method to set position and rotation
 dotnet_diagnostic.UNT0023.severity = warning	# Coalescing assignment on Unity objects
 dotnet_diagnostic.UNT0024.severity = warning	# Give priority to scalar calculations over vector calculations
 dotnet_diagnostic.UNT0025.severity = warning	# Input.GetKey overloads with KeyCode argument
+dotnet_diagnostic.UNT0026.severity = warning	# GetComponent always allocates
 
 # @UNT0004+UNT0005: https://docs.unity3d.com/ScriptReference/Time-fixedDeltaTime.html
 # @UNT0007+UNT0008: https://stackoverflow.com/questions/58487442/why-does-resharper-not-suggest-using-null-propagation-for-both-of-these-blocks
