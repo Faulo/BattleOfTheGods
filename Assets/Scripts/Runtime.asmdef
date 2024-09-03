@@ -3,7 +3,7 @@
     "rootNamespace": "",
     "references": [
         "MyBox",
-        "Slothsoft.UnityExtensions.Runtime",
+        "Slothsoft.UnityExtensions",
         "Unity.TextMeshPro",
         "Unity.InputSystem",
         "FMODUnity",
